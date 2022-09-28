@@ -10,7 +10,7 @@ export default function Avatar() {
     return (
         <View style={styles.containerAvatar}>
             <Image style={styles.avatarImg}
-                source={require('../../assets/perfil/icon2.png')}
+                source={require('../../assets/perfil/perfil.jpg')}
                 resizeMode="cover"
             />
         </View>
