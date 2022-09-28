@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { ScrollView, StyleSheet, Text, View, Image, Button } from 'react-native';
-import colors from '../../atoms/colors';
+import Colors from '../../atoms/Colors';
 import { Spacer } from '../../atoms/Spacer';
 import Avatar from '../../organisms/Avatar';
 
@@ -41,7 +41,7 @@ export default function Dashboard({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.primary,
+    backgroundColor: Colors.primary,
     alignItems: 'center',
     // justifyContent: 'center',
   },
