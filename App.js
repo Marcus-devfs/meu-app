@@ -12,8 +12,8 @@ export default function App() {
         backgroundColor={Colors.primary}
         barStyle="light-content" // Here is where you change the font-color
       />
-    {/* <MainTabNavigator/> */}
-      <Stacks/>
+    <MainTabNavigator/>
+      {/* <Stacks/> */}
     </NavigationContainer>
   );
 }

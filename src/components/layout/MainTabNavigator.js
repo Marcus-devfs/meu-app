@@ -23,12 +23,12 @@ export default function MainTabNavigator({ navigation }) {
                 headerShown: false
 
             })}>
-               <Tab.Screen name="Signin" component={Signin}
+               {/* <Tab.Screen name="Signin" component={Signin}
                 options={{
                     tabBarIcon: ({ focused, color, size }) => {
                         return <Ionicons name='home' size={30} color={focused ? '#FFF' : '#A9A9A9'} />;
                     }, 
-                }} />
+                }} /> */}
             <Tab.Screen name="Dashboard" component={Dashboard}
                 options={{
                     tabBarIcon: ({ focused, color, size }) => {
