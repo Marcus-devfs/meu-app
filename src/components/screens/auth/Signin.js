@@ -1,16 +1,24 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { Text, 
+import {
+  Text,
   Alert,
-   View, 
-   StyleSheet, 
-   TextInput, 
-   Image, 
-   ScrollView, 
-   SafeAreaView, 
-   TouchableOpacity, } from 'react-native';
-   import { Spacer, } from '../../atoms/Spacer';
-   import Colors from '../../atoms/Colors';
+  View,
+  StyleSheet,
+  TextInput,
+  TextInputField,
+  Image,
+  ScrollView,
+  SafeAreaView,
+  TouchableOpacity,
+} from 'react-native';
+import { Spacer, } from '../../atoms/Spacer';
+import Colors from '../../atoms/Colors';
+import { doLogin } from '../../../interface/auth/auth-interface';
+import Environment from '../../../config/Environment';
+import { useContext } from 'react';
+import  AuthContext  from '../../../context/validators/AuthContext';
+
 
 // export function handleSubmit({navigation,email, senha}){
 
@@ -25,23 +33,57 @@ import { Text,
 
 export const Signin = ({ navigation }) => {
 
-  const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
+  const { setUser } = useContext(AuthContext)
 
-  const handleLogin = () => {
+  const [login, setLogin] = useState({
+    email: Environment.auth.email,
+    password: Environment.auth.password
+  })
 
-    let emailOk = "vini";
-    let senhaOk = "111"
+  const [rememberLogin, setRemeberLogin] = useState(false)
 
-    if (email != emailOk) {
-      return Alert.alert("MyBank","email ou senha incorretos. Tente novamente!")
+  const handleChange = (name, value) => {
+    setLogin({
+      ...login,
+      [name]: value
+    })
+  }
+
+
+  // const [email, setEmail] = useState(null);
+  // const [password, setPassword] = useState(null);
+
+  const handleLogin = async () => {
+    try {
+      // let emailOk = "vini";
+      // let senhaOk = "111"
+
+      const { email, password } = login
+
+      if (!email || email == '' || email.length < 6 || !email.includes('@')) {
+        Alert.alert("MyBank", "Insira um email válido!")
+        return false
+      }
+
+      const user = await doLogin(login)
+
+      if (!user) {
+        Alert.alert('MyBank', 'Usuario não encontrado ou senha incorreta. Verifique os dados e tente novamente')
+        return
+      }
+
+      setUser(user)
     }
-    else if(password != senhaOk){
-      return Alert.alert("MyBank","email ou senha incorretos. Tente novamente!")
+    catch (error) {
+      console.log(error)
     }
-    else {
-      return (navigation.navigate("dashboard"));
-    }
+    // if (!password || password == '' || password.length < 6) {
+    //   Alert.alert("MyBank", "A senha deve conter no mínimo 6 caracteres")
+    //   return false
+    // }
+    // else {
+    //   return (navigation.navigate("dashboard"));
+    // }
   }
 
 
@@ -49,26 +91,43 @@ export const Signin = ({ navigation }) => {
     <View style={styles.container}>
       <SafeAreaView>
         <ScrollView>
-        <Spacer size={1}/>
+          <Spacer size={1} />
           <View style={styles.containerForm}>
-          <Spacer size={5}/>
+            <Spacer size={5} />
             <Image style={styles.imgLogin}
               source={require('../../../assets/icono.png')}
               resizeMode="contain"
             />
-         <Spacer size={1}/>
-            <TextInput
-              style={styles.input} placeholder="  ✉️ e-mail, usuario" placeholderTextColor="#696969" onChangeText={(email) => setEmail(email)}
+            <Spacer size={1} />
+            <TextInputField
+              style={styles.input}
+              name="email"
+              placeholder="  ✉️ e-mail, usuario"
+              handleChange={(name, value) => handleChange(name, value)}
+              keyBoardType="email-address"
+              placeholderTextColor="#696969"
+              value={login.email}
+              textContentType="username"
+              autoComplete="email"
             />
-            <TextInput
-              style={styles.input} secureTextEntry={true} placeholder=" 🔒 Digite sua senha" placeholderTextColor="#696969" onChangeText={(password) => setPassword(password) }
+            <TextInputField
+              style={styles.input}
+              name="password"
+              hideText={true}
+              handleChange={(name, value) => handleChange(name, value)}
+              value={login.password}
+              textContentType="password"
+              secureTextEntry={true}
+              placeholder=" 🔒 Digite sua senha"
+              placeholderTextColor="#696969"
+              type='password'
             />
-            <TouchableOpacity style={{cursor: 'pointer' ,marginLeft: 140, color: "#fff", marginBottom: 10, fontSize: 14 }}><Text style={{color: "#fff"}}>Recuperar senha?</Text></TouchableOpacity>
+            <TouchableOpacity style={{ cursor: 'pointer', marginLeft: 140, color: "#fff", marginBottom: 10, fontSize: 14 }}><Text style={{ color: "#fff" }}>Recuperar senha?</Text></TouchableOpacity>
 
             <TouchableOpacity
               style={styles.buttonLogin} onPress={handleLogin}
             >
-              <Text style={{color: '#fff', fontSize: 17}}>Entrar</Text>
+              <Text style={{ color: '#fff', fontSize: 17 }}>Entrar</Text>
             </TouchableOpacity>
 
           </View>
@@ -109,7 +168,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: '#fff',
     marginBottom: 8,
-    
+
   },
   buttonLogin: {
     backgroundColor: '#B22222',

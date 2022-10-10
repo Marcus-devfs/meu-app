@@ -1,18 +1,18 @@
-import React from "react";
-import { createContext } from "react";
+import React, { createContext, useState } from 'react'
+import { doLogout } from '../../interface/auth/auth-interface';
 
-interface AuthData{
-    token:String;
-    email:String;
-    name:String;
-}
 
-interface AuthContextData{
-    authData: AuthData;
-    SignIn: (email: string, password: string) => Promise<AuthData>;
-    SignOut:() => Promise<void>;
+export const AuthContext = createContext({});
 
-    export const AuthContext = createContext <AuthContextData>(
-        {} as AuthContextData,
-    );
-}
+export function AuthProvider({ children }) {
+
+    const [user, setUser] = useState(null)
+
+   
+
+    return (
+        <AuthContext.Provider value={{ user, setUser, doLogout }}>
+            {children}
+        </AuthContext.Provider>
+    )
+};

@@ -1,48 +1,39 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createStackNavigator, HeaderBackground } from 'react-navigation-stack';
-import Dashboard from '../screens/dashboard/dashboard';
-import { Signin } from '../screens/auth/Signin';
-import { SignUp } from '../screens/auth/SignUp';
-import UserProfile from '../screens/users/userProfile';
 import Colors from '../atoms/Colors';
+import Dashboard from '../screens/dashboard/dashboard';
+import UserProfile from '../screens/users/userProfile';
 
+export default function Stacks() {
 
+    const logged = true
+
+    return (
+        <Stack.Navigator>
+            {logged && <>
+                <Stack.Screen
+                    name="Dashboard"
+                    component={Dashboard}
+                    options={headerOptions} />
+                <Stack.Screen
+                    name="userProfile"
+                    component={UserProfile}
+                    options={headerOptions} />
+            </>}
+        </Stack.Navigator>
+    )
+}
 
 const Stack = createNativeStackNavigator();
 
-export default function Stacks() {
-    
-    return (
-        <Stack.Navigator >
-            
-            <Stack.Screen
-                name="Signin"
-                component={Signin} 
-                options={{headerShown: false,}}
-                />
-            <Stack.Screen
-                name="dashboard"
-                component={Dashboard}
-                options={{headerShown: false,}}
-               />
-           
-           <Stack.Screen
-                name="userProfile"
-                component={UserProfile}
-                options={{headerShown: false,}}
-                />
-                
-           
-            <Stack.Screen
-                name="SignUp"
-                component={SignUp} />
-           
-        </Stack.Navigator>
-    );
-
+const headerOptions = {
+    headerTintColor: Colors.primary,
+    headerStyle: {
+        backgroundColor: Colors.backgroundColor
+    },
+    headerBackTitle: '',
+    headerTitle: () => <></>
 }
-
-
 
 
 
