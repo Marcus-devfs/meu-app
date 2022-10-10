@@ -9,8 +9,8 @@ import { Text,
    ScrollView, 
    SafeAreaView, 
    TouchableOpacity, } from 'react-native';
-import Colors from '../../atoms/Colors';
-
+   import { Spacer, } from '../../atoms/Spacer';
+   import Colors from '../../atoms/Colors';
 
 // export function handleSubmit({navigation,email, senha}){
 

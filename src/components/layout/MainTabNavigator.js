@@ -6,6 +6,7 @@ import UserProfile from '../screens/users/userProfile';
 import { Ionicons } from '../atoms/icons';
 import { Signin } from '../screens/auth/Signin';
 
+
 export default function MainTabNavigator({ navigation }) {
 
     const Tab = createBottomTabNavigator();
@@ -28,7 +29,6 @@ export default function MainTabNavigator({ navigation }) {
                         return <Ionicons name='home' size={30} color={focused ? '#FFF' : '#A9A9A9'} />;
                     }, 
                 }} />
-           
             <Tab.Screen name="Dashboard" component={Dashboard}
                 options={{
                     tabBarIcon: ({ focused, color, size }) => {

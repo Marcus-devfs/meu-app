@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { ScrollView, StyleSheet, Text, View, Image, Button } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, Image, Button, TouchableOpacity } from 'react-native';
 import Colors from '../../atoms/Colors';
 import { Spacer } from '../../atoms/Spacer';
 import Avatar from '../../organisms/Avatar';
