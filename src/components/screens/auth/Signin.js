@@ -9,7 +9,7 @@ import { Text,
    SafeAreaView, 
    TouchableOpacity, } from 'react-native';
    import { Spacer, } from '../../atoms/Spacer';
-   import colors from '../../atoms/colors';
+import Colors from '../../atoms/Colors'
 
 // export function handleSubmit({navigation,email, senha}){
 
@@ -82,10 +82,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: colors.primary
+    backgroundColor: Colors.primary
   },
   containerForm: {
-    backgroundColor: colors.primary,
+    backgroundColor: Colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
     width: 300,

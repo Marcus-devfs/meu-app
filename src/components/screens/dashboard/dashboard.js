@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { ScrollView, StyleSheet, Text, View, Image, Button } from 'react-native';
-import colors from '../../atoms/colors';
+import Colors from '../../atoms/Colors';
 import { Spacer } from '../../atoms/Spacer';
 import Avatar from '../../organisms/Avatar';
 
@@ -17,8 +17,8 @@ export default function Dashboard({ navigation }) {
           <Avatar />
         </View>
         <View style={{ marginTop: 20 }}>
-          <Text style={{ color: colors.lightGray, display: 'flex', height: 30, marginLeft: 80 }}> Saldo em conta</Text>
-          <Text style={{ color: colors.primaryText, display: 'flex', height: 50, fontSize: 25, marginLeft: '27%', fontWeight: '700' }}>
+          <Text style={{ color: Colors.lightGray, display: 'flex', height: 30, marginLeft: 80 }}> Saldo em conta</Text>
+          <Text style={{ color: Colors.primaryText, display: 'flex', height: 50, fontSize: 25, marginLeft: '27%', fontWeight: '700' }}>
             R$2.500,99</Text>
 
         </View>
@@ -41,7 +41,7 @@ export default function Dashboard({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.primary,
+    backgroundColor: Colors.primary,
     alignItems: 'center',
     // justifyContent: 'center',
   },
