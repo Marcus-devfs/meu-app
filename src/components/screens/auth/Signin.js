@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { Text,
+import { Text, 
+  Alert,
    View, 
    StyleSheet, 
    TextInput, 
@@ -8,8 +9,9 @@ import { Text,
    ScrollView, 
    SafeAreaView, 
    TouchableOpacity, } from 'react-native';
+import Colors from '../../atoms/Colors';
    import { Spacer, } from '../../atoms/Spacer';
-import Colors from '../../atoms/Colors'
+
 
 // export function handleSubmit({navigation,email, senha}){
 
@@ -33,10 +35,10 @@ export const Signin = ({ navigation }) => {
     let senhaOk = "111"
 
     if (email != emailOk) {
-      return alert("email ou senha incorretos. Tente novamente!")
+      return Alert.alert("MyBank","email ou senha incorretos. Tente novamente!")
     }
     else if(password != senhaOk){
-      return alert("email ou senha incorretos. Tente novamente!")
+      return Alert.alert("MyBank","email ou senha incorretos. Tente novamente!")
     }
     else {
       return (navigation.navigate("dashboard"));

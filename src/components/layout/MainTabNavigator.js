@@ -1,70 +1,55 @@
-import React from 'react';
 import { StyleSheet } from 'react-native';
-import { Ionicons, MaterialCommunityIcons, MaterialIcons } from '../atoms/icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Colors from '../atoms/Colors';
 import Dashboard from '../screens/dashboard/dashboard';
 import UserProfile from '../screens/users/userProfile';
+import { Ionicons } from '../atoms/icons';
+import { Signin } from '../screens/auth/Signin';
 
-export default function MainTabNavigator() {
+export default function MainTabNavigator({ navigation }) {
 
     const Tab = createBottomTabNavigator();
 
+    const user = false
+
     return (
-
         <Tab.Navigator
-  screenOptions={({ route }) => ({
-    tabBarIcon: ({ color, size }) => {
-      const icons = {
-        Home: 'Dashboard',
-        Profile: 'account',
-      };
+            screenOptions={({ route }) => ({
+                tabBarStyle: {
+                    backgroundColor: Colors.primary, height: 80
+                },
+                tabBarShowLabel: false,
+                headerShown: false
 
-      return (
-        <MaterialCommunityIcons
-          name={icons[route.name]}
-          color={color}
-          size={size}
-        />
-      );
-    },
-  })}
->
-  <Tab.Screen name="Dashboard" component={Dashboard} />
-  <Tab.Screen name="Profile" component={UserProfile} />
-</Tab.Navigator>
-
-        // <Tab.Navigator 
-        //     initialRouteName="Home"
-        //     screenOptions={({ route }) => ({
-        //         tabBarIcon: ({ focused, color, size }) => {
-        //             let iconName;
-
-        //             if (route.name === 'Dashboard') {
-        //                 iconName = focused
-        //                     ? 'ios-information-circle'
-        //                     : 'ios-information-circle-outline';
-        //             } else if (route.name === 'Profile') {
-        //                 iconName = focused ? 'ios-list-box' : 'ios-list';
-        //             }
-
-        //             // You can return any component that you like here!
-        //             return <Ionicons name={"apps"} size={24} color={"#1C1C1E"} />;
-        //         },
-        //         tabBarActiveTintColor: 'tomato',
-        //         tabBarInactiveTintColor: 'gray',
-        //     })}
-        // >
-        //     <Tab.Screen name="Dashboard" component={Dashboard} />
-        //     <Tab.Screen name="Profile" component={UserProfile} />
-        // </Tab.Navigator>
+            })}>
+               <Tab.Screen name="Signin" component={Signin}
+                options={{
+                    tabBarIcon: ({ focused, color, size }) => {
+                        return <Ionicons name='home' size={30} color={focused ? '#FFF' : '#A9A9A9'} />;
+                    }, 
+                }} />
+           
+            <Tab.Screen name="Dashboard" component={Dashboard}
+                options={{
+                    tabBarIcon: ({ focused, color, size }) => {
+                        return <Ionicons name='home' size={30} color={focused ? '#FFF' : '#A9A9A9'} />;
+                    }
+                }} />
+            <Tab.Screen name="userProfile" component={UserProfile}
+                options={{
+                    tabBarIcon: ({ focused, color, size }) => {
+                        return <Ionicons name='cog' size={30} color={focused ? '#FFF' : '#A9A9A9'} />;
+                    }
+                }} />
+        </Tab.Navigator>
     );
 }
-
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingHorizontal: 15,
         paddingTop: 15,
+        backgroundColor: Colors.lightGray
     },
 });

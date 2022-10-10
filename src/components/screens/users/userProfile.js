@@ -5,6 +5,8 @@ import { Divider } from '../../atoms/Divider';
 import Header, { name } from '../../organisms/header'
 import { Ionicons } from '../../atoms/icons';
 import { Spacer } from '../../atoms/Spacer';
+import Colors from '../../atoms/Colors';
+
 
 
 export default function UserProfile() {

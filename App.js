@@ -3,14 +3,17 @@ import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import Stacks from './src/components/layout/Stacks';
 import MainTabNavigator from './src/components/layout/MainTabNavigator';
-import {AuthProvider} from './src/components/layout/AuthNavigator';
+import Colors from './src/components/atoms/Colors';
 
 export default function App() {
   return (
     <NavigationContainer>
-      <StatusBar/>
-      <Stacks />
-      {/* <MainTabNavigator /> */}
+      <StatusBar
+        backgroundColor={Colors.primary}
+        barStyle="light-content" // Here is where you change the font-color
+      />
+    {/* <MainTabNavigator/> */}
+      <Stacks/>
     </NavigationContainer>
   );
 }
