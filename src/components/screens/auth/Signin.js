@@ -10,7 +10,6 @@ import { Text,
    SafeAreaView, 
    TouchableOpacity, } from 'react-native';
 import Colors from '../../atoms/Colors';
-   import { Spacer, } from '../../atoms/Spacer';
 
 
 // export function handleSubmit({navigation,email, senha}){

@@ -4,6 +4,7 @@ import { Ionicons } from "../atoms/icons";
 import { MaterialCommunityIcons } from "../atoms/icons";
 import Avatar from "./Avatar";
 import { Spacer } from "../atoms/Spacer";
+import Colors from "../atoms/Colors";
 
 
 export const name = "Marcus Silva";
@@ -13,7 +14,7 @@ export default function Header() {
         <View style={styles.container}>
             <View>
                 <Spacer size={3} />
-                <Avatar style={{marginLeft:5}}/>
+                <Avatar />
             </View>
         </View>
     )
@@ -23,7 +24,7 @@ export default function Header() {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#06373d',
+        backgroundColor: Colors.primary,
         width: '100%',
         height: 120,
         justifyContent: 'center',
