@@ -7,7 +7,7 @@ import { Text,
    Image, 
    ScrollView, 
    SafeAreaView, 
-   TouchableOpacity, } from 'react-native';
+   TouchableOpacity,Alert } from 'react-native';
    import { Spacer, } from '../../atoms/Spacer';
    import Colors from '../../atoms/Colors';
 
@@ -33,7 +33,7 @@ export const Signin = ({ navigation }) => {
     let senhaOk = "111"
 
     if (email != emailOk) {
-      return alert("email ou senha incorretos. Tente novamente!")
+      return Alert.alert("MyBank","email ou senha incorretos. Tente novamente!")
     }
     else if(password != senhaOk){
       return alert("email ou senha incorretos. Tente novamente!")
