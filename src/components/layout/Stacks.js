@@ -7,19 +7,19 @@ import UserProfile from '../screens/users/userProfile';
 import Colors from '../atoms/Colors';
 
 
+//se estiver autorizado, usar as telas abaixo
 
 const Stack = createNativeStackNavigator();
 
-export default function Stacks() {
+export default function AppStacks() {
     
     return (
         <Stack.Navigator >
-            
-            <Stack.Screen
+            {/* <Stack.Screen
                 name="Signin"
                 component={Signin} 
                 options={{headerShown: false,}}
-                />
+                /> */}
             <Stack.Screen
                 name="dashboard"
                 component={Dashboard}

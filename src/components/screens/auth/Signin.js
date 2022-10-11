@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Text, 
   Alert,
    View, 
@@ -11,6 +11,7 @@ import { Text,
    TouchableOpacity, } from 'react-native';
    import { Spacer, } from '../../atoms/Spacer';
    import Colors from '../../atoms/Colors';
+   import { AuthContext } from '../../../context/validators/AuthContext';
 
 // export function handleSubmit({navigation,email, senha}){
 
@@ -24,6 +25,8 @@ import { Text,
 
 
 export const Signin = ({ navigation }) => {
+
+  const {loggin} = useContext(AuthContext);
 
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
@@ -66,7 +69,7 @@ export const Signin = ({ navigation }) => {
             <TouchableOpacity style={{cursor: 'pointer' ,marginLeft: 140, color: "#fff", marginBottom: 10, fontSize: 14 }}><Text style={{color: "#fff"}}>Recuperar senha?</Text></TouchableOpacity>
 
             <TouchableOpacity
-              style={styles.buttonLogin} onPress={handleLogin}
+              style={styles.buttonLogin} onPress={()=> {loggin()}}
             >
               <Text style={{color: '#fff', fontSize: 17}}>Entrar</Text>
             </TouchableOpacity>

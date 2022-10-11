@@ -1,18 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { createContext } from "react";
 
-interface AuthData{
-    token:String;
-    email:String;
-    name:String;
-}
+export const AuthContext = createContext();
 
-interface AuthContextData{
-    authData: AuthData;
-    SignIn: (email: string, password: string) => Promise<AuthData>;
-    SignOut:() => Promise<void>;
+export const AuthProvider = ({children}) => {
+    const [isLoading, setIsLoading] = useState(true);
+    const [userToken, setUserToken] = useState(null)
 
-    export const AuthContext = createContext <AuthContextData>(
-        {} as AuthContextData,
-    );
+    const loggin = () =>{
+        setUserToken('@MyBank');
+        setIsLoading(false);
+    }
+
+    const logOut = ()=>{
+        setUserToken(null);
+        setIsLoading(false)
+    }
+
+
+
+    <AuthContext.Provider value={{loggin, logOut, isLoading, userToken}}>
+        {children}
+    </AuthContext.Provider>
 }
