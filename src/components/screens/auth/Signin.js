@@ -23,10 +23,12 @@ import { Text,
 
 // }
 
+const {setAuth, auth} = useContext(AuthContext);
+console.log('auth', auth);
 
 export const Signin = ({ navigation }) => {
 
-  const {loggin} = useContext(AuthContext);
+  
 
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
@@ -43,6 +45,7 @@ export const Signin = ({ navigation }) => {
       return Alert.alert("MyBank","email ou senha incorretos. Tente novamente!")
     }
     else {
+      setAuth(true)
       return (navigation.navigate("dashboard"));
     }
   }
@@ -69,7 +72,7 @@ export const Signin = ({ navigation }) => {
             <TouchableOpacity style={{cursor: 'pointer' ,marginLeft: 140, color: "#fff", marginBottom: 10, fontSize: 14 }}><Text style={{color: "#fff"}}>Recuperar senha?</Text></TouchableOpacity>
 
             <TouchableOpacity
-              style={styles.buttonLogin} onPress={()=> {loggin()}}
+              style={styles.buttonLogin} onPress={{handleLogin}}
             >
               <Text style={{color: '#fff', fontSize: 17}}>Entrar</Text>
             </TouchableOpacity>

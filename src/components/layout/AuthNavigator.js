@@ -11,21 +11,22 @@ import Colors from '../atoms/Colors';
 
 const Stack = createNativeStackNavigator();
 
-export const AuthStack = ()=> {
-    
+const AuthNavigator = () => {
+
     return (
         <Stack.Navigator >
             <Stack.Screen
+                initialParams={'/Signin'}
                 name="Signin"
-                component={Signin} 
-                options={{headerShown: false,}}
-                />           
+                component={Signin}
+                options={{ headerShown: false, }}
+            />
         </Stack.Navigator>
     );
 
 }
 
-
+export default AuthNavigator
 
 
 

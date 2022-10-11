@@ -6,7 +6,8 @@ import Dashboard from '../screens/dashboard/dashboard';
 import UserProfile from '../screens/users/userProfile';
 import { Ionicons } from '../atoms/icons';
 import { Signin } from '../screens/auth/Signin';
-import Stacks from './Stacks';
+import LoggedInStacks from './Stacks';
+
 
 
 export const StackHome = () => {

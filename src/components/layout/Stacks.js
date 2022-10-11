@@ -11,7 +11,7 @@ import Colors from '../atoms/Colors';
 
 const Stack = createNativeStackNavigator();
 
-export default function AppStacks() {
+export default function Stacks() {
     
     return (
         <Stack.Navigator >

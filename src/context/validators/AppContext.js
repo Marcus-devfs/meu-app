@@ -3,25 +3,16 @@ import { NavigationContainer } from "@react-navigation/native";
 import { AuthContext } from "./AuthContext";
 import { AuthProvider } from "./AuthContext";
 import { ActivityIndicator, View } from "react-native";
-import AppStacks from "../../components/layout/Stacks";
 import AuthNavigator from "../../components/layout/AuthNavigator";
+import LoggedInStacks from "../../components/layout/Stacks";
+import { AuthProvider } from "./AuthContext";
 
-export default function AppContext(){
+ function AppContext(){
 
-    const {isLoadding, userToken} = useContext(AuthContext);
-
-    if( isLoadding) {
-        return(
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor:'red'}}>
-            <ActivityIndicator size={'large'}/>
-        </View>
-        );
-    }
-
+    const { auth } = useContext(AuthContext);
     return(
-        <NavigationContainer>
-            {userToken !== null ? <AppStacks /> : <AuthNavigator />}
-            <AuthNavigator />
-        </NavigationContainer>
+            auth ? <AuthNavigator /> : <LoggedInStacks />
     )
 }
+
+export default AppContext

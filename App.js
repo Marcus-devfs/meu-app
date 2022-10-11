@@ -6,18 +6,17 @@ import MainTabNavigator, { Stack } from './src/components/layout/MainTabNavigato
 import Colors from './src/components/atoms/Colors';
 import { AuthProvider } from './src/context/validators/AuthContext';
 import AuthNavigator from './src/components/layout/AuthNavigator';
+import AppContext from './src/context/validators/AppContext';
 
 export default function App() {
   return (
 
-    
+    <AuthProvider>
+      <AppContext />
       <NavigationContainer>
-        <StatusBar
-          backgroundColor={Colors.primary}
-          barStyle="light-content" // Here is where you change the font-color
-        />
+        <AppContext/>
         <AuthNavigator />
       </NavigationContainer>
- 
+    </AuthProvider>
   );
 }
