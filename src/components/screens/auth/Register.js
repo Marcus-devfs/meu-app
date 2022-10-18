@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import { Spacer, } from '../../atoms/Spacer';
 import Colors from '../../atoms/Colors';
+import { AuthContext } from '../../../context/validators/AuthContext';
 
 // export function handleSubmit({navigation,email, senha}){
 
@@ -26,7 +27,7 @@ import Colors from '../../atoms/Colors';
 
 
 export const RegisterScreen = ({ navigation }) => {
-
+    const vailogo = useContext(AuthContext);
 
     // const handleRegister = () => {
 
@@ -50,7 +51,7 @@ export const RegisterScreen = ({ navigation }) => {
             <SafeAreaView>
                 <ScrollView>
                     <Spacer size={2} />
-
+                    <Text style={{ color: 'black', fontSize: 25 }}>{vailogo}</Text>
                     <View style={styles.containerForm}>
                         <Text style={{ color: '#fff', fontSize: 25 }}>Crie sua conta!</Text>
                         <Spacer size={5} />

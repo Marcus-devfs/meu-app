@@ -1,17 +1,21 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useContext, useState } from 'react';
-import { Text, 
+import {
+  Text,
   Alert,
-   View, 
-   StyleSheet, 
-   TextInput, 
-   Image, 
-   ScrollView, 
-   SafeAreaView, 
-   TouchableOpacity, } from 'react-native';
-   import { Spacer, } from '../../atoms/Spacer';
-   import Colors from '../../atoms/Colors';
-   import { AuthContext } from '../../../context/validators/AuthContext';
+  View,
+  StyleSheet,
+  TextInput,
+  Image,
+  ScrollView,
+  SafeAreaView,
+  TouchableOpacity,
+} from 'react-native';
+import { Spacer, } from '../../atoms/Spacer';
+import Colors from '../../atoms/Colors';
+import { AuthContext } from '../../../context/validators/AuthContext';
+
+
 
 // export function handleSubmit({navigation,email, senha}){
 
@@ -24,11 +28,13 @@ import { Text,
 // }
 
 export const Signin = ({ navigation }) => {
-
-  
-
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
+  const vailogo = useContext(AuthContext);
+
+
+
+
 
   const handleLogin = () => {
 
@@ -36,10 +42,10 @@ export const Signin = ({ navigation }) => {
     let senhaOk = "111"
 
     if (email != emailOk) {
-      return Alert.alert("MyBank","email ou senha incorretos. Tente novamente!")
+      return Alert.alert("MyBank", "email ou senha incorretos. Tente novamente!")
     }
-    else if(password != senhaOk){
-      return Alert.alert("MyBank","email ou senha incorretos. Tente novamente!")
+    else if (password != senhaOk) {
+      return Alert.alert("MyBank", "email ou senha incorretos. Tente novamente!")
     }
     else {
       return navigation.navigate("dashboard");
@@ -51,26 +57,27 @@ export const Signin = ({ navigation }) => {
     <View style={styles.container}>
       <SafeAreaView>
         <ScrollView>
-        <Spacer size={3}/>
+          <Spacer size={3} />
           <View style={styles.containerForm}>
-          <Spacer size={5}/>
+          <Text style={{ color: 'black', fontSize: 25 }}>{vailogo}</Text>
+            <Spacer size={5} />
             <Image style={styles.imgLogin}
               source={require('../../../assets/icono.png')}
               resizeMode="contain"
             />
-         <Spacer size={1}/>
+            <Spacer size={1} />
             <TextInput
-              style={styles.input} placeholder="  ✉️ e-mail, usuario" placeholderTextColor="#696969" onChangeText={(email) => setEmail(email)}
+              style={styles.input} placeholder="  ✉️ e-mail, usuario" placeholderTextColor="#696969" onChangeText={text => setEmail(text)} value={email}
             />
             <TextInput
-              style={styles.input} secureTextEntry={true} placeholder=" 🔒 Digite sua senha" placeholderTextColor="#696969" onChangeText={(password) => setPassword(password) }
+              style={styles.input} secureTextEntry={true} placeholder=" 🔒 Digite sua senha" placeholderTextColor="#696969" onChangeText={(text) => setPassword(text)} value={password}
             />
-            <TouchableOpacity style={{cursor: 'pointer' ,marginLeft: 140, color: "#fff", marginBottom: 10, fontSize: 14 }}><Text style={{color: "#fff"}}>Recuperar senha?</Text></TouchableOpacity>
+            <TouchableOpacity style={{ cursor: 'pointer', marginLeft: 140, color: "#fff", marginBottom: 10, fontSize: 14 }}><Text style={{ color: "#fff" }}>Recuperar senha?</Text></TouchableOpacity>
 
             <TouchableOpacity
               style={styles.buttonLogin} onPress={handleLogin}
             >
-              <Text style={{color: '#fff', fontSize: 17}}>Entrar</Text>
+              <Text style={{ color: '#fff', fontSize: 17 }}>Entrar</Text>
             </TouchableOpacity>
 
           </View>
@@ -122,7 +129,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: '#fff',
     marginBottom: 8,
-    
+
   },
   buttonLogin: {
     backgroundColor: '#B22222',
