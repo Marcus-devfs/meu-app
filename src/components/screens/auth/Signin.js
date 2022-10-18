@@ -23,9 +23,6 @@ import { Text,
 
 // }
 
-const {setAuth, auth} = useContext(AuthContext);
-console.log('auth', auth);
-
 export const Signin = ({ navigation }) => {
 
   
@@ -45,8 +42,7 @@ export const Signin = ({ navigation }) => {
       return Alert.alert("MyBank","email ou senha incorretos. Tente novamente!")
     }
     else {
-      setAuth(true)
-      return (navigation.navigate("dashboard"));
+      return navigation.navigate("dashboard");
     }
   }
 
@@ -55,7 +51,7 @@ export const Signin = ({ navigation }) => {
     <View style={styles.container}>
       <SafeAreaView>
         <ScrollView>
-        <Spacer size={1}/>
+        <Spacer size={3}/>
           <View style={styles.containerForm}>
           <Spacer size={5}/>
             <Image style={styles.imgLogin}
@@ -72,11 +68,22 @@ export const Signin = ({ navigation }) => {
             <TouchableOpacity style={{cursor: 'pointer' ,marginLeft: 140, color: "#fff", marginBottom: 10, fontSize: 14 }}><Text style={{color: "#fff"}}>Recuperar senha?</Text></TouchableOpacity>
 
             <TouchableOpacity
-              style={styles.buttonLogin} onPress={{handleLogin}}
+              style={styles.buttonLogin} onPress={handleLogin}
             >
               <Text style={{color: '#fff', fontSize: 17}}>Entrar</Text>
             </TouchableOpacity>
 
+          </View>
+
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <Spacer size={2} />
+            <Text style={{ color: '#fff', fontSize: 13 }}>Ainda não tem conta?</Text>
+            <TouchableOpacity
+              style={styles.buttonRegister} onPress={() => { navigation.navigate('Register-Screen') }}
+            >
+
+              <Text style={{ color: '#1E90FF', fontSize: 17 }}>Registre-se</Text>
+            </TouchableOpacity>
           </View>
           <StatusBar style="auto" />
         </ScrollView>

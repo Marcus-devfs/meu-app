@@ -5,6 +5,7 @@ import { Signin } from '../screens/auth/Signin';
 import { SignUp } from '../screens/auth/SignUp';
 import UserProfile from '../screens/users/userProfile';
 import Colors from '../atoms/Colors';
+import { RegisterScreen } from '../screens/auth/Register';
 
 
 //se estiver autorizado, usar as telas abaixo
@@ -15,11 +16,11 @@ export default function Stacks() {
     
     return (
         <Stack.Navigator >
-            {/* <Stack.Screen
+            <Stack.Screen
                 name="Signin"
                 component={Signin} 
                 options={{headerShown: false,}}
-                /> */}
+                />
             <Stack.Screen
                 name="dashboard"
                 component={Dashboard}
@@ -32,10 +33,11 @@ export default function Stacks() {
                 options={{headerShown: false,}}
                 />
                 
-           
             <Stack.Screen
-                name="SignUp"
-                component={SignUp} />
+                name="Register-Screen"
+                component={RegisterScreen} 
+                options={{headerShown: false,}}
+                />
            
         </Stack.Navigator>
     );

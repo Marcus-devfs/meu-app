@@ -10,13 +10,10 @@ import AppContext from './src/context/validators/AppContext';
 
 export default function App() {
   return (
+    <NavigationContainer>
 
-    <AuthProvider>
-      <AppContext />
-      <NavigationContainer>
-        <AppContext/>
-        <AuthNavigator />
-      </NavigationContainer>
-    </AuthProvider>
+      <StatusBar />
+      <Stacks />
+    </NavigationContainer>
   );
 }

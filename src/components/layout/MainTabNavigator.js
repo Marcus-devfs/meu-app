@@ -9,27 +9,6 @@ import { Signin } from '../screens/auth/Signin';
 import LoggedInStacks from './Stacks';
 
 
-
-export const StackHome = () => {
-
-    const Stack = createNativeStackNavigator();
-
-    return (
-        <Stack.Navigator>
-            <Stack.Screen name="Dashboard" 
-            component={Dashboard} 
-            />
-            <Stack.Screen name="Profile" 
-            component={UserProfile} 
-            />
-        </Stack.Navigator>
-    );
-
-}
-
-
-
-
 export const TabNavigator = ({ navigation }) => {
 
 
