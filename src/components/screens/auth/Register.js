@@ -27,7 +27,12 @@ import { AuthContext } from '../../../context/validators/AuthContext';
 
 
 export const RegisterScreen = ({ navigation }) => {
-    const vailogo = useContext(AuthContext);
+    const [name, setName] = useState();
+    const [email, setEmail] = useState();
+    const [password, setPassword] = useState();
+    const [confirmpassword, setConfirmPassword] = useState();
+
+    const { register } = useContext(AuthContext);
 
     // const handleRegister = () => {
 
@@ -76,7 +81,7 @@ export const RegisterScreen = ({ navigation }) => {
                         <Spacer size={1} />
 
                         <TouchableOpacity
-                            style={styles.buttonRegister} onPress={()=> navigation.navigate("dashboard")}
+                            style={styles.buttonRegister} onPress={() => navigation.navigate("dashboard")}
                         >
                             <Text style={{ color: '#fff', fontSize: 17 }}>Cadastrar</Text>
                         </TouchableOpacity>
