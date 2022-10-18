@@ -1,4 +1,5 @@
 import React, { createContext } from "react";
+import axios from 'axios'
 import { API_URL } from "../../config/Environment";
 
 
@@ -8,13 +9,14 @@ export const AuthProvider = ({ children }) => {
 
     const register = (name, email, password, confirmpassword) => {
 
-        axios.post(`${API_URL}/auth/register`, {
-            name,
-            email,
-            password,
-            confirmpassword,
-        }).
-            then(res => {
+        axios
+            .post(`${API_URL}/auth/register`, {
+                name,
+                email,
+                password,
+                confirmpassword,
+            })
+            .then(res => {
                 let userInfo = res.data;
                 console.log(userInfo)
             })
@@ -29,6 +31,6 @@ export const AuthProvider = ({ children }) => {
 
 
     return (
-        <AuthContext.Provider value={{register}}>{children}</AuthContext.Provider>
+        <AuthContext.Provider value={register}>{children}</AuthContext.Provider>
     );
 }
