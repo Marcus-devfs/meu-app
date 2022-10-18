@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Text, 
   Alert,
    View, 
@@ -11,6 +11,7 @@ import { Text,
    TouchableOpacity, } from 'react-native';
    import { Spacer, } from '../../atoms/Spacer';
    import Colors from '../../atoms/Colors';
+   import { AuthContext } from '../../../context/validators/AuthContext';
 
 // export function handleSubmit({navigation,email, senha}){
 
@@ -22,8 +23,9 @@ import { Text,
 
 // }
 
-
 export const Signin = ({ navigation }) => {
+
+  
 
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
@@ -40,7 +42,7 @@ export const Signin = ({ navigation }) => {
       return Alert.alert("MyBank","email ou senha incorretos. Tente novamente!")
     }
     else {
-      return (navigation.navigate("dashboard"));
+      return navigation.navigate("dashboard");
     }
   }
 
@@ -49,7 +51,7 @@ export const Signin = ({ navigation }) => {
     <View style={styles.container}>
       <SafeAreaView>
         <ScrollView>
-        <Spacer size={1}/>
+        <Spacer size={3}/>
           <View style={styles.containerForm}>
           <Spacer size={5}/>
             <Image style={styles.imgLogin}
@@ -71,6 +73,17 @@ export const Signin = ({ navigation }) => {
               <Text style={{color: '#fff', fontSize: 17}}>Entrar</Text>
             </TouchableOpacity>
 
+          </View>
+
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <Spacer size={2} />
+            <Text style={{ color: '#fff', fontSize: 13 }}>Ainda não tem conta?</Text>
+            <TouchableOpacity
+              style={styles.buttonRegister} onPress={() => { navigation.navigate('Register-Screen') }}
+            >
+
+              <Text style={{ color: '#1E90FF', fontSize: 17 }}>Registre-se</Text>
+            </TouchableOpacity>
           </View>
           <StatusBar style="auto" />
         </ScrollView>

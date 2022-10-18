@@ -5,8 +5,10 @@ import { Signin } from '../screens/auth/Signin';
 import { SignUp } from '../screens/auth/SignUp';
 import UserProfile from '../screens/users/userProfile';
 import Colors from '../atoms/Colors';
+import { RegisterScreen } from '../screens/auth/Register';
 
 
+//se estiver autorizado, usar as telas abaixo
 
 const Stack = createNativeStackNavigator();
 
@@ -14,7 +16,6 @@ export default function Stacks() {
     
     return (
         <Stack.Navigator >
-            
             <Stack.Screen
                 name="Signin"
                 component={Signin} 
@@ -32,10 +33,11 @@ export default function Stacks() {
                 options={{headerShown: false,}}
                 />
                 
-           
             <Stack.Screen
-                name="SignUp"
-                component={SignUp} />
+                name="Register-Screen"
+                component={RegisterScreen} 
+                options={{headerShown: false,}}
+                />
            
         </Stack.Navigator>
     );
