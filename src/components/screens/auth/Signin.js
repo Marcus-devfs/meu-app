@@ -14,7 +14,8 @@ import {
 import { Spacer, } from '../../atoms/Spacer';
 import Colors from '../../atoms/Colors';
 import { AuthContext } from '../../../context/validators/AuthContext';
-
+import Environment from '../../../config/Environment';
+import { AuthNavigator } from '../../layout/AuthNavigator';
 
 
 // export function handleSubmit({navigation,email, senha}){
@@ -27,16 +28,21 @@ import { AuthContext } from '../../../context/validators/AuthContext';
 
 // }
 
+
 export const Signin = ({ navigation }) => {
+
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
-  const vailogo = useContext(AuthContext);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 
+  // const [email, setEmail] = useState(null);
+  // const [password, setPassword] = useState(null);
 
-
+  // const val = useContext(AuthContext);
 
   const handleLogin = () => {
+
 
     let emailOk = "vini";
     let senhaOk = "111"
@@ -47,55 +53,56 @@ export const Signin = ({ navigation }) => {
     else if (password != senhaOk) {
       return Alert.alert("MyBank", "email ou senha incorretos. Tente novamente!")
     }
-    else {
-      return navigation.navigate("dashboard");
-    }
+
+    else{ (
+      setIsLoggedIn(true)
+    )
+    navigation.navigate('dashboard')
+  }
+
+
+
   }
 
 
   return (
-    <View style={styles.container}>
-      <SafeAreaView>
-        <ScrollView>
-          <Spacer size={3} />
-          <View style={styles.containerForm}>
-          <Text style={{ color: 'black', fontSize: 25 }}>{vailogo}</Text>
-            <Spacer size={5} />
-            <Image style={styles.imgLogin}
-              source={require('../../../assets/icono.png')}
-              resizeMode="contain"
-            />
-            <Spacer size={1} />
-            <TextInput
-              style={styles.input} placeholder="  ✉️ e-mail, usuario" placeholderTextColor="#696969" onChangeText={text => setEmail(text)} value={email}
-            />
-            <TextInput
-              style={styles.input} secureTextEntry={true} placeholder=" 🔒 Digite sua senha" placeholderTextColor="#696969" onChangeText={(text) => setPassword(text)} value={password}
-            />
-            <TouchableOpacity style={{ cursor: 'pointer', marginLeft: 140, color: "#fff", marginBottom: 10, fontSize: 14 }}><Text style={{ color: "#fff" }}>Recuperar senha?</Text></TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.buttonLogin} onPress={handleLogin}
-            >
-              <Text style={{ color: '#fff', fontSize: 17 }}>Entrar</Text>
-            </TouchableOpacity>
-
-          </View>
-
-          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Spacer size={2} />
-            <Text style={{ color: '#fff', fontSize: 13 }}>Ainda não tem conta?</Text>
-            <TouchableOpacity
-              style={styles.buttonRegister} onPress={() => { navigation.navigate('Register-Screen') }}
-            >
-
-              <Text style={{ color: '#1E90FF', fontSize: 17 }}>Registre-se</Text>
-            </TouchableOpacity>
-          </View>
-          <StatusBar style="auto" />
-        </ScrollView>
-      </SafeAreaView>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <ScrollView>
+        <Spacer size={1} />
+        <View style={styles.containerForm}>
+          <Spacer size={5} />
+          <Image style={styles.imgLogin}
+            source={require('../../../assets/icono.png')}
+            resizeMode="contain"
+          />
+          <Spacer size={1} />
+          <TextInput
+            style={styles.input} placeholder="  ✉️ e-mail, usuario" placeholderTextColor="#696969" onChangeText={(email) => setEmail(email)} value={email}
+          />
+          <TextInput
+            style={styles.input} secureTextEntry={true} placeholder=" 🔒 Digite sua senha" placeholderTextColor="#696969" onChangeText={(password) => setPassword(password)} value={password}
+          />
+          <TouchableOpacity style={{ cursor: 'pointer', marginLeft: 140, color: "#fff", marginBottom: 10, fontSize: 14 }}><Text style={{ color: "#fff" }}>Recuperar senha?</Text></TouchableOpacity>
+          <TouchableOpacity
+            style={styles.buttonLogin} onPress={handleLogin}
+          >
+            <Text style={{ color: '#fff', fontSize: 17 }}>Entrar</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <Spacer size={2} />
+          <Text style={{ color: '#fff', fontSize: 13 }}>Ainda não tem conta?</Text>
+          <TouchableOpacity
+            style={styles.buttonRegister} onPress={() => {
+              navigation.navigate('Register-Screen')
+            }}
+          >
+            <Text style={{ color: '#1E90FF', fontSize: 17 }}>Registre-se</Text>
+          </TouchableOpacity>
+        </View>
+        <StatusBar style="auto" />
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -103,7 +110,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: Colors.primary
+    backgroundColor: Colors.primary,
   },
   containerForm: {
     backgroundColor: Colors.primary,
@@ -111,12 +118,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: 300,
     borderRadius: 10,
-    height: 500,
+    maxHeight: 400,
     margin: 40,
+    marginTop: 100
   },
   imgLogin: {
     width: '100%',
-    height: "30%",
+    height: "35%",
     resizeMode: 'contain',
     marginBottom: 30,
     marginTop: 10
@@ -136,8 +144,7 @@ const styles = StyleSheet.create({
     padding: 7,
     width: '90%',
     alignItems: 'center',
-    borderRadius: 20,
+    borderRadius: 10,
     marginTop: 10
   },
-
 });

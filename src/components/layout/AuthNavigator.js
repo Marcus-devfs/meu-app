@@ -8,15 +8,15 @@ import Colors from '../atoms/Colors';
 import { RegisterScreen } from '../screens/auth/Register';
 
 
-//se estiver autorizado, usar as telas abaixo
 
 const Stack = createNativeStackNavigator();
 
 export const AuthNavigator = () => {
 
-    const isLoggedIn = true;
+    const isLoggedIn = false
 
 
+    //Se não estiver autorizado, usar telas de Login e Cadastro
     if (!isLoggedIn) {
         return (
             <Stack.Navigator >
@@ -25,16 +25,16 @@ export const AuthNavigator = () => {
                     component={Signin}
                     options={{ headerShown: false, }}
                 />
-
                 <Stack.Screen
                     name="Register-Screen"
                     component={RegisterScreen}
                     options={{ headerShown: false, }}
                 />
-
             </Stack.Navigator>
         );
     }
+
+    //se estiver autorizado, usar as telas abaixo
     return (
         <Stack.Navigator >
             <Stack.Screen

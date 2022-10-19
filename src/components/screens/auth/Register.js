@@ -53,8 +53,7 @@ export const RegisterScreen = ({ navigation }) => {
 
 
     return (
-        <View style={styles.container}>
-            <SafeAreaView>
+            <SafeAreaView style={styles.container}>
                 <ScrollView>
                     <Spacer size={2} />
                     {/* <Text style={{ color: 'black', fontSize: 25 }}>{vailogo}</Text> */}
@@ -93,7 +92,6 @@ export const RegisterScreen = ({ navigation }) => {
                     <StatusBar style="auto" />
                 </ScrollView>
             </SafeAreaView>
-        </View>
     );
 }
 
