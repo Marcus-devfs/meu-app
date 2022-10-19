@@ -1,14 +1,39 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { ScrollView, StyleSheet, Text, View, Image, Button, TouchableOpacity } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, Image, Button, TouchableOpacity, FlatList } from 'react-native';
+import { dataBase } from '../../../config/date';
 import Colors from '../../atoms/Colors';
 import { Spacer } from '../../atoms/Spacer';
+import Moviments from '../../Moviments/moviments';
+
 import Avatar from '../../organisms/Avatar';
 
 
+const listItem = [
+  {
+    id: 1,
+    label: 'Boleto internet',
+    value: '105,00',
+    date: '20/11/2022',
+    type: 0 // dispesas,
+  },
+  {
+    id: 2,
+    label: 'Aluguel',
+    value: '1500,00',
+    date: '15/11/2022',
+    type: 0 // dispesas,
+  },
+  {
+    id: 3,
+    label: 'Combustivel',
+    value: '300,00',
+    date: '30/11/2022',
+    type: 0 // dispesas,
+  },
+]
 
-
-export default function Dashboard({ navigation }) {
+export default function Dashboard({ navigation, list }) {
   return (
     <View style={styles.container}>
       <Spacer size={3} />
@@ -22,20 +47,27 @@ export default function Dashboard({ navigation }) {
             R$2.500,00</Text>
         </View>
       </View>
-
       <View style={styles.containerDash}>
-        <View style={{flexDirection:'row'}}>
+        <View style={{ flexDirection: 'row' }}>
           <TouchableOpacity style={styles.boxRevenue}>
-            <Text style={{color:Colors.darkGray, fontSize:15}}>Receita:</Text>
-            <Text style={{color:'#006400', fontSize:20, fontWeight:'700'}}>R$ 3.500,00</Text>
+            <Text style={{ color: Colors.darkGray, fontSize: 15 }}>Receita:</Text>
+            <Text style={{ color: '#006400', fontSize: 20, fontWeight: '700' }}>R$ 3.500,00</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.boxSpend}>
-          <Text style={{color:Colors.darkGray, fontSize:15, }}>Dispesas:</Text>
-            <Text style={{color:'#8B0000', fontSize:20, fontWeight:'700'}}>R$ 1.000,00</Text>
+            <Text style={{ color: Colors.darkGray, fontSize: 15, }}>Dispesas:</Text>
+            <Text style={{ color: '#8B0000', fontSize: 20, fontWeight: '700' }}>R$ 1.000,00</Text>
           </TouchableOpacity>
         </View>
-        <Text style={styles.titleName}>Bem vindo ao MyBank!</Text>
-        <Text style={styles.subTitle}>Seu aplicativo de controle financeiro... 😎</Text>
+        <Spacer size={3} />
+        <Text>Últimas movimentações</Text>
+        <FlatList
+          style={styles.list}
+          data={listItem}
+          keyExtractor={(item) => String(item.id)}
+          showsVerticalScrollIndicator={false}
+          renderItem={({ item }) => <Moviments data={item}/>}
+        />
+        <Spacer size={3} />
         <StatusBar style="auto" />
         <Button
           buttonStyle={{ marginTop: 20 }}
@@ -70,7 +102,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 15,
     borderTopLeftRadius: 15,
     backgroundColor: '#fff',
-    height: '100%',
+    maxHeight: '100%',
     width: '100%'
   },
   boxRevenue: {
@@ -83,12 +115,12 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     backgroundColor: '#fff',
     shadowColor: '#171717',
-    shadowOffset: {width: -2, height: 4},
+    shadowOffset: { width: -2, height: 4 },
     shadowOpacity: 0.5,
     shadowRadius: 3,
     elevation: 20,
   },
-  boxSpend:{
+  boxSpend: {
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 8,
@@ -97,19 +129,14 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     backgroundColor: '#fff',
     shadowColor: '#171717',
-    shadowOffset: {width: -2, height: 4},
+    shadowOffset: { width: -2, height: 4 },
     shadowOpacity: 0.5,
     shadowRadius: 3,
     elevation: 20,
   },
-  subTitle: {
-    color: '#06373d',
-    marginTop: 20,
-
-  },
-  titleName: {
-    paddingTop: 80,
-    alignItems: 'center',
-
+  list: {
+    // backgroundColor: 'red',
+    padding: 10,
+    width: '100%'
   },
 });

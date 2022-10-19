@@ -53,7 +53,8 @@ export const RegisterScreen = ({ navigation }) => {
 
 
     return (
-            <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
+            <SafeAreaView>
                 <ScrollView>
                     <Spacer size={2} />
                     {/* <Text style={{ color: 'black', fontSize: 25 }}>{vailogo}</Text> */}
@@ -87,11 +88,14 @@ export const RegisterScreen = ({ navigation }) => {
                         >
                             <Text style={{ color: '#fff', fontSize: 17 }}>Cadastrar</Text>
                         </TouchableOpacity>
-
+                        <Spacer size={5} />
                     </View>
-                    <StatusBar style="auto" />
+                    <StatusBar barStyle={{ color: '#fff' }} />
+                    
+
                 </ScrollView>
             </SafeAreaView>
+        </View>
     );
 }
 

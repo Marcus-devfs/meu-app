@@ -66,11 +66,12 @@ export const Signin = ({ navigation }) => {
 
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
+      <SafeAreaView>
       <ScrollView>
         <Spacer size={1} />
         <View style={styles.containerForm}>
-          <Spacer size={5} />
+          <Spacer size={3} />
           <Image style={styles.imgLogin}
             source={require('../../../assets/icono.png')}
             resizeMode="contain"
@@ -102,7 +103,8 @@ export const Signin = ({ navigation }) => {
         </View>
         <StatusBar style="auto" />
       </ScrollView>
-    </SafeAreaView>
+      </SafeAreaView>
+    </View>
   );
 }
 

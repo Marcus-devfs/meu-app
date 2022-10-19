@@ -13,7 +13,7 @@ const Stack = createNativeStackNavigator();
 
 export const AuthNavigator = () => {
 
-    const isLoggedIn = false
+    const isLoggedIn = true
 
 
     //Se não estiver autorizado, usar telas de Login e Cadastro
