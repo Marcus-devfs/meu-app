@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import { Spacer, } from '../../atoms/Spacer';
 import Colors from '../../atoms/Colors';
+import { AuthContext } from '../../../context/validators/AuthContext';
 
 // export function handleSubmit({navigation,email, senha}){
 
@@ -26,7 +27,13 @@ import Colors from '../../atoms/Colors';
 
 
 export const RegisterScreen = ({ navigation }) => {
+    const [name, setName] = useState();
+    const [email, setEmail] = useState();
+    const [password, setPassword] = useState();
+    const [confirmpassword, setConfirmPassword] = useState();
 
+    const { register } = useContext(AuthContext);
+    console.log(register)
 
     // const handleRegister = () => {
 
@@ -46,11 +53,10 @@ export const RegisterScreen = ({ navigation }) => {
 
 
     return (
-        <View style={styles.container}>
-            <SafeAreaView>
+            <SafeAreaView style={styles.container}>
                 <ScrollView>
                     <Spacer size={2} />
-
+                    {/* <Text style={{ color: 'black', fontSize: 25 }}>{vailogo}</Text> */}
                     <View style={styles.containerForm}>
                         <Text style={{ color: '#fff', fontSize: 25 }}>Crie sua conta!</Text>
                         <Spacer size={5} />
@@ -60,22 +66,24 @@ export const RegisterScreen = ({ navigation }) => {
                         />
                         <Spacer size={1} />
                         <TextInput
-                            style={styles.input} placeholder=" Nome" placeholderTextColor="#696969" onChangeText={(name, value) => handleChange(name, value)}
+                            style={styles.input} placeholder=" Nome" placeholderTextColor="#696969" onChangeText={text => setName(text)} value={name}
                         />
                         <TextInput
-                            style={styles.input} placeholder=" E-mail" placeholderTextColor="#696969" onChangeText={(name, value) => handleChange(name, value)}
+                            style={styles.input} placeholder=" E-mail" placeholderTextColor="#696969" onChangeText={text => setEmail(text)} value={email}
                         />
                         <TextInput
-                            style={styles.input} secureTextEntry={true} placeholder=" Senha" placeholderTextColor="#696969" onChangeText={(name, value) => handleChange(name, value)}
+                            style={styles.input} secureTextEntry={true} placeholder=" Senha" placeholderTextColor="#696969" onChangeText={text => setPassword(text)} value={password}
                         />
                         <TextInput
-                            style={styles.input} secureTextEntry={true} placeholder=" Confirme sua Senha" placeholderTextColor="#696969" onChangeText={(name, value) => handleChange(name, value)}
+                            style={styles.input} secureTextEntry={true} placeholder=" Confirme sua Senha" placeholderTextColor="#696969" onChangeText={text => setConfirmPassword(text)} value={confirmpassword}
                         />
                         {/* <TouchableOpacity style={{cursor: 'pointer' ,marginLeft: 140, color: "#fff", marginBottom: 10, fontSize: 14 }}><Text style={{color: "#fff"}}>Recuperar senha?</Text></TouchableOpacity> */}
                         <Spacer size={1} />
 
                         <TouchableOpacity
-                            style={styles.buttonRegister} onPress={()=> navigation.navigate("dashboard")}
+                            style={styles.buttonRegister} onPress={() => {
+                                register(name, email, password, confirmpassword);
+                            }}
                         >
                             <Text style={{ color: '#fff', fontSize: 17 }}>Cadastrar</Text>
                         </TouchableOpacity>
@@ -84,7 +92,6 @@ export const RegisterScreen = ({ navigation }) => {
                     <StatusBar style="auto" />
                 </ScrollView>
             </SafeAreaView>
-        </View>
     );
 }
 
