@@ -33,6 +33,7 @@ export const RegisterScreen = ({ navigation }) => {
     const [confirmpassword, setConfirmPassword] = useState();
 
     const { register } = useContext(AuthContext);
+    console.log(register)
 
     // const handleRegister = () => {
 

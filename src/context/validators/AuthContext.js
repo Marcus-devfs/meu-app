@@ -7,14 +7,13 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
 
-    const register = (name, email, password, confirmpassword) => {
+    const register = (name, email, password) => {
 
         axios
             .post(`${API_URL}/auth/register`, {
                 name,
                 email,
                 password,
-                confirmpassword,
             })
             .then(res => {
                 let userInfo = res.data;
@@ -22,15 +21,21 @@ export const AuthProvider = ({ children }) => {
             })
             .catch(e => {
                 console.log(`erro ao cadastrar ${e}!`);
-            })
+            });
 
-        //validation
+    };
 
-    }
-
-
+    //validation
 
     return (
-        <AuthContext.Provider value={register}>{children}</AuthContext.Provider>
+        <AuthContext.Provider value={register} >{children}
+        
+        </AuthContext.Provider>
+        
     );
+
 }
+
+
+
+
