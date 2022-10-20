@@ -36,12 +36,13 @@ export const Signin = ({ navigation }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 
+
   // const [email, setEmail] = useState(null);
   // const [password, setPassword] = useState(null);
 
   // const val = useContext(AuthContext);
 
-  const handleLogin = () => {
+    const handleLogin = () => {
 
 
     let emailOk = "vini";
@@ -53,56 +54,51 @@ export const Signin = ({ navigation }) => {
     else if (password != senhaOk) {
       return Alert.alert("MyBank", "email ou senha incorretos. Tente novamente!")
     }
-
-    else{ (
-      setIsLoggedIn(true)
-    )
-    navigation.navigate('dashboard')
+    return (
+      setIsLoggedIn(true)    
+    );
   }
-
-
-
-  }
+  console.log('Tela login',isLoggedIn)
 
 
   return (
     <View style={styles.container}>
       <SafeAreaView>
-      <ScrollView>
-        <Spacer size={1} />
-        <View style={styles.containerForm}>
-          <Spacer size={3} />
-          <Image style={styles.imgLogin}
-            source={require('../../../assets/icono.png')}
-            resizeMode="contain"
-          />
+        <ScrollView>
           <Spacer size={1} />
-          <TextInput
-            style={styles.input} placeholder="  ✉️ e-mail, usuario" placeholderTextColor="#696969" onChangeText={(email) => setEmail(email)} value={email}
-          />
-          <TextInput
-            style={styles.input} secureTextEntry={true} placeholder=" 🔒 Digite sua senha" placeholderTextColor="#696969" onChangeText={(password) => setPassword(password)} value={password}
-          />
-          <TouchableOpacity style={{ cursor: 'pointer', marginLeft: 140, color: "#fff", marginBottom: 10, fontSize: 14 }}><Text style={{ color: "#fff" }}>Recuperar senha?</Text></TouchableOpacity>
-          <TouchableOpacity
-            style={styles.buttonLogin} onPress={handleLogin}
-          >
-            <Text style={{ color: '#fff', fontSize: 17 }}>Entrar</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <Spacer size={2} />
-          <Text style={{ color: '#fff', fontSize: 13 }}>Ainda não tem conta?</Text>
-          <TouchableOpacity
-            style={styles.buttonRegister} onPress={() => {
-              navigation.navigate('Register-Screen')
-            }}
-          >
-            <Text style={{ color: '#1E90FF', fontSize: 17 }}>Registre-se</Text>
-          </TouchableOpacity>
-        </View>
-        <StatusBar style="auto" />
-      </ScrollView>
+          <View style={styles.containerForm}>
+            <Spacer size={3} />
+            <Image style={styles.imgLogin}
+              source={require('../../../assets/icono.png')}
+              resizeMode="contain"
+            />
+            <Spacer size={1} />
+            <TextInput
+              style={styles.input} placeholder="  ✉️ e-mail, usuario" placeholderTextColor="#696969" onChangeText={(email) => setEmail(email)} value={email}
+            />
+            <TextInput
+              style={styles.input} secureTextEntry={true} placeholder=" 🔒 Digite sua senha" placeholderTextColor="#696969" onChangeText={(password) => setPassword(password)} value={password}
+            />
+            <TouchableOpacity style={{ cursor: 'pointer', marginLeft: 140, color: "#fff", marginBottom: 10, fontSize: 14 }}><Text style={{ color: "#fff" }}>Recuperar senha?</Text></TouchableOpacity>
+            <TouchableOpacity
+              style={styles.buttonLogin} onPress={handleLogin}
+            >
+              <Text style={{ color: '#fff', fontSize: 17 }}>Entrar</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <Spacer size={2} />
+            <Text style={{ color: '#fff', fontSize: 13 }}>Ainda não tem conta?</Text>
+            <TouchableOpacity
+              style={styles.buttonRegister} onPress={() => {
+                navigation.navigate('Register-Screen')
+              }}
+            >
+              <Text style={{ color: '#1E90FF', fontSize: 17 }}>Registre-se</Text>
+            </TouchableOpacity>
+          </View>
+          <StatusBar style="auto" />
+        </ScrollView>
       </SafeAreaView>
     </View>
   );
