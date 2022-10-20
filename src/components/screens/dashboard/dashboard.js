@@ -67,11 +67,11 @@ export default function Dashboard({ navigation, list }) {
       
       <View style={styles.containerHeader}>
 
-        <View style={{ display: 'flex', marginTop: 55, height: 60, marginLeft: 6 }}>
+        <View style={{ display: 'flex', marginTop: 45, height: 50, marginLeft: 6 }}>
           <Avatar />
         </View>
 
-        <View style={{ marginTop: 50 }}>
+        <View style={{ marginTop: 38 }}>
           <Text style={{ color: Colors.lightGray, display: 'flex', height: 30, marginLeft: 65 }}> Saldo em conta</Text>
           <Text style={{ color: Colors.primaryText, display: 'flex', height: 50, fontSize: 28, marginLeft: 45, fontWeight: '700' }}>
             R$2.500,00</Text>
@@ -99,9 +99,9 @@ export default function Dashboard({ navigation, list }) {
 
       <Actions />
 
-      <ScrollView>
-        <View style={{ width: '100%', }}>
-          <Text style={{ fontWeight: '700', fontSize: 18, margin: 10 }}>Ultimas movimentações</Text>
+      {/* <ScrollView showsVerticalScrollIndicator={false}> */}
+        <View style={{ width: '100%', minHeight: 200, }}>
+          <Text style={{ fontWeight: 'bold', fontSize: 18, margin: 10, color:Colors.darkGray,  }}>Ultimas movimentações</Text>
 
           <FlatList
             style={styles.list}
@@ -112,15 +112,15 @@ export default function Dashboard({ navigation, list }) {
           />
 
         </View>
-      </ScrollView>
-      <Spacer size={3} />
+      {/* </ScrollView> */}
+      <Spacer size={1} />
       <StatusBar style="auto" />
-      <Button
-        buttonStyle={{ marginTop: 20 }}
+      {/* <Button
+        buttonStyle={{ marginTop: 1 }}
         backgroundColor="#03A9F4"
         title="Perfil"
         onPress={() => { navigation.navigate("userProfile") }}
-      />
+      /> */}
     </View>
     // </View >
   );
@@ -138,7 +138,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#06373d',
     width: '100%',
-    height: 160,
+    minHeight: 135,
+    maxHeight: 135,
     justifyContent: 'flex-start',
     // alignItems: 'center',
   },
@@ -182,7 +183,9 @@ const styles = StyleSheet.create({
   },
   list: {
     // backgroundColor: 'red',
-    padding: 10,
-    width: '100%'
+    padding: 14,
+    marginTop: 10,
+    width: '100%',
+    maxHeight: 270
   },
 });

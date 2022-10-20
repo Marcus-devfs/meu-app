@@ -1,11 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import Colors from '../atoms/Colors';
 import { Ionicons } from '../atoms/icons';
 import { FontAwesome5 } from '../atoms/icons';
 
-export default function Actions() {
+export default function Actions({ navigation }) {
 
 
     return (
@@ -18,26 +18,26 @@ export default function Actions() {
             </TouchableOpacity>
             <TouchableOpacity style={styles.actionButton}>
                 <View style={styles.areaButton}>
-                <FontAwesome5 name="cart-arrow-down" size={30} color={Colors.darkGray}></FontAwesome5>
+                    <FontAwesome5 name="cart-arrow-down" size={30} color={Colors.darkGray}></FontAwesome5>
                 </View>
                 <Text style={styles.typeButton}> Saídas </Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.actionButton}>
                 <View style={styles.areaButton}>
-                <FontAwesome5 name="credit-card" size={30} color={Colors.darkGray}></FontAwesome5>
+                    <FontAwesome5 name="credit-card" size={30} color={Colors.darkGray}></FontAwesome5>
                 </View>
                 <Text style={styles.typeButton}> Cartões </Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.actionButton}>
                 <View style={styles.areaButton}>
-                <FontAwesome5 name="barcode" size={30} color={Colors.darkGray}></FontAwesome5>
+                    <FontAwesome5 name="barcode" size={30} color={Colors.darkGray}></FontAwesome5>
 
                 </View>
                 <Text style={styles.typeButton}> Contas </Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.actionButton}>
                 <View style={styles.areaButton}>
-                <FontAwesome5 name="ellipsis-h" size={30} color={Colors.darkGray}></FontAwesome5>
+                    <FontAwesome5 name="ellipsis-h" size={30} color={Colors.darkGray}></FontAwesome5>
                 </View>
                 <Text style={styles.typeButton}> Config </Text>
             </TouchableOpacity>
@@ -49,20 +49,22 @@ export default function Actions() {
 const styles = StyleSheet.create({
     container: {
         marginBottom: 5,
-        marginTop: 65,
+        marginTop: 55,
         paddingEnd: 13,
         paddingStart: 13,
-        height: 133,
-        borderBottomWidth: 0.5,
-        borderBottomColor: Colors.lightGray,
-        borderTopWidth: 0.5,
-        borderTopColor: Colors.lightGray,
+        minHeight: 100,
+        maxHeight: 100,
+
+        // borderBottomWidth: 0.5,
+        // borderBottomColor: Colors.lightGray,
+        // borderTopWidth: 0.5,
+        // borderTopColor: Colors.lightGray,
     },
     actionButton: {
         alignItems: 'center',
         marginRight: 30,
         marginTop: 5
-        
+
     },
     areaButton: {
         backgroundColor: '#dadada',
@@ -78,7 +80,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: 'bold',
         textAlign: 'center',
-        
+
     }
 
 });
