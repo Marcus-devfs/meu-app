@@ -1,16 +1,28 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useState } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import Colors from '../atoms/Colors';
 
 export default function Moviments({ data }) {
+
+    const [showValue, setShowValue] = useState(false);
+
     return (
-        <TouchableOpacity style={styles.container}>
-            <Text style={styles.content}>{data.date}</Text>
+        <TouchableOpacity style={styles.container} onPress={() => setShowValue(!showValue)}>
+            <Text style={styles.date}>{data.date}</Text>
 
             <View style={styles.content}>
                 <Text style={styles.label}>{data.label}</Text>
-                <Text style={styles.value}>{data.value}</Text>
+
+                {showValue ? (<Text
+                    style={data.type === 1 ? styles.value : styles.expenses}
+                >
+                    {data.type === 1 ? `R$ ${data.value}` : `R$ -${data.value}`}
+                </Text>) : (
+                    <View style={styles.valueHidde}>
+                    </View>
+                )}
+
             </View>
         </TouchableOpacity>
     );
@@ -19,22 +31,42 @@ export default function Moviments({ data }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection:'row',
-        marginBottom: 13,
-        backgroundColor:Colors.lightGray,
-        padding: 5,
-       
+        marginBottom: 15,
+        borderBottomWidth: 0.5,
+        borderBottomColor: Colors.lightGray
+
     },
     content: {
-        flex: 1,
-        color: '#fff',
-        padding: 5,
-        alignItems: 'flex-end'
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 2,
+        marginBottom: 8
     },
-    label:{
+    date: {
+        color: Colors.lightGray,
+        fontWeight: '600'
+    },
+    label: {
+        fontWeight: '600',
+        fontSize: 16
 
     },
     value: {
-
+        fontWeight: '600',
+        fontSize: 16,
+        color: '#006400'
+    },
+    expenses: {
+        fontWeight: '600',
+        fontSize: 16,
+        color: '#8B0000'
+    },
+    valueHidde: {
+        marginTop: 8,
+        width: 70,
+        height: 10,
+        opacity: 0.5,
+        borderRadius: 5,
+        backgroundColor: Colors.lightGray
     }
 });
