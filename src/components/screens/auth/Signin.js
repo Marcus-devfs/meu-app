@@ -42,7 +42,7 @@ export const Signin = ({ navigation }) => {
 
   // const val = useContext(AuthContext);
 
-    const handleLogin = () => {
+    const handleLogin = (isLoggedIn) => {
 
 
     let emailOk = "vini";
@@ -55,7 +55,7 @@ export const Signin = ({ navigation }) => {
       return Alert.alert("MyBank", "email ou senha incorretos. Tente novamente!")
     }
     return (
-      setIsLoggedIn(true)    
+      setIsLoggedIn(!isLoggedIn)    
     );
   }
   console.log('Tela login',isLoggedIn)
