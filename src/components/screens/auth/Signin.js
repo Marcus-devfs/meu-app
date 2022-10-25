@@ -83,7 +83,10 @@ export const Signin = ({ navigation }) => {
             />
             <TouchableOpacity style={{ cursor: 'pointer', marginLeft: 140, color: "#fff", marginBottom: 10, fontSize: 14 }}><Text style={{ color: "#fff" }}>Recuperar senha?</Text></TouchableOpacity>
             <TouchableOpacity
-              style={styles.buttonLogin} onPress={() => loginUser(email, password)}
+              style={styles.buttonLogin} onPress={() => 
+                loginUser(email, password)
+              // navigation.navigate('dashboard')
+              }
             >
               <Text style={{ color: '#fff', fontSize: 17 }}>Entrar</Text>
             </TouchableOpacity>
