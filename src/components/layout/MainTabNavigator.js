@@ -20,7 +20,7 @@ export const TabNavigator = ({ navigation }) => {
         <Tab.Navigator
             screenOptions={({ route }) => ({
                 tabBarStyle: {
-                    backgroundColor: Colors.primary, height: 60, paddingBottom: 5, paddingTop: 5
+                    backgroundColor: Colors.primary, height: 55, paddingBottom: 5, paddingTop: 5 
                 },
                 tabBarShowLabel: true,
                 headerShown: false
@@ -33,13 +33,13 @@ export const TabNavigator = ({ navigation }) => {
                 options={{
                     
                     tabBarIcon: ({ focused, color, size }) => {
-                        return <Ionicons name='home' size={22} color={focused ? '#FFF' : '#A9A9A9'} />;
+                        return <Ionicons name='home' size={25} color={focused ? '#fff' : '#A9A9A9'} style={styles.tabConfig} />;
                     }
                 }} />
             <Tab.Screen name="userProfile" component={UserProfile}
                 options={{
                     tabBarIcon: ({ focused, color, size }) => {
-                        return <Ionicons name='cog' size={22} color={focused ? '#FFF' : '#A9A9A9'} />;
+                        return <Ionicons name='cog' size={25} color={focused ? '#fff' : '#A9A9A9'} style={styles.tabConfig} />;
                     }
                 }} />
         </Tab.Navigator>
@@ -55,4 +55,14 @@ const styles = StyleSheet.create({
         paddingTop: 15,
         backgroundColor: Colors.lightGray
     },
+    // tabConfig:{
+    //     backgroundColor: '#fff',
+    //     width: 60,
+    //     height: 60,
+    //     borderRadius: 10,
+    //     alignItems: 'center',
+    //     justifyContent: 'center',
+    //     marginBottom: 40,
+    //     padding: 6
+    // }
 });

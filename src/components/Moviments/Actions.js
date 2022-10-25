@@ -49,7 +49,7 @@ export default function Actions({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         marginBottom: 5,
-        marginTop: 55,
+        marginTop: 60,
         paddingEnd: 13,
         paddingStart: 13,
         minHeight: 100,

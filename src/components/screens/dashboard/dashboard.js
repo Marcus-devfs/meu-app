@@ -186,6 +186,6 @@ const styles = StyleSheet.create({
     padding: 14,
     marginTop: 10,
     width: '100%',
-    maxHeight: 270
+    maxHeight: 260,
   },
 });

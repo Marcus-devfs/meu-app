@@ -31,8 +31,11 @@ import { AuthNavigator } from '../../layout/AuthNavigator';
 
 export const Signin = ({ navigation }) => {
 
-  const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
+  const {loginUser} = useContext(AuthContext);
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 
@@ -42,7 +45,7 @@ export const Signin = ({ navigation }) => {
 
   // const val = useContext(AuthContext);
 
-    const handleLogin = () => {
+    const handleLogin = (isLoggedIn) => {
 
 
     let emailOk = "vini";
@@ -55,10 +58,9 @@ export const Signin = ({ navigation }) => {
       return Alert.alert("MyBank", "email ou senha incorretos. Tente novamente!")
     }
     return (
-      setIsLoggedIn(true)    
+      setIsLoggedIn(!isLoggedIn)    
     );
   }
-  console.log('Tela login',isLoggedIn)
 
 
   return (
@@ -81,7 +83,10 @@ export const Signin = ({ navigation }) => {
             />
             <TouchableOpacity style={{ cursor: 'pointer', marginLeft: 140, color: "#fff", marginBottom: 10, fontSize: 14 }}><Text style={{ color: "#fff" }}>Recuperar senha?</Text></TouchableOpacity>
             <TouchableOpacity
-              style={styles.buttonLogin} onPress={handleLogin}
+              style={styles.buttonLogin} onPress={() => 
+                loginUser(email, password)
+              // navigation.navigate('dashboard')
+              }
             >
               <Text style={{ color: '#fff', fontSize: 17 }}>Entrar</Text>
             </TouchableOpacity>
