@@ -7,15 +7,21 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
 
-    const createUser = async (name, email, password) => {
+    const createUser = async (name, email, password, confirmpassword) => {
 
         try {
             await api.post("/auth/register", {
                 name: name,
                 email: email,
                 password: password,
+                confirmpassword: confirmpassword
             });
             console.log(createUser,'usuario Registrado')
+            console.log('name:', name)
+            console.log('email:', email)
+            console.log('password:', password)
+            console.log('confirmpassword:', confirmpassword)
+
 
         } catch (err) {
             console.log(err, 'Usuario não encontrado');
@@ -50,7 +56,7 @@ export const AuthProvider = ({ children }) => {
             console.log(loginUser,'usuario logado')
 
         } catch (err) {
-            console.log(err);
+            console.log(err, 'Usuario não encontrado');
         }
     }
 
