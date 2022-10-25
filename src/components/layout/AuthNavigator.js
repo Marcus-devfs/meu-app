@@ -14,9 +14,7 @@ import { useState } from 'react';
 const Stack = createNativeStackNavigator();
 
 export const AuthNavigator = () => {
-    const isLoggedIn = true
-
-console.log('AuthNvigator',isLoggedIn)
+    const isLoggedIn = ""
 
     //Se não estiver autorizado, usar telas de Login e Cadastro
     if (!isLoggedIn) {
