@@ -27,15 +27,15 @@ import { AuthContext } from '../../../context/validators/AuthContext';
 
 
 export const RegisterScreen = ({ navigation }) => {
-    
+
     const { createUser } = useContext(AuthContext);
-    
+
     const [name, setName] = useState();
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const [confirmpassword, setConfirmPassword] = useState();
 
-    
+
 
     // const handleRegister = () => {
 
@@ -84,16 +84,30 @@ export const RegisterScreen = ({ navigation }) => {
                         <Spacer size={1} />
 
                         <TouchableOpacity
-                            style={styles.buttonRegister} onPress={() => 
+                            style={styles.buttonRegister} onPress={() => {
                                 createUser(name, email, password, confirmpassword)
+                                navigation.navigate('Signin')
+                            }
                             }
                         >
                             <Text style={{ color: '#fff', fontSize: 17 }}>Cadastrar</Text>
                         </TouchableOpacity>
+
                         <Spacer size={5} />
                     </View>
+                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
+                        <Spacer size={2} />
+                        <Text style={{ color: '#fff', fontSize: 13 }}>Já possui uma conta?</Text>
+                        <TouchableOpacity
+                            onPress={() => {
+                                navigation.navigate('Signin')
+                            }}
+                        >
+                            <Text style={{ color: '#1E90FF', fontSize: 14 }}> Fazer login</Text>
+                        </TouchableOpacity>
+                    </View>
                     <StatusBar barStyle={{ color: '#fff' }} />
-                    
+
 
                 </ScrollView>
             </SafeAreaView>

@@ -2,6 +2,7 @@ import React, { createContext } from "react";
 import axios from 'axios'
 import api from "../../config/api";
 import  AsyncStorage  from "@react-native-async-storage/async-storage";
+import { Alert } from "react-native";
 
 
 export const AuthContext = createContext();
@@ -17,32 +18,17 @@ export const AuthProvider = ({ children }) => {
                 password: password,
                 confirmpassword: confirmpassword
             });
-            console.log(createUser,'usuario Registrado')
+            Alert.alert('MyBank', 'Cadastrado com Sucesso! 😎')
             console.log('name:', name)
             console.log('email:', email)
             console.log('password:', password)
             console.log('confirmpassword:', confirmpassword)
 
-
         } catch (err) {
-            console.log(err, 'Usuario não encontrado');
+            console.log(err, 'Ocorreu um erro ao cadastrar seu usuario');
+            Alert.alert('MyBank', 'Ocorreu um erro ao cadastrar seu usuario! Verifique as informações e tente novamente 😞 ')
+
         }
-
-
-        // axios
-        //     .post(`${API_URL}/auth/register`, {
-        //         name,
-        //         email,
-        //         password,
-        //     })
-        //     .then(res => {
-        //         let userInfo = res.data;
-        //         console.log(userInfo)
-        //     })
-        //     .catch(e => {
-        //         console.log(`erro ao cadastrar ${e}!`);
-        //     });
-
     }
 
     const loginUser = async (email, password) => {
@@ -60,6 +46,7 @@ export const AuthProvider = ({ children }) => {
 
         } catch (err) {
             console.log(err, 'Usuario não encontrado');
+            Alert.alert('MyBank', 'Usuario não encontrado! 😞 ')
         }
     }
 

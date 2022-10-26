@@ -83,15 +83,15 @@ export const Signin = ({ navigation }) => {
             />
             <TouchableOpacity style={{ cursor: 'pointer', marginLeft: 140, color: "#fff", marginBottom: 10, fontSize: 14 }}><Text style={{ color: "#fff" }}>Recuperar senha?</Text></TouchableOpacity>
             <TouchableOpacity
-              style={styles.buttonLogin} onPress={() => 
+              style={styles.buttonLogin} onPress={() => {
                 loginUser(email, password)
-              // navigation.navigate('dashboard')
-              }
+              navigation.navigate('dashboard')
+              }}
             >
               <Text style={{ color: '#fff', fontSize: 17 }}>Entrar</Text>
             </TouchableOpacity>
           </View>
-          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
             <Spacer size={2} />
             <Text style={{ color: '#fff', fontSize: 13 }}>Ainda não tem conta?</Text>
             <TouchableOpacity
@@ -99,7 +99,7 @@ export const Signin = ({ navigation }) => {
                 navigation.navigate('Register-Screen')
               }}
             >
-              <Text style={{ color: '#1E90FF', fontSize: 17 }}>Registre-se</Text>
+              <Text style={{ color: '#1E90FF', fontSize: 14 }}> Registre-se</Text>
             </TouchableOpacity>
           </View>
           <StatusBar style="auto" />
