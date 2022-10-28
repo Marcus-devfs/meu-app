@@ -1,4 +1,4 @@
-import React, { createContext } from "react";
+import React, { createContext, useContext, useState } from "react";
 import axios from 'axios'
 import api from "../../config/api";
 import  AsyncStorage  from "@react-native-async-storage/async-storage";
@@ -8,6 +8,9 @@ import { Alert } from "react-native";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+
+    // const [user, setUser] = useState(null)
+    // console.log(user)
 
     const createUser = async (name, email, password, confirmpassword) => {
 
@@ -41,8 +44,8 @@ export const AuthProvider = ({ children }) => {
             
             await AsyncStorage.setItem('@MyBank', data.data.token);
 
-            const id = await AsyncStorage.getItem('@MyBank')
-            console.log(id)
+            const token = await AsyncStorage.getItem('@MyBank')
+            console.log(token)
 
         } catch (err) {
             console.log(err, 'Usuario não encontrado');
