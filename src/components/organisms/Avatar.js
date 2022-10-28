@@ -4,19 +4,22 @@ import { Ionicons } from "../atoms/icons";
 import { MaterialCommunityIcons } from "../atoms/icons";
 
 const firstName = "Marcus"
+const imageAvatar = require('../../assets/perfil/perfil.jpg')
 export const email = "marcusvini6277@gmail.com";
 
 export default function Avatar() {
     return (
         <View style={styles.containerAvatar}>
             <Image style={styles.avatarImg}
-                source={require('../../assets/perfil/perfil.jpg')}
+                source={imageAvatar}
                 resizeMode="cover"
             />
         </View>
     )
 
 }
+
+
 
 const styles = StyleSheet.create({
     containerAvatar: {

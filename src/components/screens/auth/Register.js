@@ -28,14 +28,36 @@ import { AuthContext } from '../../../context/validators/AuthContext';
 
 export const RegisterScreen = ({ navigation }) => {
 
-    const { createUser } = useContext(AuthContext);
+    // const { createUser } = useContext(AuthContext);
 
-    const [name, setName] = useState();
-    const [email, setEmail] = useState();
-    const [password, setPassword] = useState();
-    const [confirmpassword, setConfirmPassword] = useState();
+    const [userData, setUserData] = useState({
+        name: '',
+        email: '',
+        password: '',
+        confirmpassword: '',
+    })
 
+    const handleChange = async (name, value) => {
+        setUserData({
+            ...userData,
+            [name]: value
+        })
+    }
+    // const [name, setName] = useState();
+    // const [email, setEmail] = useState();
+    // const [password, setPassword] = useState();
+    // const [confirmpassword, setConfirmPassword] = useState();
 
+    const handleCreateAccount = async () => {
+        try {
+            await createUser(userData)
+            console.log(userData)
+            // navigation.navigate('Signin')
+
+        } catch (error) {
+            console.log(error, 'Ocorreu um erro a criar a conta')
+        }
+    }
 
     // const handleRegister = () => {
 
@@ -69,27 +91,44 @@ export const RegisterScreen = ({ navigation }) => {
                         />
                         <Spacer size={1} />
                         <TextInput
-                            style={styles.input} placeholder=" Nome" placeholderTextColor="#696969" onChangeText={name => setName(name)} value={name}
+                            style={styles.input} 
+                            placeholder=" Nome"
+                            placeholderTextColor="#696969"
+                            handleChange={(name, value) => handleChange(name, value)} 
+                            value={userData.name}
                         />
+
                         <TextInput
-                            style={styles.input} placeholder=" E-mail" placeholderTextColor="#696969" onChangeText={email => setEmail(email)} value={email}
+                            style={styles.input}
+                            placeholder=" E-mail" 
+                            placeholderTextColor="#696969" 
+                            handleChange={(name, value) => handleChange(name, value)}
+                            value={userData.email}
                         />
+                        
                         <TextInput
-                            style={styles.input} secureTextEntry={true} placeholder=" Senha" placeholderTextColor="#696969" onChangeText={password => setPassword(password)} value={password}
+                            style={styles.input} 
+                            secureTextEntry={true} 
+                            placeholder=" Senha" 
+                            placeholderTextColor="#696969" 
+                            handleChange={(name, value) => handleChange(name, value)} 
+                            value={userData.password}
                         />
+                        
                         <TextInput
-                            style={styles.input} secureTextEntry={true} placeholder=" Confirme sua Senha" placeholderTextColor="#696969" onChangeText={confirmpassword => setConfirmPassword(confirmpassword)} value={confirmpassword}
+                            style={styles.input} 
+                            secureTextEntry={true} 
+                            placeholder=" Confirme sua Senha" 
+                            placeholderTextColor="#696969" 
+                            handleChange={(name, value) => handleChange(name, value)} 
+                            value={userData.confirmpassword}
                         />
                         {/* <TouchableOpacity style={{cursor: 'pointer' ,marginLeft: 140, color: "#fff", marginBottom: 10, fontSize: 14 }}><Text style={{color: "#fff"}}>Recuperar senha?</Text></TouchableOpacity> */}
                         <Spacer size={1} />
 
                         <TouchableOpacity
-                            style={styles.buttonRegister} onPress={() => {
-                                createUser(name, email, password, confirmpassword)
-                                navigation.navigate('Signin')
-                            }
-                            }
-                        >
+                            style={styles.buttonRegister} onPress={handleCreateAccount}>
+
                             <Text style={{ color: '#fff', fontSize: 17 }}>Cadastrar</Text>
                         </TouchableOpacity>
 

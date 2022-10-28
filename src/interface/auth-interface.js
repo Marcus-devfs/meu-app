@@ -25,12 +25,12 @@ export const loginUser = async (loginData) => {
     }
 }
 
-//Verificar
+//Ok
 export const doLoginByToken = async (token) => {
     try {
 
         api.defaults.headers['Authorization'] = `Bearer ${token}`;
-        const response = await api.post('/login/token')
+        const response = await api.post('/auth/login/token')
 
         const { user, token: newToken } = response.data
 
@@ -40,7 +40,8 @@ export const doLoginByToken = async (token) => {
 
         return user
     } catch (error) {
-        throwError(error)
+        alert(error)
+        console.log(error, 'Ocorreu um erro com o token')
         return false
     }
 }
@@ -58,6 +59,7 @@ export const doLogout = async () => {
 }
 
 // Verificar depois - "Esqueci a senha"
+
 // export const passRecover = async (email) => {
 //     try {
 //         const isValid = await beforeForgot(email)
@@ -71,6 +73,8 @@ export const doLogout = async () => {
 //     }
 // }
 
+//
+
 // Ok - trocar no Register o email,password, confirm, etc por ..userDate
 export const createUser = async (userData) => {
     try {
@@ -83,8 +87,9 @@ export const createUser = async (userData) => {
     }
 }
 
-// Verificar
+// Ok
 export const userDataUpdate = async (userData) => {
+    console.log(userData)
     try {
         beforeUserDataUpdate(userData)
         const response = await api.patch(`/user/${userData._id}`, { user: userData })

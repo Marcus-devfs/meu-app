@@ -18,48 +18,60 @@ import Environment from '../../../config/Environment';
 import { AuthNavigator } from '../../layout/AuthNavigator';
 
 
-// export function handleSubmit({navigation,email, senha}){
-
-//   if(TextInput == user)
-//   return(navigation.navigate("dashboard"));
-//   else{
-//     alert('email ou senha incorreta. Verifique e tente novamente.')
-//   }
-
-// }
-
-
 export const Signin = ({ navigation }) => {
 
-  const {loginUser} = useContext(AuthContext);
+  // const {loginUser} = useContext(AuthContext);
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-
-
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
   // const [email, setEmail] = useState(null);
   // const [password, setPassword] = useState(null);
 
   // const val = useContext(AuthContext);
 
-    const handleLogin = (isLoggedIn) => {
 
+  const { setUser } = useContext(AuthContext)
 
-    let emailOk = "vini";
-    let senhaOk = "111"
+  const [login, setLogin] = useState({
+    email: '',
+    password: '',
+  })
 
-    if (email != emailOk) {
-      return Alert.alert("MyBank", "email ou senha incorretos. Tente novamente!")
+  const handleChange = (name, value) => {
+    setLogin({
+      ...login,
+      [name]: value
+    })
+  }
+
+  const handleLogin = async () => {
+    try {
+
+      const { email, password } = login
+
+      if (!email || email.length < 6 || email == "" || !email.includes('@')) {
+        Alert.alert("MyBank", "email inválido. Verifique os dados e tente novamente!")
+        return false
+      }
+
+      if (!password || password.length < 6 || password == "") {
+        Alert.alert('MayBank', 'A senha deve conter no mínimo 6 digitos.')
+        return false
+      }
+
+      const user = await loginUser(login)
+
+      if (!user) {
+        Alert.alert('MyBank', 'Usuário não encontrado ou senha incorreta. Verifique os dadose tente novamente!')
+        return
+      }
+      setUser(user)
+      console.log(user,'tela Login')
+
+    } catch (error) {
+      console.log(error, 'Ocorreu um erro ao logar')
     }
-    else if (password != senhaOk) {
-      return Alert.alert("MyBank", "email ou senha incorretos. Tente novamente!")
-    }
-    return (
-      setIsLoggedIn(!isLoggedIn)    
-    );
   }
 
 
@@ -76,21 +88,33 @@ export const Signin = ({ navigation }) => {
             />
             <Spacer size={1} />
             <TextInput
-              style={styles.input} placeholder="  ✉️ e-mail, usuario" placeholderTextColor="#696969" onChangeText={(email) => setEmail(email)} value={email}
+              style={styles.input}
+              placeholder="  ✉️ e-mail, usuario"
+              placeholderTextColor="#696969"
+              onChangeText={(name, value) => handleChange(name, value)}
+              value={login.email}
             />
+
             <TextInput
-              style={styles.input} secureTextEntry={true} placeholder=" 🔒 Digite sua senha" placeholderTextColor="#696969" onChangeText={(password) => setPassword(password)} value={password}
+              style={styles.input}
+              secureTextEntry={true}
+              placeholder=" 🔒 Digite sua senha"
+              placeholderTextColor="#696969"
+              onChangeText={(name, value) => handleChange(name, value)}
+              value={login.password}
             />
-            <TouchableOpacity style={{ cursor: 'pointer', marginLeft: 140, color: "#fff", marginBottom: 10, fontSize: 14 }}><Text style={{ color: "#fff" }}>Recuperar senha?</Text></TouchableOpacity>
+
+            <TouchableOpacity style={{ cursor: 'pointer', marginLeft: 140, color: "#fff", marginBottom: 10, fontSize: 14 }}>
+              <Text style={{ color: "#fff" }}>Recuperar senha?</Text></TouchableOpacity>
+
             <TouchableOpacity
-              style={styles.buttonLogin} onPress={() => {
-                loginUser(email, password)
-              navigation.navigate('dashboard')
-              }}
-            >
+              style={styles.buttonLogin} onPress={handleLogin}>
+
               <Text style={{ color: '#fff', fontSize: 17 }}>Entrar</Text>
             </TouchableOpacity>
+
           </View>
+
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
             <Spacer size={2} />
             <Text style={{ color: '#fff', fontSize: 13 }}>Ainda não tem conta?</Text>
