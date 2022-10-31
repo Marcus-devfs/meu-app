@@ -30,7 +30,7 @@ export const doLoginByToken = async (token) => {
     try {
 
         api.defaults.headers['authorization'] = `Bearer ${token}`;
-        const response = await api.post('/auth/login/token')
+        const response = await api.get('/')
 
         const { user, token: newToken } = response.data
 
@@ -42,7 +42,7 @@ export const doLoginByToken = async (token) => {
         return user
     } catch (error) {
         alert(error)
-        console.log(error, 'Ocorreu um erro com o token')
+        console.log(JSON.stringify(error))
         return false
     }
 }
@@ -83,7 +83,7 @@ export const createUser = async (userData) => {
         const response = await api.post("/auth/register", { user: userData })
         return response.data
     } catch (error) {
-        console.log(error, 'Ocorreu um erro ao cadastrar seu usuario');
+        console.log(JSON.stringify(error), 'Ocorreu um erro ao cadastrar seu usuario');
         Alert.alert('MyBank', 'Ocorreu um erro ao cadastrar seu usuario! Verifique as informações e tente novamente 😞 ')
     }
 }

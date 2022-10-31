@@ -65,16 +65,16 @@ export const Signin = ({ navigation }) => {
 
       const user = await loginUser(login)
       setUser(user)
-      console.log(user)
 
       if (!user) {
         Alert.alert('MyBank', 'Usuário não encontrado ou senha incorreta. Verifique os dados e tente novamente!')
         return
+        
       }
       
 
     } catch (error) {
-      console.log(error, 'Ocorreu um erro ao logar')
+      console.log(JSON.stringify(error), 'Ocorreu um erro ao logar')
     }
     
   }

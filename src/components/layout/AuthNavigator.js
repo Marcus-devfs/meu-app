@@ -21,14 +21,20 @@ export const AuthNavigator = () => {
 
     const { user, setUser } = useContext(AuthContext)
 
-    useEffect(async () => {
-        const token = await AsyncStorage.getItem('@MyBank', token)
+    useEffect(() => {
 
-        if (token) {
-            const user = await doLoginByToken(token)
-            setUser(user)
-            console.log(user,'tela Login')
-        }
+        const signinToken = async () => {
+            const token = await AsyncStorage.getItem('@MyBank', token)
+            if (token)
+                try {
+                    const user = await doLoginByToken(token)
+                    setUser(user)
+                    console.log(user, 'tela Login')
+                } catch (err) {
+                    console.log(err);
+                }
+        };
+        signinToken();
     }, [])
 
     //Se não estiver autorizado, usar telas de Login e Cadastro

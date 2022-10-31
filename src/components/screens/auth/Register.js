@@ -31,12 +31,7 @@ export const RegisterScreen = ({ navigation }) => {
 
     // const { createUser } = useContext(AuthContext);
 
-    const [userData, setUserData] = useState({
-        name: 'Marcus',
-        email: 'marcao@gmail.com',
-        password: 'teste123',
-        confirmpassword: 'teste123',
-    })
+    const [userData, setUserData] = useState('')
 
     const handleChange = async (name, value) => {
         setUserData({
@@ -44,6 +39,7 @@ export const RegisterScreen = ({ navigation }) => {
             [name]: value
         })
     }
+    console.log(userData)
     // const [name, setName] = useState();
     // const [email, setEmail] = useState();
     // const [password, setPassword] = useState();
@@ -56,7 +52,7 @@ export const RegisterScreen = ({ navigation }) => {
             navigation.navigate('Signin')
 
         } catch (error) {
-            console.log(error, 'Ocorreu um erro a criar a conta')
+            console.log(JSON.stringify(error), 'Ocorreu um erro a criar a conta')
         }
     }
 

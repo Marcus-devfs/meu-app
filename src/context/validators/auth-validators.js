@@ -34,6 +34,7 @@ export const beforeLogin = (login) => {
 export const beforeCreateAccount = (userData) => {
 
     const { name, email, password, confirmpassword } = userData;
+    console.log(userData)
 
     (!name) && alert("O campo 'Nome' é obrigatório");
     (!email) ? alert("O campo 'E-mail' é obrigatório") :
