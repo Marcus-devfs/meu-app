@@ -16,6 +16,8 @@ import Colors from '../../atoms/Colors';
 import { AuthContext } from '../../../context/validators/AuthContext';
 import Environment from '../../../config/Environment';
 import { AuthNavigator } from '../../layout/AuthNavigator';
+import { validatePathConfig } from '@react-navigation/native';
+import { loginUser } from '../../../interface/auth-interface';
 
 
 export const Signin = ({ navigation }) => {
@@ -31,11 +33,11 @@ export const Signin = ({ navigation }) => {
   // const val = useContext(AuthContext);
 
 
-  const { setUser } = useContext(AuthContext)
+  const { user, setUser } = useContext(AuthContext)
 
   const [login, setLogin] = useState({
-    email: '',
-    password: '',
+    email: Environment.auth.email,
+    password: Environment.auth.password
   })
 
   const handleChange = (name, value) => {
@@ -49,6 +51,7 @@ export const Signin = ({ navigation }) => {
     try {
 
       const { email, password } = login
+      console.log(login)
 
       if (!email || email.length < 6 || email == "" || !email.includes('@')) {
         Alert.alert("MyBank", "email inválido. Verifique os dados e tente novamente!")
@@ -61,17 +64,19 @@ export const Signin = ({ navigation }) => {
       }
 
       const user = await loginUser(login)
+      setUser(user)
+      console.log(user)
 
       if (!user) {
-        Alert.alert('MyBank', 'Usuário não encontrado ou senha incorreta. Verifique os dadose tente novamente!')
+        Alert.alert('MyBank', 'Usuário não encontrado ou senha incorreta. Verifique os dados e tente novamente!')
         return
       }
-      setUser(user)
-      console.log(user,'tela Login')
+      
 
     } catch (error) {
       console.log(error, 'Ocorreu um erro ao logar')
     }
+    
   }
 
 

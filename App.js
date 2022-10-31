@@ -13,7 +13,7 @@ export default function App() {
       <AuthProvider>
         <StatusBar />
         {/* <Stacks /> */}
-        {/* <AuthNavigator /> */}
+        <AuthNavigator />
       </AuthProvider>
     </NavigationContainer>
   );

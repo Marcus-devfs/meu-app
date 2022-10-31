@@ -11,6 +11,7 @@ import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../context/validators/AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { doLoginByToken } from '../../interface/auth-interface';
 
 
 
@@ -26,6 +27,7 @@ export const AuthNavigator = () => {
         if (token) {
             const user = await doLoginByToken(token)
             setUser(user)
+            console.log(user,'tela Login')
         }
     }, [])
 

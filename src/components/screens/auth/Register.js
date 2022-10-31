@@ -14,6 +14,7 @@ import {
 import { Spacer, } from '../../atoms/Spacer';
 import Colors from '../../atoms/Colors';
 import { AuthContext } from '../../../context/validators/AuthContext';
+import { createUser } from '../../../interface/auth-interface';
 
 // export function handleSubmit({navigation,email, senha}){
 
@@ -31,10 +32,10 @@ export const RegisterScreen = ({ navigation }) => {
     // const { createUser } = useContext(AuthContext);
 
     const [userData, setUserData] = useState({
-        name: '',
-        email: '',
-        password: '',
-        confirmpassword: '',
+        name: 'Marcus',
+        email: 'marcao@gmail.com',
+        password: 'teste123',
+        confirmpassword: 'teste123',
     })
 
     const handleChange = async (name, value) => {
@@ -52,7 +53,7 @@ export const RegisterScreen = ({ navigation }) => {
         try {
             await createUser(userData)
             console.log(userData)
-            // navigation.navigate('Signin')
+            navigation.navigate('Signin')
 
         } catch (error) {
             console.log(error, 'Ocorreu um erro a criar a conta')

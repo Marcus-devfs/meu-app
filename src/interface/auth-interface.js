@@ -3,13 +3,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { beforeLogin, beforeCreateAccount, beforeUserDataUpdate, } from "../context/validators/auth-validators";
 
 // Ok - trocar no Signin o email e password por ..login
-export const loginUser = async (loginData) => {
+export const loginUser = async (login) => {
     try {
 
-        const isValid = await beforeLogin(loginData)
+        const isValid = await beforeLogin(login)
         if (!isValid) return false
 
-        const response = await api.post("/auth/login", loginData)
+        const response = await api.post("/auth/login", login)
 
         const { user, token } = response.data
 
@@ -29,7 +29,7 @@ export const loginUser = async (loginData) => {
 export const doLoginByToken = async (token) => {
     try {
 
-        api.defaults.headers['Authorization'] = `Bearer ${token}`;
+        api.defaults.headers['authorization'] = `Bearer ${token}`;
         const response = await api.post('/auth/login/token')
 
         const { user, token: newToken } = response.data
@@ -38,6 +38,7 @@ export const doLoginByToken = async (token) => {
 
         api.defaults.headers['Authorization'] = `Bearer ${newToken}`;
 
+        console.log(user, 'doLoginByToken')
         return user
     } catch (error) {
         alert(error)
