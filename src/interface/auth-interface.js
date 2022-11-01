@@ -42,7 +42,7 @@ export const doLoginByToken = async (token) => {
         console.log(user, 'doLoginByToken')
         return user
     } catch (error) {
-        Alert.alert('MyBank','Credentials invalid!')
+        Alert.alert('MyBank','Invalid credentials')
         console.error(error.response.data)
         return false
     }

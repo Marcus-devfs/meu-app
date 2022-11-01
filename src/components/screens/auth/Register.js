@@ -31,7 +31,12 @@ export const RegisterScreen = ({ navigation }) => {
 
     // const { createUser } = useContext(AuthContext);
 
-    const [userData, setUserData] = useState('')
+    const [userData, setUserData] = useState({
+        name:'',
+        email:'',
+        password:'',
+        confirmpassword:''
+    })
 
     const handleChange = async (name, value) => {
         setUserData({
