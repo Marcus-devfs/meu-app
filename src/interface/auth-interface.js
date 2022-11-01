@@ -1,5 +1,6 @@
 import api from "../config/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Alert } from "react-native";
 import { beforeLogin, beforeCreateAccount, beforeUserDataUpdate, } from "../context/validators/auth-validators";
 
 // Ok - trocar no Signin o email e password por ..login
@@ -41,8 +42,8 @@ export const doLoginByToken = async (token) => {
         console.log(user, 'doLoginByToken')
         return user
     } catch (error) {
-        alert(error)
-        console.log(JSON.stringify(error))
+        Alert.alert('MyBank','Credentials invalid!')
+        console.error(error.response.data)
         return false
     }
 }

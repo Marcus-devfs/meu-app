@@ -30,8 +30,8 @@ export const AuthNavigator = () => {
                     const user = await doLoginByToken(token)
                     setUser(user)
                     console.log(user, 'tela Login')
-                } catch (err) {
-                    console.log(err);
+                } catch (error) {
+                    console.error(error.data);
                 }
         };
         signinToken();
