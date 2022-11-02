@@ -79,12 +79,13 @@ export const doLogout = async () => {
 
 // Ok - trocar no Register o email,password, confirm, etc por ..userDate
 export const createUser = async (userData) => {
+    console.log(userData,'auth')
     try {
         beforeCreateAccount(userData)
         const response = await api.post("/auth/register", { user: userData })
         return response.data
     } catch (error) {
-        console.log(JSON.stringify(error), 'Ocorreu um erro ao cadastrar seu usuario');
+        console.error(error.data, 'Ocorreu um erro ao cadastrar seu usuario');
         Alert.alert('MyBank', 'Ocorreu um erro ao cadastrar seu usuario! Verifique as informações e tente novamente 😞 ')
     }
 }

@@ -1,5 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useContext, useState } from 'react';
+import { TextInputState } from '../../atoms/TextIput';
 import {
     Text,
     Alert,
@@ -32,10 +33,10 @@ export const RegisterScreen = ({ navigation }) => {
     // const { createUser } = useContext(AuthContext);
 
     const [userData, setUserData] = useState({
-        name:'',
-        email:'',
-        password:'',
-        confirmpassword:''
+        name: '',
+        email: '',
+        password: '',
+        confirmpassword: ''
     })
 
     const handleChange = async (name, value) => {
@@ -92,38 +93,40 @@ export const RegisterScreen = ({ navigation }) => {
                             resizeMode="contain"
                         />
                         <Spacer size={1} />
-                        <TextInput
-                            style={styles.input} 
-                            placeholder=" Nome"
-                            placeholderTextColor="#696969"
-                            handleChange={(name, value) => handleChange(name, value)} 
+                        <TextInputState
+                            name="name"
+                            placeholder="Digite seu nome"
                             value={userData.name}
+                            handleChange={(name, value) => handleChange(name, value)}
                         />
 
-                        <TextInput
-                            style={styles.input}
-                            placeholder=" E-mail" 
-                            placeholderTextColor="#696969" 
-                            handleChange={(name, value) => handleChange(name, value)}
+                        <TextInputState
+                            name="email"
+                            keyboardType='email-address'
+                            placeholder="Digite seu e-mail"
+                            autoCapitalize="none"
                             value={userData.email}
+                            handleChange={(name, value) => handleChange(name, value)}
                         />
-                        
-                        <TextInput
-                            style={styles.input} 
-                            secureTextEntry={true} 
-                            placeholder=" Senha" 
-                            placeholderTextColor="#696969" 
-                            handleChange={(name, value) => handleChange(name, value)} 
+
+                        <TextInputState
+                            name="password"
+                            placeholder="Digite sua senha"
+                            autoCapitalize="none"
+                            secureTextEntry={true}
                             value={userData.password}
+                            handleChange={(name, value) => handleChange(name, value)}
+                            type='password'
                         />
-                        
-                        <TextInput
-                            style={styles.input} 
-                            secureTextEntry={true} 
-                            placeholder=" Confirme sua Senha" 
-                            placeholderTextColor="#696969" 
-                            handleChange={(name, value) => handleChange(name, value)} 
+
+                        <TextInputState
+                            name="confirmpassword"
+                            placeholder="Confirme sua senha"
+                            autoCapitalize="none"
+                            secureTextEntry={true}
                             value={userData.confirmpassword}
+                            handleChange={(name, value) => handleChange(name, value)}
+                            type='password'
                         />
                         {/* <TouchableOpacity style={{cursor: 'pointer' ,marginLeft: 140, color: "#fff", marginBottom: 10, fontSize: 14 }}><Text style={{color: "#fff"}}>Recuperar senha?</Text></TouchableOpacity> */}
                         <Spacer size={1} />
@@ -179,16 +182,6 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
         marginBottom: 30,
         marginTop: 10
-    },
-    input: {
-        height: 40,
-        borderWidth: 1,
-        padding: 5,
-        width: '100%',
-        borderRadius: 5,
-        backgroundColor: '#fff',
-        marginBottom: 8,
-
     },
     buttonRegister: {
         backgroundColor: '#B22222',
