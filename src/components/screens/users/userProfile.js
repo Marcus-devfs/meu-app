@@ -1,15 +1,19 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useContext } from 'react';
 import { ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Divider } from '../../atoms/Divider';
 import Header, { name } from '../../organisms/header'
 import { Ionicons } from '../../atoms/icons';
 import { Spacer } from '../../atoms/Spacer';
 import Colors from '../../atoms/Colors';
+import { AuthContext } from '../../../context/validators/AuthContext';
 
 
 
 export default function UserProfile() {
+
+  const {handleLogout} = useContext(AuthContext)
+
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -31,7 +35,7 @@ export default function UserProfile() {
         <Ionicons name='chevron-forward' color={'#A9A9A9'} size={16} />
       </TouchableOpacity>
       <Divider style={styles.divider} />
-      <TouchableOpacity style={styles.menuItem}>
+      <TouchableOpacity style={styles.menuItem} onPress={()=> handleLogout()}>
         <Text style={styles.menuItemText}>Sair</Text>
         <Ionicons name='chevron-forward' color={'#A9A9A9'} size={16} />
       </TouchableOpacity>

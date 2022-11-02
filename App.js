@@ -12,6 +12,7 @@ export default function App() {
     <NavigationContainer>
       <AuthProvider>
         <StatusBar />
+        {/* <Stacks /> */}
         <AuthNavigator />
       </AuthProvider>
     </NavigationContainer>

@@ -6,6 +6,7 @@ import { SignUp } from '../screens/auth/SignUp';
 import UserProfile from '../screens/users/userProfile';
 import Colors from '../atoms/Colors';
 import { RegisterScreen } from '../screens/auth/Register';
+import { TabNavigator } from './MainTabNavigator';
 
 
 //se estiver autorizado, usar as telas abaixo
@@ -21,6 +22,10 @@ export default function Stacks() {
                 component={Signin} 
                 options={{headerShown: false,}}
                 />
+               <Stack.Screen
+                name="TabNavigator"
+                component={TabNavigator}
+                options={{ headerShown: false, }}/>
             <Stack.Screen
                 name="dashboard"
                 component={Dashboard}
