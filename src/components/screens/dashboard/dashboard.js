@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useContext } from 'react';
 import { ScrollView, StyleSheet, Text, View, Image, Button, TouchableOpacity, FlatList } from 'react-native';
+import { AuthContext } from '../../../context/validators/AuthContext';
 import Colors from '../../atoms/Colors';
 import { Spacer } from '../../atoms/Spacer';
 import Actions from '../../Moviments/Actions';
@@ -62,16 +63,20 @@ const listItem = [
 ]
 
 export default function Dashboard({ navigation, list }) {
+
+  const {user} = useContext(AuthContext)
+  const {name} = user
   return (
     <View style={styles.container}>
       
       <View style={styles.containerHeader}>
 
-        <View style={{ display: 'flex', marginTop: 45, height: 50, marginLeft: 6 }}>
+        <View style={{ display: 'flex', marginTop: 55, height: 50, marginLeft: 6 }}>
           <Avatar />
+          <Text style={styles.userName}>{name}</Text>
         </View>
 
-        <View style={{ marginTop: 38 }}>
+        <View style={{ marginTop: 45 }}>
           <Text style={{ color: Colors.lightGray, display: 'flex', height: 30, marginLeft: 65 }}> Saldo em conta</Text>
           <Text style={{ color: Colors.primaryText, display: 'flex', height: 50, fontSize: 28, marginLeft: 45, fontWeight: '700' }}>
             R$2.500,00</Text>
@@ -134,12 +139,19 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
     // justifyContent: 'center',
   },
+  userName:{
+    color:Colors.lightGray,
+    fontSize: 17,
+    textAlign: 'center',
+    marginLeft: 10,
+    marginTop: 5
+},
   containerHeader: {
     flexDirection: 'row',
     backgroundColor: '#06373d',
     width: '100%',
-    minHeight: 135,
-    maxHeight: 135,
+    minHeight: 155,
+    maxHeight: 155,
     justifyContent: 'flex-start',
     // alignItems: 'center',
   },

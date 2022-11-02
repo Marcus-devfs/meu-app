@@ -23,7 +23,7 @@ export const AuthNavigator = () => {
 
     useEffect(() => {
 
-        const signinToken = async () => {
+        const signinToken = async (navigation) => {
             const token = await AsyncStorage.getItem('@MyBank', token)
             if (token)
                 try {
@@ -33,6 +33,9 @@ export const AuthNavigator = () => {
                 } catch (error) {
                     console.error(error.data);
                 }
+            else {
+                navigation.navigate('Signin')
+            }
         };
         signinToken();
     }, [])

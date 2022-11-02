@@ -15,7 +15,7 @@ export const loginUser = async (login) => {
         const { user, token } = response.data
 
         if (token) AsyncStorage.setItem('@MyBank', token)
-
+        console.log('token', token)
         api.defaults.headers['Authorization'] = `Bearer ${token}`;
 
         return user
@@ -31,7 +31,7 @@ export const doLoginByToken = async (token) => {
     try {
 
         api.defaults.headers['authorization'] = `Bearer ${token}`;
-        const response = await api.get('/')
+        const response = await api.get('/auth/login/token')
 
         const { user, token: newToken } = response.data
 
@@ -42,7 +42,7 @@ export const doLoginByToken = async (token) => {
         console.log(user, 'doLoginByToken')
         return user
     } catch (error) {
-        Alert.alert('MyBank','Invalid credentials')
+        Alert.alert('MyBank', 'Invalid credentials')
         console.error(error.response.data)
         return false
     }
