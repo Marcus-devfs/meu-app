@@ -21,8 +21,8 @@ export const TextInputState = (props) => {
          <View style={{
             backgroundColor: '#FFF',
             borderRadius: 8,
-            width: 300,
-            paddingVertical: 8,
+            width: 320,
+            paddingVertical: 6,
             marginBottom: 8,
             flexDirection:'row',
          }}>

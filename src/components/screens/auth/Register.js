@@ -45,20 +45,30 @@ export const RegisterScreen = ({ navigation }) => {
             [name]: value
         })
     }
-    console.log(userData)
     // const [name, setName] = useState();
     // const [email, setEmail] = useState();
     // const [password, setPassword] = useState();
     // const [confirmpassword, setConfirmPassword] = useState();
 
     const handleCreateAccount = async () => {
-        try {
-            await createUser(userData)
-            console.log(userData)
-            navigation.navigate('Signin')
 
+        const emailValidator = (email) => {
+            const EMAIL_REGEX = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&*'+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+            return EMAIL_REGEX.test(email)
+        }
+
+        try {
+            const { name, email, password, confirmpassword } = userData;
+
+            if (!name) { Alert.alert('MyBank', "O campo 'Nome' é obrigatório") }
+            if (!email) { Alert.alert('MyBank', "O campo 'E-mail' é obrigatório") }
+            if (!emailValidator(email)) { Alert.alert('MyBank', "O e-mail digitado está incorreto") }
+            if (!password) { Alert.alert('MyBank', "O campo 'Senha' é obrigatório") }
+            if (password !== confirmpassword) { Alert.alert('MyBank', 'As senhas não conferem! Verifique e tente novamente') }
+
+            await createUser(userData)
         } catch (error) {
-            console.log(JSON.stringify(error), 'Ocorreu um erro a criar a conta')
+            console.error(error, 'Ocorreu um erro com os dados')
         }
     }
 

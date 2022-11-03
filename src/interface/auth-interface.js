@@ -21,7 +21,6 @@ export const loginUser = async (login) => {
         return user
     } catch (error) {
         console.log(error, 'Usuario não encontrado');
-        Alert.alert('MyBank', 'Usuario não encontrado! 😞 ')
         return false
     }
 }
@@ -42,8 +41,7 @@ export const doLoginByToken = async (token) => {
         console.log(user, 'doLoginByToken')
         return user
     } catch (error) {
-        Alert.alert('MyBank', 'Invalid credentials')
-        console.error(error.response.data)
+        console.error(error.response.data, 'Invalid credentials')
         return false
     }
 }
@@ -79,29 +77,30 @@ export const doLogout = async () => {
 
 // Ok - trocar no Register o email,password, confirm, etc por ..userDate
 export const createUser = async (userData) => {
-    console.log(userData,'auth')
+    console.log(userData, 'auth')
+
     try {
-        beforeCreateAccount(userData)
-        const response = await api.post("/auth/register", { user: userData })
+        // await beforeCreateAccount(userData)
+        const response = await api.post("/auth/register", userData)
+        Alert.alert('MyBank','Usuario cadastrado com sucesso!')
         return response.data
     } catch (error) {
-        console.error(error.data, 'Ocorreu um erro ao cadastrar seu usuario');
-        Alert.alert('MyBank', 'Ocorreu um erro ao cadastrar seu usuario! Verifique as informações e tente novamente 😞 ')
+        console.log(error.data, 'Ocorreu um erro ao cadastrar seu usuario');
     }
 }
 
 // Ok
-export const userDataUpdate = async (userData) => {
-    console.log(userData)
-    try {
-        beforeUserDataUpdate(userData)
-        const response = await api.patch(`/user/${userData._id}`, { user: userData })
-        const { data } = response
-        const { user: updatedUser } = data
+// export const userDataUpdate = async (userData) => {
+//     console.log(userData)
+//     try {
+//         beforeUserDataUpdate(userData)
+//         const response = await api.patch(`/user/${userData._id}`, { user: userData })
+//         const { data } = response
+//         const { user: updatedUser } = data
 
-        return updatedUser
-    } catch (error) {
-        console.log(error)
-        return false
-    }
-}
+//         return updatedUser
+//     } catch (error) {
+//         console.log(error)
+//         return false
+//     }
+// }

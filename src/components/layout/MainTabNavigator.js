@@ -20,7 +20,7 @@ export const TabNavigator = ({ navigation }) => {
         <Tab.Navigator
             screenOptions={({ route }) => ({
                 tabBarStyle: {
-                    backgroundColor: Colors.primary, height: 55, paddingBottom: 5, paddingTop: 5 
+                    backgroundColor: Colors.primary, height: 60, paddingBottom: 8, paddingTop: 8, 
                 },
                 tabBarShowLabel: true,
                 headerShown: false
@@ -55,14 +55,6 @@ const styles = StyleSheet.create({
         paddingTop: 15,
         backgroundColor: Colors.lightGray
     },
-    // tabConfig:{
-    //     backgroundColor: '#fff',
-    //     width: 60,
-    //     height: 60,
-    //     borderRadius: 10,
-    //     alignItems: 'center',
-    //     justifyContent: 'center',
-    //     marginBottom: 40,
-    //     padding: 6
-    // }
+    tabConfig:{
+    }
 });

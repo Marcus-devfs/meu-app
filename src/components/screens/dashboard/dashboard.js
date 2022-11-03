@@ -64,11 +64,11 @@ const listItem = [
 
 export default function Dashboard({ navigation, list }) {
 
-  const {user} = useContext(AuthContext)
-  const {name} = user
+  const { user } = useContext(AuthContext)
+  const { name } = user
   return (
     <View style={styles.container}>
-      
+
       <View style={styles.containerHeader}>
 
         <View style={{ display: 'flex', marginTop: 55, height: 50, marginLeft: 6 }}>
@@ -105,18 +105,18 @@ export default function Dashboard({ navigation, list }) {
       <Actions />
 
       {/* <ScrollView showsVerticalScrollIndicator={false}> */}
-        <View style={{ width: '100%', minHeight: 200, }}>
-          <Text style={{ fontWeight: 'bold', fontSize: 18, margin: 10, color:Colors.darkGray,  }}>Ultimas movimentações</Text>
+      <View style={{ width: '100%', minHeight: 200, }}>
+        <Text style={{ fontWeight: 'bold', fontSize: 18, margin: 10, color: Colors.darkGray, }}>Ultimas movimentações</Text>
 
-          <FlatList
-            style={styles.list}
-            data={listItem}
-            keyExtractor={(item) => String(item.id)}
-            showsVerticalScrollIndicator={false}
-            renderItem={({ item }) => <Moviments data={item} />}
-          />
+        <FlatList
+          style={styles.list}
+          data={listItem}
+          keyExtractor={(item) => String(item.id)}
+          showsVerticalScrollIndicator={false}
+          renderItem={({ item }) => <Moviments data={item} />}
+        />
 
-        </View>
+      </View>
       {/* </ScrollView> */}
       <Spacer size={1} />
       <StatusBar style="auto" />
@@ -139,13 +139,13 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
     // justifyContent: 'center',
   },
-  userName:{
-    color:Colors.lightGray,
-    fontSize: 17,
+  userName: {
+    color: Colors.lightGray,
+    fontSize: 14,
     textAlign: 'center',
     marginLeft: 10,
     marginTop: 5
-},
+  },
   containerHeader: {
     flexDirection: 'row',
     backgroundColor: '#06373d',

@@ -16,6 +16,7 @@ import Colors from '../../atoms/Colors';
 import { AuthContext } from '../../../context/validators/AuthContext';
 import Environment from '../../../config/Environment';
 import { loginUser } from '../../../interface/auth-interface';
+import { TextInputState } from '../../atoms/TextIput';
 
 
 export const Signin = ({ navigation }) => {
@@ -34,8 +35,8 @@ export const Signin = ({ navigation }) => {
   const { setUser } = useContext(AuthContext)
 
   const [login, setLogin] = useState({
-    email: Environment.auth.email,
-    password: Environment.auth.password
+    email: '',
+    password: ''
   })
 
   const handleChange = (name, value) => {
@@ -90,23 +91,25 @@ export const Signin = ({ navigation }) => {
               resizeMode="contain"
             />
             <Spacer size={1} />
-            <TextInput
-              style={styles.input}
+            <TextInputState
               placeholder="  ✉️ e-mail, usuario"
               placeholderTextColor="#696969"
               name="email"
+              keyboardType='email-address'
+              autoCapitalize="none"
               value={login.email}
-              onChangeText={(name, value) => handleChange(name, value)}
+              handleChange={(name, value) => handleChange(name, value)}
             />
 
-            <TextInput
-              style={styles.input}
+            <TextInputState
               secureTextEntry={true}
+              type="password"
               placeholder=" 🔒 Digite sua senha"
               placeholderTextColor="#696969"
               name="password"
+              autoCapitalize="none"
               value={login.password}
-              onChangeText={(name, value) => handleChange(name, value)}
+              handleChange={(name, value) => handleChange(name, value)}
             />
 
             <TouchableOpacity style={{ cursor: 'pointer', marginLeft: 140, color: "#fff", marginBottom: 10, fontSize: 14 }}>
