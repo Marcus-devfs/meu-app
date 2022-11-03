@@ -22,7 +22,7 @@ export const TextInputState = (props) => {
             backgroundColor: '#FFF',
             borderRadius: 8,
             width: 320,
-            paddingVertical: 6,
+            paddingVertical: 10,
             marginBottom: 8,
             flexDirection:'row',
          }}>
@@ -36,7 +36,7 @@ export const TextInputState = (props) => {
             />
             {type == 'password' &&
                <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                  <Ionicons name={showPassword ? 'eye-sharp' : 'eye-off-sharp'} size={25} color={Colors.secondaryDisabled} style={{paddingRight: 8, alignItems: 'center'}}/>
+                  <Ionicons name={showPassword ? 'eye-sharp' : 'eye-off-sharp'} size={20} color={Colors.secondaryDisabled} style={{paddingRight: 8, justifyContent: 'center',}}/>
                </TouchableOpacity>}
          </View>
       </View>

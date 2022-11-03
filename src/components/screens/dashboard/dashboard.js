@@ -66,6 +66,7 @@ export default function Dashboard({ navigation, list }) {
 
   const { user } = useContext(AuthContext)
   const { name } = user
+
   return (
     <View style={styles.container}>
 

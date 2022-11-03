@@ -106,6 +106,7 @@ export const RegisterScreen = ({ navigation }) => {
                         <TextInputState
                             name="name"
                             placeholder="Digite seu nome"
+                            placeholderTextColor="#696969"
                             value={userData.name}
                             handleChange={(name, value) => handleChange(name, value)}
                         />
@@ -113,6 +114,7 @@ export const RegisterScreen = ({ navigation }) => {
                         <TextInputState
                             name="email"
                             keyboardType='email-address'
+                            placeholderTextColor="#696969"
                             placeholder="Digite seu e-mail"
                             autoCapitalize="none"
                             value={userData.email}
@@ -122,6 +124,7 @@ export const RegisterScreen = ({ navigation }) => {
                         <TextInputState
                             name="password"
                             placeholder="Digite sua senha"
+                            placeholderTextColor="#696969"
                             autoCapitalize="none"
                             secureTextEntry={true}
                             value={userData.password}
@@ -132,6 +135,7 @@ export const RegisterScreen = ({ navigation }) => {
                         <TextInputState
                             name="confirmpassword"
                             placeholder="Confirme sua senha"
+                            placeholderTextColor="#696969"
                             autoCapitalize="none"
                             secureTextEntry={true}
                             value={userData.confirmpassword}
