@@ -15,9 +15,8 @@ import { Spacer, } from '../../atoms/Spacer';
 import Colors from '../../atoms/Colors';
 import { AuthContext } from '../../../context/validators/AuthContext';
 import Environment from '../../../config/Environment';
-import { AuthNavigator } from '../../layout/AuthNavigator';
-import { validatePathConfig } from '@react-navigation/native';
 import { loginUser } from '../../../interface/auth-interface';
+import { TextInputState } from '../../atoms/TextIput';
 
 
 export const Signin = ({ navigation }) => {
@@ -33,11 +32,11 @@ export const Signin = ({ navigation }) => {
   // const val = useContext(AuthContext);
 
 
-  const { user, setUser } = useContext(AuthContext)
+  const { setUser } = useContext(AuthContext)
 
   const [login, setLogin] = useState({
-    email: Environment.auth.email,
-    password: Environment.auth.password
+    email: '',
+    password: ''
   })
 
   const handleChange = (name, value) => {
@@ -69,14 +68,14 @@ export const Signin = ({ navigation }) => {
       if (!user) {
         Alert.alert('MyBank', 'Usuário não encontrado ou senha incorreta. Verifique os dados e tente novamente!')
         return
-        
+
       }
-      
+
 
     } catch (error) {
       console.log(JSON.stringify(error), 'Ocorreu um erro ao logar')
     }
-    
+
   }
 
 
@@ -92,21 +91,25 @@ export const Signin = ({ navigation }) => {
               resizeMode="contain"
             />
             <Spacer size={1} />
-            <TextInput
-              style={styles.input}
+            <TextInputState
               placeholder="  ✉️ e-mail, usuario"
               placeholderTextColor="#696969"
-              onChangeText={(name, value) => handleChange(name, value)}
+              name="email"
+              keyboardType='email-address'
+              autoCapitalize="none"
               value={login.email}
+              handleChange={(name, value) => handleChange(name, value)}
             />
 
-            <TextInput
-              style={styles.input}
+            <TextInputState
               secureTextEntry={true}
+              type="password"
               placeholder=" 🔒 Digite sua senha"
               placeholderTextColor="#696969"
-              onChangeText={(name, value) => handleChange(name, value)}
+              name="password"
+              autoCapitalize="none"
               value={login.password}
+              handleChange={(name, value) => handleChange(name, value)}
             />
 
             <TouchableOpacity style={{ cursor: 'pointer', marginLeft: 140, color: "#fff", marginBottom: 10, fontSize: 14 }}>

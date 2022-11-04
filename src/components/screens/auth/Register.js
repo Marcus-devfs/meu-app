@@ -1,5 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useContext, useState } from 'react';
+import { TextInputState } from '../../atoms/TextIput';
 import {
     Text,
     Alert,
@@ -32,10 +33,10 @@ export const RegisterScreen = ({ navigation }) => {
     // const { createUser } = useContext(AuthContext);
 
     const [userData, setUserData] = useState({
-        name:'',
-        email:'',
-        password:'',
-        confirmpassword:''
+        name: '',
+        email: '',
+        password: '',
+        confirmpassword: ''
     })
 
     const handleChange = async (name, value) => {
@@ -44,20 +45,30 @@ export const RegisterScreen = ({ navigation }) => {
             [name]: value
         })
     }
-    console.log(userData)
     // const [name, setName] = useState();
     // const [email, setEmail] = useState();
     // const [password, setPassword] = useState();
     // const [confirmpassword, setConfirmPassword] = useState();
 
     const handleCreateAccount = async () => {
-        try {
-            await createUser(userData)
-            console.log(userData)
-            navigation.navigate('Signin')
 
+        const emailValidator = (email) => {
+            const EMAIL_REGEX = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&*'+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+            return EMAIL_REGEX.test(email)
+        }
+
+        try {
+            const { name, email, password, confirmpassword } = userData;
+
+            if (!name) { Alert.alert('MyBank', "O campo 'Nome' é obrigatório") }
+            if (!email) { Alert.alert('MyBank', "O campo 'E-mail' é obrigatório") }
+            if (!emailValidator(email)) { Alert.alert('MyBank', "O e-mail digitado está incorreto") }
+            if (!password) { Alert.alert('MyBank', "O campo 'Senha' é obrigatório") }
+            if (password !== confirmpassword) { Alert.alert('MyBank', 'As senhas não conferem! Verifique e tente novamente') }
+
+            await createUser(userData)
         } catch (error) {
-            console.log(JSON.stringify(error), 'Ocorreu um erro a criar a conta')
+            console.error(error, 'Ocorreu um erro com os dados')
         }
     }
 
@@ -92,38 +103,44 @@ export const RegisterScreen = ({ navigation }) => {
                             resizeMode="contain"
                         />
                         <Spacer size={1} />
-                        <TextInput
-                            style={styles.input} 
-                            placeholder=" Nome"
+                        <TextInputState
+                            name="name"
+                            placeholder="Digite seu nome"
                             placeholderTextColor="#696969"
-                            handleChange={(name, value) => handleChange(name, value)} 
                             value={userData.name}
+                            handleChange={(name, value) => handleChange(name, value)}
                         />
 
-                        <TextInput
-                            style={styles.input}
-                            placeholder=" E-mail" 
-                            placeholderTextColor="#696969" 
-                            handleChange={(name, value) => handleChange(name, value)}
+                        <TextInputState
+                            name="email"
+                            keyboardType='email-address'
+                            placeholderTextColor="#696969"
+                            placeholder="Digite seu e-mail"
+                            autoCapitalize="none"
                             value={userData.email}
+                            handleChange={(name, value) => handleChange(name, value)}
                         />
-                        
-                        <TextInput
-                            style={styles.input} 
-                            secureTextEntry={true} 
-                            placeholder=" Senha" 
-                            placeholderTextColor="#696969" 
-                            handleChange={(name, value) => handleChange(name, value)} 
+
+                        <TextInputState
+                            name="password"
+                            placeholder="Digite sua senha"
+                            placeholderTextColor="#696969"
+                            autoCapitalize="none"
+                            secureTextEntry={true}
                             value={userData.password}
+                            handleChange={(name, value) => handleChange(name, value)}
+                            type='password'
                         />
-                        
-                        <TextInput
-                            style={styles.input} 
-                            secureTextEntry={true} 
-                            placeholder=" Confirme sua Senha" 
-                            placeholderTextColor="#696969" 
-                            handleChange={(name, value) => handleChange(name, value)} 
+
+                        <TextInputState
+                            name="confirmpassword"
+                            placeholder="Confirme sua senha"
+                            placeholderTextColor="#696969"
+                            autoCapitalize="none"
+                            secureTextEntry={true}
                             value={userData.confirmpassword}
+                            handleChange={(name, value) => handleChange(name, value)}
+                            type='password'
                         />
                         {/* <TouchableOpacity style={{cursor: 'pointer' ,marginLeft: 140, color: "#fff", marginBottom: 10, fontSize: 14 }}><Text style={{color: "#fff"}}>Recuperar senha?</Text></TouchableOpacity> */}
                         <Spacer size={1} />
@@ -179,16 +196,6 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
         marginBottom: 30,
         marginTop: 10
-    },
-    input: {
-        height: 40,
-        borderWidth: 1,
-        padding: 5,
-        width: '100%',
-        borderRadius: 5,
-        backgroundColor: '#fff',
-        marginBottom: 8,
-
     },
     buttonRegister: {
         backgroundColor: '#B22222',
