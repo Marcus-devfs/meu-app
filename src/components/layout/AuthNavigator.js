@@ -25,6 +25,7 @@ export const AuthNavigator = () => {
 
         const signinToken = async () => {
             const token = await AsyncStorage.getItem('@MyBank', token)
+            console.log(token)
             if (token)
                 try {
                     const user = await doLoginByToken(token)

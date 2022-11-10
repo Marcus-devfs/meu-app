@@ -35,8 +35,8 @@ export const Signin = ({ navigation }) => {
   const { setUser } = useContext(AuthContext)
 
   const [login, setLogin] = useState({
-    email: '',
-    password: ''
+    email: Environment.auth.email,
+    password: Environment.auth.password
   })
 
   const handleChange = (name, value) => {

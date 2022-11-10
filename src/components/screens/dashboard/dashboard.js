@@ -65,7 +65,9 @@ const listItem = [
 export default function Dashboard({ navigation, list }) {
 
   const { user } = useContext(AuthContext)
-  const { name } = user
+  const { name} = user
+
+  const userName = name.split(" ")[0]; 
 
   return (
     <View style={styles.container}>
@@ -74,7 +76,7 @@ export default function Dashboard({ navigation, list }) {
 
         <View style={{ display: 'flex', marginTop: 55, height: 50, marginLeft: 6 }}>
           <Avatar />
-          <Text style={styles.userName}>{name}</Text>
+          <Text style={styles.userName}>{userName}</Text>
         </View>
 
         <View style={{ marginTop: 45 }}>
