@@ -1,20 +1,44 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { useEffect } from "react";
-import { View, Text, ActivityIndicator } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
+import Colors from "../../atoms/Colors";
 
-export default function doLoginToken(props) {
+export function doLoginToken(props) {
+    const [loading, setLoading] = useState(null);
     useEffect(() => {
-        async function handleUserToken() {
-            const userToken = await AsyncStorage.getItem('@Mybank', token);
+        const signinToken = async () => {
 
-            props.navigation.navigate(userToken ? 'dashboard' : 'Signin');
-        }
-        handleUserToken();
+            
+
+            const userToken = await AsyncStorage.getItem('@MyBank', token)
+            console.log(token, 'signinTOken')
+
+            if (!!userToken)
+                try {
+                    setLoading(true)
+                    setUser(user)
+                    props.navigation.navigate('dashboard');
+                    setLoading(false)
+                } catch (error) {
+                    console.error(error.data);
+                    props.navigation.navigate('Signin')
+                }
+        };
+        signinToken();
+
+
+
+        // async function asynchandleUserToken () {
+        //     const userToken = await AsyncStorage.getItem('@Mybank', token);
+
+        //     props.navigation.navigate(userToken ? 'dashboard' : 'Signin');
+        // }
+        // handleUserToken();
     }, []);
 
     return (
         <View style={styles.container}>
-            <ActivityIndicator color={"#fff"} size={50} />
+            {loading ? LoadingIndicator : props.navigation.navigate('dashboard')}
         </View>
     )
 
@@ -28,4 +52,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
 })
+
+const LoadingIndicator =
+    <View>
+        <ActivityIndicator color={"#fff"} size={50} />
+    </View>
 

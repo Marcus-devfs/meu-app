@@ -12,6 +12,7 @@ import { AuthContext } from '../../context/validators/AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { doLoginByToken } from '../../interface/auth-interface';
+import {doLoginToken} from '../screens/auth/LoginByToken';
 
 
 
@@ -21,23 +22,23 @@ export const AuthNavigator = () => {
 
     const { user, setUser } = useContext(AuthContext)
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        const signinToken = async () => {
-            const token = await AsyncStorage.getItem('@MyBank', token)
-            console.log(token)
-            if (token)
-                try {
-                    const user = await doLoginByToken(token)
-                    setUser(user)
-                    console.log(user, 'tela Login')
-                } catch (error) {
-                    console.error(error.data);
-                }
-           
-        };
-        signinToken();
-    }, [])
+    //     const signinToken = async () => {
+    //         const token = await AsyncStorage.getItem('@MyBank', token)
+    //         console.log(token)
+    //         if (token)
+    //             try {
+    //                 const user = await doLoginByToken(token)
+    //                 setUser(user)
+    //                 console.log(user, 'tela Login')
+    //             } catch (error) {
+    //                 console.error(error.data);
+    //             }
+
+    //     };
+    //     signinToken();
+    // }, [])
 
     //Se não estiver autorizado, usar telas de Login e Cadastro
 
