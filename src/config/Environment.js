@@ -3,7 +3,7 @@ export default {
         url: 'http://localhost:3000/'
     },
     auth: {
-        email: 'dallila.almeida@gmail.com',
-        password: 'dallila123'
+        email: 'marcus.silva@gmail.com',
+        password: 'vini123'
     }
 }

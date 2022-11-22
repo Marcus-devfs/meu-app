@@ -20,7 +20,7 @@ export const TabNavigator = ({ navigation }) => {
         <Tab.Navigator
             screenOptions={({ route }) => ({
                 tabBarStyle: {
-                    backgroundColor: Colors.primary, height: 60, paddingBottom: 8, paddingTop: 8, 
+                    backgroundColor: Colors.lightGray, height: 68, paddingBottom: 15, paddingTop: 5,
                 },
                 tabBarShowLabel: true,
                 headerShown: false
@@ -29,17 +29,17 @@ export const TabNavigator = ({ navigation }) => {
             })}>
 
 
-            <Tab.Screen name="Dashboard" component={Dashboard}
+            <Tab.Screen name="Home" component={Dashboard}
                 options={{
-                    
+
                     tabBarIcon: ({ focused, color, size }) => {
-                        return <Ionicons name='home' size={25} color={focused ? '#fff' : '#A9A9A9'} style={styles.tabConfig} />;
+                        return <Ionicons name='home' size={30} color={focused ? Colors.primary : Colors.primary - 0.5 } style={styles.tabConfig} />;
                     }
                 }} />
-            <Tab.Screen name="userProfile" component={UserProfile}
+            <Tab.Screen name="Profile" component={UserProfile}
                 options={{
                     tabBarIcon: ({ focused, color, size }) => {
-                        return <Ionicons name='cog' size={25} color={focused ? '#fff' : '#A9A9A9'} style={styles.tabConfig} />;
+                        return <Ionicons name='cog' size={30} color={focused ? Colors.primary : Colors.primary } style={styles.tabConfig} />;
                     }
                 }} />
         </Tab.Navigator>
@@ -49,12 +49,12 @@ export const TabNavigator = ({ navigation }) => {
 
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingHorizontal: 15,
-        paddingTop: 15,
-        backgroundColor: Colors.lightGray
-    },
-    tabConfig:{
+    // container: {
+    //     flex: 1,
+    //     paddingHorizontal: 15,
+    //     paddingTop: 15,
+    //     backgroundColor: Colors.lightGray
+    // },
+    tabConfig: {
     }
 });

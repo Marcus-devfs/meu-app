@@ -11,7 +11,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
 
     const [user, setUser] = useState(null)
-    console.log(user, 'authcontext')//false
+    console.log(user, 'authcontext aqui')//false
 
     const handleLogout = async () =>{
         await doLogout()
