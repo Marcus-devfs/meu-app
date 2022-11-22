@@ -12,7 +12,7 @@ import { AuthContext } from '../../context/validators/AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { doLoginByToken } from '../../interface/auth-interface';
-import {doLoginToken} from '../screens/auth/LoginByToken';
+import {DoLoginToken} from '../screens/auth/LoginByToken';
 
 
 
@@ -46,6 +46,10 @@ export const AuthNavigator = () => {
         <Stack.Navigator>
             {user && isLoggedInStack}
             {!user && <>
+                {/* <Stack.Screen
+                    name="DoLoginByToken"
+                    component={DoLoginToken}
+                    options={{ headerShown: false, }} /> */}
                 <Stack.Screen
                     name="Signin"
                     component={Signin}

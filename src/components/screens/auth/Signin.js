@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import {
   Text,
   Alert,
@@ -17,6 +17,8 @@ import { AuthContext } from '../../../context/validators/AuthContext';
 import Environment from '../../../config/Environment';
 import { loginUser } from '../../../interface/auth-interface';
 import { TextInputState } from '../../atoms/TextIput';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 export const Signin = ({ navigation }) => {
