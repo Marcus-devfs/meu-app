@@ -1,6 +1,8 @@
+import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View, Image, Button, TouchableOpacity, FlatList } from 'react-native';
+import api from '../../../config/api';
 import { AuthContext } from '../../../context/validators/AuthContext';
 import Colors from '../../atoms/Colors';
 import { Spacer } from '../../atoms/Spacer';
@@ -8,7 +10,6 @@ import Actions from '../../Moviments/Actions';
 import Moviments from '../../Moviments/moviments';
 
 import Avatar from '../../organisms/Avatar';
-
 
 const listItem = [
   {
@@ -62,12 +63,27 @@ const listItem = [
   },
 ]
 
+
 export default function Dashboard({ navigation, list }) {
 
-  const { user } = useContext(AuthContext)
-  const { name} = user
+  const movimentList = async () => {
 
-  const userName = name.split(" ")[0]; 
+    const response = await api.get('/moviments');
+    const { data } = response
+    const { msg } = data
+    const list = msg;
+
+    console.log('const aqui 2', list);
+
+    return list
+  }
+
+  
+
+  const { user } = useContext(AuthContext)
+  const { name } = user
+
+  const userName = name.split(" ")[0];
 
   return (
     <View style={styles.container}>
@@ -89,9 +105,9 @@ export default function Dashboard({ navigation, list }) {
 
       <View style={styles.containerDash}>
 
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 15 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', }}>
 
-          <TouchableOpacity style={styles.boxRevenue}>
+          <TouchableOpacity style={styles.boxRevenue} onPress={movimentList()}>
             <Text style={{ color: Colors.darkGray, fontSize: 15 }}>Receita:</Text>
             <Text style={{ color: '#006400', fontSize: 20, fontWeight: '700' }}>R$ 3.500,00</Text>
           </TouchableOpacity>
@@ -153,8 +169,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#06373d',
     width: '100%',
-    minHeight: 155,
-    maxHeight: 155,
+    minHeight: 145,
+    maxHeight: 145,
     justifyContent: 'flex-start',
     // alignItems: 'center',
   },
