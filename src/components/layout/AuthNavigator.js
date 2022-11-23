@@ -13,6 +13,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { doLoginByToken } from '../../interface/auth-interface';
 import {DoLoginToken} from '../screens/auth/LoginByToken';
+import SpendControll from '../screens/dashboard/spend';
+import DepositControll from '../screens/dashboard/deposit';
 
 
 
@@ -79,6 +81,14 @@ const isLoggedInStack =
         <Stack.Screen
             name="userProfile"
             component={UserProfile}
+            options={{ headerShown: false, }} />
+            <Stack.Screen
+            name="spendControll"
+            component={SpendControll}
+            options={{ headerShown: false, }} />
+            <Stack.Screen
+            name="depositControll"
+            component={DepositControll}
             options={{ headerShown: false, }} />
     </>
 

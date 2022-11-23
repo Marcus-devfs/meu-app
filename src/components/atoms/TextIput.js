@@ -17,7 +17,7 @@ export const TextInputState = (props) => {
 
    return (
       <View style={[containerStyle]}>
-         {label && <Text style={{ ...styles.textInputLabel, color: Colors.primary }}>{label}</Text>}
+         {label && <Text style={{ ...styles.textInputLabel,  }}>{label}</Text>}
          <View style={{
             backgroundColor: '#FFF',
             borderRadius: 8,
