@@ -1,6 +1,8 @@
+import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { ScrollView, StyleSheet, Text, View, Image, Button, TouchableOpacity, FlatList } from 'react-native';
+import api from '../../../config/api';
 import { AuthContext } from '../../../context/validators/AuthContext';
 import Colors from '../../atoms/Colors';
 import { Spacer } from '../../atoms/Spacer';
@@ -8,7 +10,6 @@ import Actions from '../../Moviments/Actions';
 import Moviments from '../../Moviments/moviments';
 
 import Avatar from '../../organisms/Avatar';
-
 
 const listItem = [
   {
@@ -64,10 +65,28 @@ const listItem = [
 
 export default function Dashboard({ navigation, list }) {
 
-  const { user } = useContext(AuthContext)
-  const { name} = user
+  useEffect(()=>{
+    movimentList();
+  }, [])
 
-  const userName = name.split(" ")[0]; 
+  const [listMoviment, useListItem] = useState();
+
+  const movimentList = async () => {
+
+    const response = await api.get('/moviments');
+    const { msg } = response.data
+    const list = msg;
+
+    useListItem(list)
+
+    return;
+  }
+
+
+  const { user } = useContext(AuthContext)
+  const { name } = user
+
+  const userName = name.split(" ")[0];
 
   return (
     <View style={styles.container}>
@@ -89,7 +108,7 @@ export default function Dashboard({ navigation, list }) {
 
       <View style={styles.containerDash}>
 
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 15 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', }}>
 
           <TouchableOpacity style={styles.boxRevenue}>
             <Text style={{ color: Colors.darkGray, fontSize: 15 }}>Receita:</Text>
@@ -113,7 +132,7 @@ export default function Dashboard({ navigation, list }) {
 
         <FlatList
           style={styles.list}
-          data={listItem}
+          data={listMoviment}
           keyExtractor={(item) => String(item.id)}
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => <Moviments data={item} />}
@@ -153,8 +172,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#06373d',
     width: '100%',
-    minHeight: 155,
-    maxHeight: 155,
+    minHeight: 145,
+    maxHeight: 145,
     justifyContent: 'flex-start',
     // alignItems: 'center',
   },
