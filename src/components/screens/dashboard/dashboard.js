@@ -11,82 +11,34 @@ import Moviments from '../../Moviments/moviments';
 
 import Avatar from '../../organisms/Avatar';
 
-const listItem = [
-  {
-    id: 1,
-    label: 'Boleto internet',
-    value: '105,00',
-    date: '20/11/2022',
-    type: 0 // dispesas,
-  },
-  {
-    id: 2,
-    label: 'Aluguel',
-    value: '1500,00',
-    date: '15/11/2022',
-    type: 0 // dispesas,
-  },
-  {
-    id: 3,
-    label: 'Combustivel',
-    value: '300,00',
-    date: '30/11/2022',
-    type: 0 // dispesas,
-  },
-  {
-    id: 4,
-    label: 'Salário',
-    value: '3500,00',
-    date: '30/11/2022',
-    type: 1 // Receita,
-  },
-  {
-    id: 5,
-    label: 'Bônus',
-    value: '1000,00',
-    date: '15/11/2022',
-    type: 1 // Receita,
-  },
-  {
-    id: 6,
-    label: '13º Salário',
-    value: '3500,00',
-    date: '30/11/2022',
-    type: 1 // Receita,
-  },
-  {
-    id: 7,
-    label: 'Mercado',
-    value: '1200,00',
-    date: '20/11/2022',
-    type: 0 // dispesas,
-  },
-]
-
-export default function Dashboard({ navigation, list }) {
-
-  useEffect(()=>{
-    movimentList();
+export default function Dashboard({ navigation }) {
+  
+  useEffect(() => {
+    
   }, [])
+
+  const { user } = useContext(AuthContext)
+  const { name, _id } = user
+
+  const userName = name.split(" ")[0];
+  const idUser = _id
+
+  useEffect(() => {
+    movimentList();
+  })
 
   const [listMoviment, useListItem] = useState();
 
   const movimentList = async () => {
 
-    const response = await api.get('/moviments');
+    const response = await api.get(`/moviments`);
     const { msg } = response.data
-    const list = msg;
-
-    useListItem(list)
-
+    const list = msg.filter(list => list.createdBy === idUser)
+    useListItem(list);
+    
     return;
   }
 
-
-  const { user } = useContext(AuthContext)
-  const { name } = user
-
-  const userName = name.split(" ")[0];
 
   return (
     <View style={styles.container}>
@@ -127,13 +79,13 @@ export default function Dashboard({ navigation, list }) {
       <Actions />
 
       {/* <ScrollView showsVerticalScrollIndicator={false}> */}
-      <View style={{ width: '100%', minHeight: 200, }}>
+      <View style={{ width: '100%', minHeight: 300, }}>
         <Text style={{ fontWeight: 'bold', fontSize: 18, margin: 10, color: Colors.darkGray, }}>Ultimas movimentações</Text>
 
         <FlatList
           style={styles.list}
           data={listMoviment}
-          keyExtractor={(item) => String(item.id)}
+          keyExtractor={(item) => String(item._id)}
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => <Moviments data={item} />}
         />
@@ -220,6 +172,6 @@ const styles = StyleSheet.create({
     padding: 14,
     marginTop: 10,
     width: '100%',
-    maxHeight: 260,
+    maxHeight: 300,
   },
 });

@@ -8,8 +8,10 @@ export default function Moviments({ data }) {
     const [showValue, setShowValue] = useState(false);
 
     return (
-        <TouchableOpacity style={styles.container} onPress={() => setShowValue(!showValue)}>
-            <Text style={styles.date}>{data.date}</Text>
+        <TouchableOpacity style={styles.container} >
+        {/* <TouchableOpacity style={styles.container} onPress={() => setShowValue(!showValue)}> */}
+
+            <Text style={styles.date}>{data.createdAt}</Text>
 
             <View style={styles.content}>
                 <Text style={styles.label}>{data.label}</Text>

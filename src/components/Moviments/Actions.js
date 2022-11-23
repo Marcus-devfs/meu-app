@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, ScrollView, Alert } from 'react-native';
@@ -5,18 +6,19 @@ import Colors from '../atoms/Colors';
 import { Ionicons } from '../atoms/icons';
 import { FontAwesome5 } from '../atoms/icons';
 
-export default function Actions({ navigation }) {
+export default function Actions() {
 
+    const navigation = useNavigation()
 
     return (
         <ScrollView style={styles.container} horizontal={true} showsHorizontalScrollIndicator={false}>
-            <TouchableOpacity style={styles.actionButton}>
+            <TouchableOpacity style={styles.actionButton} onPress={()=> navigation.navigate('depositControll')}>
                 <View style={styles.areaButton}>
                     <FontAwesome5 name="wallet" size={30} color={Colors.darkGray}></FontAwesome5>
                 </View>
                 <Text style={styles.typeButton}> Entradas </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.actionButton}>
+            <TouchableOpacity style={styles.actionButton} onPress={()=> navigation.navigate('spendControll')}>
                 <View style={styles.areaButton}>
                     <FontAwesome5 name="cart-arrow-down" size={30} color={Colors.darkGray}></FontAwesome5>
                 </View>
