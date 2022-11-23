@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { ScrollView, StyleSheet, Text, View, Image, Button, TouchableOpacity, FlatList } from 'react-native';
 import api from '../../../config/api';
 import { AuthContext } from '../../../context/validators/AuthContext';
@@ -63,22 +63,25 @@ const listItem = [
   },
 ]
 
-
 export default function Dashboard({ navigation, list }) {
+
+  useEffect(()=>{
+    movimentList();
+  }, [])
+
+  const [listMoviment, useListItem] = useState();
 
   const movimentList = async () => {
 
     const response = await api.get('/moviments');
-    const { data } = response
-    const { msg } = data
+    const { msg } = response.data
     const list = msg;
 
-    console.log('const aqui 2', list);
+    useListItem(list)
 
-    return list
+    return;
   }
 
-  
 
   const { user } = useContext(AuthContext)
   const { name } = user
@@ -107,7 +110,7 @@ export default function Dashboard({ navigation, list }) {
 
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', }}>
 
-          <TouchableOpacity style={styles.boxRevenue} onPress={movimentList()}>
+          <TouchableOpacity style={styles.boxRevenue}>
             <Text style={{ color: Colors.darkGray, fontSize: 15 }}>Receita:</Text>
             <Text style={{ color: '#006400', fontSize: 20, fontWeight: '700' }}>R$ 3.500,00</Text>
           </TouchableOpacity>
@@ -129,7 +132,7 @@ export default function Dashboard({ navigation, list }) {
 
         <FlatList
           style={styles.list}
-          data={listItem}
+          data={listMoviment}
           keyExtractor={(item) => String(item.id)}
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => <Moviments data={item} />}
