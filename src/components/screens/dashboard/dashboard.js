@@ -50,7 +50,7 @@ export default function Dashboard({ navigation }) {
           <Text style={styles.userName}>{userName}</Text>
         </View>
 
-        <View style={{ marginTop: 45 }}>
+        <View style={{ marginTop: 55 }}>
           <Text style={{ color: Colors.lightGray, display: 'flex', height: 30, marginLeft: 65 }}> Saldo em conta</Text>
           <Text style={{ color: Colors.primaryText, display: 'flex', height: 50, fontSize: 28, marginLeft: 45, fontWeight: '700' }}>
             R$2.500,00</Text>
@@ -124,8 +124,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#06373d',
     width: '100%',
-    minHeight: 145,
-    maxHeight: 145,
+    minHeight: 150,
+    maxHeight: 150,
     justifyContent: 'flex-start',
     // alignItems: 'center',
   },

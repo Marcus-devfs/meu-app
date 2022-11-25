@@ -52,7 +52,7 @@ export default function SpendControll() {
                 Alert.alert("MyBank", "Valor inválido")
             }
             else {
-                await createMoviment(deposit)
+                await createMoviment(spend)
                 navigation.goBack();
             }
 
