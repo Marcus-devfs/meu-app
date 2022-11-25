@@ -4,9 +4,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Colors from '../atoms/Colors';
 import Dashboard from '../screens/dashboard/dashboard';
 import UserProfile from '../screens/users/userProfile';
-import { Ionicons } from '../atoms/icons';
+import { FontAwesome5, Ionicons } from '../atoms/icons';
 import { Signin } from '../screens/auth/Signin';
 import LoggedInStacks from './Stacks';
+import MovimentsList from '../screens/listMoviments/listMoviments';
 
 
 export const TabNavigator = ({ navigation }) => {
@@ -31,9 +32,14 @@ export const TabNavigator = ({ navigation }) => {
 
             <Tab.Screen name="Home" component={Dashboard}
                 options={{
-
                     tabBarIcon: ({ focused, color, size }) => {
                         return <Ionicons name='home' size={30} color={focused ? Colors.primary : Colors.primary - 0.5 } style={styles.tabConfig} />;
+                    }
+                }} />
+                <Tab.Screen name="Moviments" component={MovimentsList}
+                options={{
+                    tabBarIcon: ({ focused, color, size }) => {
+                        return <FontAwesome5 name='exchange-alt' size={30} color={focused ? Colors.primary : Colors.primary - 0.5 } style={styles.tabConfig} />;
                     }
                 }} />
             <Tab.Screen name="Profile" component={UserProfile}
