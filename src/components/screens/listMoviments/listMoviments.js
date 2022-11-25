@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, Text, FlatList, StyleSheet, ScrollView } from "react-native";
+import { View, Text, FlatList, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import api from "../../../config/api";
 import { AuthContext } from "../../../context/validators/AuthContext";
 import Colors from "../../atoms/Colors";
+import { FontAwesome5 } from "../../atoms/icons";
 import Moviments from "../../Moviments/moviments";
 
 export default function MovimentsList() {
@@ -14,7 +15,6 @@ export default function MovimentsList() {
     const { user } = useContext(AuthContext)
     const { name, _id } = user
 
-    const userName = name.split(" ")[0];
     const idUser = _id
 
     useEffect(() => {
@@ -49,6 +49,9 @@ export default function MovimentsList() {
                     renderItem={({ item }) => <Moviments data={item} />}
                 />
             </View>
+            <TouchableOpacity style={{bottom: 80, alignItems:'flex-end', padding: 8, marginRight: 8 }} onPress={()=> console.log(listMoviment)}>
+                <FontAwesome5 name="wallet" size={35} color={Colors.darkGray}></FontAwesome5>
+            </TouchableOpacity>
         </View>
     )
 }
@@ -80,9 +83,11 @@ const styles = StyleSheet.create({
         marginTop: 20
     },
     list: {
-        marginTop: 10,
+        marginTop: 20,
         width: '100%',
         padding: 10,
         backgroundColor: '#fff',
+        minHeight: '78%',
+        maxHeight: '78%',
     },
 });
