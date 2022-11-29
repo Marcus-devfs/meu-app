@@ -1,29 +1,48 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import api from '../../config/api';
 import Colors from '../atoms/Colors';
 
 export default function Moviments({ data }) {
 
-    const [showValue, setShowValue] = useState(false);
+    const [listMoviment, useListItem] = useState();
+
+    const movimentList = async () => {
+
+        const response = await api.get(`/moviments`);
+        const { msg } = response.data
+        // const { value } = msg
+        const list = msg.filter(list => list.createdBy === idUser)
+        useListItem(list);
+        return;
+    }
+
+    async function deleteMoviment(id, eItem) {
+        const response = await api.delete(`/moviments/${id}`)
+        const { msg } = response.data
+        console.log('aqui id', msg);
+    }
+
+    const [showButton, setShowButton] = useState(false);
 
     return (
         // <TouchableOpacity style={styles.container} >
-        <TouchableOpacity style={styles.container} onPress={() => setShowValue(!showValue)}>
+        <TouchableOpacity style={styles.container} onPress={() => setShowButton(!showButton)}>
 
             <Text style={styles.date}>{data.createdAt}</Text>
 
             <View style={styles.content}>
                 <Text style={styles.label}>{data.label}</Text>
+                <Text style={data.type === 1 ? styles.value : styles.expenses}>
+                    {data.type === 1 ? `R$ ${data.value}` : `R$ -${data.value}`}
+                </Text>
 
-                {showValue ? (
-                    <View style={styles.valueHidde}>
-                    {/* <View style={styles.valueHidde}> */}
-                    </View>
-                ) : (
-                    <Text style={data.type === 1 ? styles.value : styles.expenses}>
-                        {data.type === 1 ? `R$ ${data.value}` : `R$ -${data.value}`}
-                    </Text>)}
+                {showButton ? (
+                    <TouchableOpacity style={styles.buttonDelete} onPress={(eItem) => deleteMoviment(data.id, eItem)}>
+                        <Text style={{ color: '#fff', textAlign: 'center', justifyContent: 'center' }}>Apagar</Text>
+                    </TouchableOpacity>
+                ) : ""}
 
             </View>
         </TouchableOpacity>
@@ -70,5 +89,12 @@ const styles = StyleSheet.create({
         opacity: 0.5,
         borderRadius: 5,
         backgroundColor: Colors.lightGray
+    },
+    buttonDelete: {
+        backgroundColor: 'red',
+        paddingHorizontal: 6,
+        paddingVertical: 4,
+        textAlign: 'center',
+        borderRadius: 5
     }
 });
