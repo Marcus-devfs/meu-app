@@ -42,14 +42,12 @@ export default function DepositControll() {
 
         try {
             const { createdAt, value, label } = deposit
-            console.log(deposit)
 
-            if (!label || label == "") { Alert.alert("MyBank", "Dados preenchidos de forma inválida.") }
-            if (!createdAt || createdAt == "") {
-                Alert.alert("MyBank", "Data preenchida de forma inválida")
-            }
+            if (!label || label == "") { return Alert.alert("MyBank", "Dados preenchidos de forma inválida.") }
+            if (!createdAt || createdAt == "") { return Alert.alert("MyBank", "Data preenchida de forma inválida") }
             if (!value) {
                 Alert.alert("MyBank", "Valor inválido")
+                return
             }
             else {
                 await createMoviment(deposit)

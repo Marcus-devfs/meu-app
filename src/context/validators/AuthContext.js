@@ -10,7 +10,7 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
 
-    const [user, setUser] = useState(null)
+    const [user, setUser] = useState(user)
     console.log(user, 'authcontext aqui')//false
 
     const handleLogout = async () =>{
