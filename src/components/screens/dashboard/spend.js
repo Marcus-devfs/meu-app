@@ -27,7 +27,7 @@ export default function SpendControll() {
         label: '',
         value: '',
         createdAt: '',
-        type: 0,
+        type: 'expense',
         createdBy: idUser,
         user: idUser,
     })

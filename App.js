@@ -13,13 +13,12 @@ export default function App() {
 
     <NavigationContainer>
       <StatusBar />
-      {/* <AppProvider> */}
+      <AppProvider>
         <AuthProvider>
-          {/* <Stacks /> */}
           <AuthNavigator />
-          {/* <Loading /> */}
+          <Loading />
         </AuthProvider>
-      {/* </AppProvider> */}
+      </AppProvider>
     </NavigationContainer>
   );
 }

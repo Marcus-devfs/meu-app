@@ -1,21 +1,29 @@
 import React, { createContext, useContext, useState } from "react";
 import axios from 'axios'
 import api from "../../config/api";
-import  AsyncStorage  from "@react-native-async-storage/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Alert } from "react-native";
 import { doLogout } from "../../interface/auth-interface";
+import { AppContext } from "./AppContext";
+
 
 
 export const AuthContext = createContext();
 
+
 export const AuthProvider = ({ children }) => {
+    const { startLoading, stopLoading, loading } = useContext(AppContext)
+
+
 
     const [user, setUser] = useState()
     console.log(user, 'authcontext aqui')//false
 
-    const handleLogout = async () =>{
+    const handleLogout = async () => {
+        startLoading({ msg: 'Carregando...' })
         await doLogout()
         setUser(null)
+        stopLoading()
     }
 
     // const createUser = async (name, email, password, confirmpassword) => {
@@ -47,7 +55,7 @@ export const AuthProvider = ({ children }) => {
     //             email: email,
     //             password: password,
     //         });
-            
+
     //         await AsyncStorage.setItem('@MyBank', data.data.token);
 
     //         const token = await AsyncStorage.getItem('@MyBank')
