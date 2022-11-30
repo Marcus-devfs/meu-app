@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useContext, useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
 import { AuthContext } from '../../../context/validators/AuthContext';
-import { createMoviment } from '../../../interface/moviments-interface';
+import { createMovimentSpend } from '../../../interface/moviments-interface';
 import Colors from '../../atoms/Colors';
 import { Spacer } from '../../atoms/Spacer';
 import { TextInputState } from '../../atoms/TextIput';
@@ -29,7 +29,7 @@ export default function SpendControll() {
         createdAt: '',
         type: 0,
         createdBy: idUser,
-
+        user: idUser,
     })
 
     const handleChange = (name, value) => {
@@ -50,7 +50,7 @@ export default function SpendControll() {
                 return
             }
             else {
-                await createMoviment(spend)
+                await createMovimentSpend(spend)
                 navigation.goBack();
             }
 

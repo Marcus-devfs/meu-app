@@ -34,11 +34,9 @@ export default function Dashboard({ navigation }) {
 
   const movimentList = async () => {
 
-    const response = await api.get(`/moviments`);
-    const { msg } = response.data
-    // const { value } = msg
-    const list = msg.filter(list => list.createdBy === idUser)
-    useListItem(list);
+    const response = await api.get(`/moviment/${idUser}`);
+    const { moviments } = response.data
+    useListItem(moviments);
     return;
   }
 
