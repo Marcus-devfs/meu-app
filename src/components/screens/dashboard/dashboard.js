@@ -12,9 +12,11 @@ import Moviments from '../../Moviments/moviments';
 import Avatar from '../../organisms/Avatar';
 
 export default function Dashboard({ navigation }) {
-  
+
+  const [valueTotal, useValueTotal] = useState("R$ 2.500,00");
+
   useEffect(() => {
-    
+  
   }, [])
 
   const { user } = useContext(AuthContext)
@@ -27,17 +29,19 @@ export default function Dashboard({ navigation }) {
     movimentList();
   })
 
+
   const [listMoviment, useListItem] = useState();
 
   const movimentList = async () => {
 
-    const response = await api.get(`/moviments`);
-    const { msg } = response.data
-    const list = msg.filter(list => list.createdBy === idUser)
-    useListItem(list);
-    
+    const response = await api.get(`/moviment/${idUser}`);
+    const { moviments } = response.data
+    useListItem(moviments);
     return;
   }
+
+  // const { value } = listMoviment
+  // console.log('dindin', value);
 
 
   return (
@@ -53,7 +57,7 @@ export default function Dashboard({ navigation }) {
         <View style={{ marginTop: 55 }}>
           <Text style={{ color: Colors.lightGray, display: 'flex', height: 30, marginLeft: 65 }}> Saldo em conta</Text>
           <Text style={{ color: Colors.primaryText, display: 'flex', height: 50, fontSize: 28, marginLeft: 45, fontWeight: '700' }}>
-            R$2.500,00</Text>
+            {valueTotal}</Text>
         </View>
 
       </View>
