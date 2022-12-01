@@ -3,6 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useContext, useState, useEffect } from 'react';
 import { ScrollView, StyleSheet, Text, View, Image, Button, TouchableOpacity, FlatList } from 'react-native';
 import api from '../../../config/api';
+import { AppContext } from '../../../context/validators/AppContext';
 import { AuthContext } from '../../../context/validators/AuthContext';
 import Colors from '../../atoms/Colors';
 import { Spacer } from '../../atoms/Spacer';
@@ -14,9 +15,10 @@ import Avatar from '../../organisms/Avatar';
 export default function Dashboard({ navigation }) {
 
   const [valueTotal, useValueTotal] = useState("R$ 2.500,00");
+  const { startLoading, stopLoading, loading } = useContext(AppContext)
 
   useEffect(() => {
-  
+
   }, [])
 
   const { user } = useContext(AuthContext)
@@ -26,8 +28,11 @@ export default function Dashboard({ navigation }) {
   const idUser = _id
 
   useEffect(() => {
+    startLoading({ msg: 'Carregando...' })
     movimentList();
+    stopLoading()
   })
+
 
 
   const [listMoviment, useListItem] = useState();
@@ -39,9 +44,6 @@ export default function Dashboard({ navigation }) {
     useListItem(moviments);
     return;
   }
-
-  // const { value } = listMoviment
-  // console.log('dindin', value);
 
 
   return (
@@ -93,6 +95,7 @@ export default function Dashboard({ navigation }) {
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => <Moviments data={item} />}
         />
+
 
       </View>
       {/* </ScrollView> */}

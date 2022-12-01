@@ -6,21 +6,12 @@ import Colors from '../atoms/Colors';
 
 export default function Moviments({ data }) {
 
-    const [listMoviment, useListItem] = useState();
+    // console.log(data)
 
-    const movimentList = async () => {
-
-        const response = await api.get(`/moviments`);
+    const deleteMoviment = async (_id) => {
+        const response = await api.delete(`/moviments/${_id}`)
         const { msg } = response.data
-        // const { value } = msg
-        const list = msg.filter(list => list.createdBy === idUser)
-        useListItem(list);
-        return;
-    }
-
-    async function deleteMoviment(id, eItem) {
-        const response = await api.delete(`/moviments/${id}`)
-        const { msg } = response.data
+        console.log('aqui dados', response.data);
         console.log('aqui id', msg);
     }
 
@@ -34,12 +25,12 @@ export default function Moviments({ data }) {
 
             <View style={styles.content}>
                 <Text style={styles.label}>{data.label}</Text>
-                <Text style={data.type === 1 ? styles.value : styles.expenses}>
-                    {data.type === 1 ? `R$ ${data.value}` : `R$ -${data.value}`}
+                <Text style={data.type == 'income' ? styles.value : styles.expenses}>
+                    {data.type == 'income' ? `R$ ${data.value}` : `R$ -${data.value}`}
                 </Text>
 
                 {showButton ? (
-                    <TouchableOpacity style={styles.buttonDelete} onPress={(eItem) => deleteMoviment(data.id, eItem)}>
+                    <TouchableOpacity style={styles.buttonDelete} onPress={() => deleteMoviment(data._id)}>
                         <Text style={{ color: '#fff', textAlign: 'center', justifyContent: 'center' }}>Apagar</Text>
                     </TouchableOpacity>
                 ) : ""}

@@ -27,7 +27,7 @@ export default function DepositControll() {
         label: '',
         value: '',
         createdAt: '',
-        type: 1,
+        type: 'income',
         createdBy: idUser,
         user: idUser,
     })
