@@ -15,7 +15,7 @@ import Avatar from '../../organisms/Avatar';
 export default function Dashboard({ navigation }) {
 
   const [valueTotal, useValueTotal] = useState("R$ 2.500,00");
-  const { startLoading, stopLoading } = useContext(AppContext)
+  const { startLoading, stopLoading, loading } = useContext(AppContext)
 
   useEffect(() => {
 
@@ -43,16 +43,6 @@ export default function Dashboard({ navigation }) {
     const { moviments } = response.data
     useListItem(moviments);
     return;
-  }
-
-  // const { value } = listMoviment
-  // console.log('dindin', value);
-
-  const deleteMoviment = async (_id) => {
-    const response = await api.delete(`/moviments/${_id}`)
-    const { msg } = response.data
-    console.log('aqui dados', response.data);
-    console.log('aqui id', msg);
   }
 
 

@@ -12,7 +12,7 @@ export const Loading = () => {
             <View style={styles.overlay} />
             <View style={styles.container}>
                 <View style={styles.logoContainer}>
-                    <ActivityIndicator size="large" color="#FFF" />
+                    <ActivityIndicator size="large" color="red" />
                 </View>
                 <Text style={{fontSize: 16, marginTop: 10, fontWeight: '500'}}>{loading.msg}</Text>
             </View>
@@ -25,7 +25,7 @@ return (<></>)
 
 const styles = StyleSheet.create({
     overlay: {
-        backgroundColor: Colors.darkGray,
+        backgroundColor: Colors.primary,
         width: '100%',
         height: '100%',
         position: 'absolute',

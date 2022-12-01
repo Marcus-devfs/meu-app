@@ -22,7 +22,7 @@ export default function Stacks() {
                 component={Signin} 
                 options={{headerShown: false,}}
                 />
-               <Stack.Screen
+               {/* <Stack.Screen
                 name="TabNavigator"
                 component={TabNavigator}
                 options={{ headerShown: false, }}/>
@@ -42,7 +42,7 @@ export default function Stacks() {
                 name="Register-Screen"
                 component={RegisterScreen} 
                 options={{headerShown: false,}}
-                />
+                /> */}
            
         </Stack.Navigator>
     );

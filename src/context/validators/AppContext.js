@@ -7,13 +7,13 @@ export function AppProvider({ children }) {
     const [loading, setLoading] = useState(null)
     const [alert, setAlert] = useState()
 
-    const startLoading = async (loading = { msg: 'Carregando...' }) => {
+    const startLoading = async (  loading = 'Carregando...' ) => {
         setLoading(loading)
         return
     }
 
     const stopLoading = async () => {
-        setLoading(null)
+        setLoading(false)
         return
     }
 
