@@ -2,8 +2,12 @@ import api from "../config/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Alert } from "react-native";
 import { beforeLogin, beforeCreateAccount, beforeUserDataUpdate, } from "../context/validators/auth-validators";
+import { setStatusBarNetworkActivityIndicatorVisible } from "expo-status-bar";
+import { AuthContext } from "../context/validators/AuthContext";
+import { useContext } from "react";
 
 // Ok - trocar no Signin o email e password por ..login
+
 export const loginUser = async (login) => {
     try {
 
@@ -23,7 +27,7 @@ export const loginUser = async (login) => {
         console.log(error, 'Usuario não encontrado');
         return false
     }
-    
+
 }
 
 //Ok
@@ -48,12 +52,11 @@ export const doLoginByToken = async (token) => {
 }
 
 // Ok
-export const doLogout = async () => {
+export const doLogout = async (user) => {
     try {
         AsyncStorage.removeItem('@MyBank')
         api.defaults.headers['Authorization'] = ``;
-
-        return
+        return user
     } catch (error) {
         console.log(error)
     }
@@ -83,7 +86,7 @@ export const createUser = async (userData) => {
     try {
         // await beforeCreateAccount(userData)
         const response = await api.post("/auth/register", userData)
-        Alert.alert('MyBank','Usuario cadastrado com sucesso!')
+        Alert.alert('MyBank', 'Usuario cadastrado com sucesso!')
         return response.data
     } catch (error) {
         console.log(error.data, 'Ocorreu um erro ao cadastrar seu usuario');

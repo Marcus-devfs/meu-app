@@ -13,16 +13,13 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const { startLoading, stopLoading, loading } = useContext(AppContext)
-
-
-
+    
     const [user, setUser] = useState()
     console.log(user, 'authcontext aqui')//false
 
     const handleLogout = async () => {
         startLoading({ msg: 'Carregando...' })
-        await doLogout()
-        setUser(null)
+        await setUser(null)
         stopLoading()
     }
 
