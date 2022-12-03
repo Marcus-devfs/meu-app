@@ -10,9 +10,8 @@ import { TabNavigator } from './MainTabNavigator';
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../context/validators/AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { doLoginByToken } from '../../interface/auth-interface';
-import {DoLoginToken} from '../screens/auth/LoginByToken';
+import { DoLoginToken } from '../screens/auth/LoginByToken';
 import SpendControll from '../screens/dashboard/spend';
 import DepositControll from '../screens/dashboard/deposit';
 
@@ -23,26 +22,6 @@ const Stack = createNativeStackNavigator();
 export const AuthNavigator = () => {
 
     const { user, setUser } = useContext(AuthContext)
-
-    // useEffect(() => {
-
-    //     const signinToken = async () => {
-    //         const token = await AsyncStorage.getItem('@MyBank', token)
-    //         console.log(token)
-    //         if (token)
-    //             try {
-    //                 const user = await doLoginByToken(token)
-    //                 setUser(user)
-    //                 console.log(user, 'tela Login')
-    //             } catch (error) {
-    //                 console.error(error.data);
-    //             }
-
-    //     };
-    //     signinToken();
-    // }, [])
-
-    //Se não estiver autorizado, usar telas de Login e Cadastro
 
     return (
         <Stack.Navigator>
@@ -82,11 +61,11 @@ const isLoggedInStack =
             name="userProfile"
             component={UserProfile}
             options={{ headerShown: false, }} />
-            <Stack.Screen
+        <Stack.Screen
             name="spendControll"
             component={SpendControll}
             options={{ headerShown: false, }} />
-            <Stack.Screen
+        <Stack.Screen
             name="depositControll"
             component={DepositControll}
             options={{ headerShown: false, }} />
