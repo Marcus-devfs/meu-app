@@ -17,9 +17,9 @@ export default function Dashboard({ navigation }) {
   const [valueTotal, useValueTotal] = useState("R$ 2.500,00");
   const { startLoading, stopLoading, loading } = useContext(AppContext)
 
-  useEffect(() => {
-
-  }, [])
+  // useEffect(() => {
+  //   handleLoadItems()
+  // }, [])
 
   const { user } = useContext(AuthContext)
   const { name, _id } = user
@@ -27,12 +27,15 @@ export default function Dashboard({ navigation }) {
   const userName = name.split(" ")[0];
   const idUser = _id
 
-  useEffect(() => {
-    startLoading({ msg: 'Carregando...' })
-    movimentList();
-    stopLoading()
-  })
+  useEffect(()=>{
+    handleLoadItems()
+ },[])
 
+ const handleLoadItems = async () => {
+    startLoading({ msg: 'Carregando...' })
+    await movimentList(listMoviment)
+    stopLoading()
+ }
 
 
   const [listMoviment, useListItem] = useState();

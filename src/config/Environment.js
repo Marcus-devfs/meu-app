@@ -1,6 +1,6 @@
 export default {
     api: {
-        url: 'http://192.168.193.112:3000/'
+        url: 'http://192.168.0.129:3000/'
     },
     auth: {
         email: 'marcus.silva@gmail.com',
