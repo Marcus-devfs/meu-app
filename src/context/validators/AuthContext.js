@@ -13,29 +13,31 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
 
-
+    const [auth, setAuth] = useState(null);
     const [user, setUser] = useState(null)
     console.log(user, 'authcontext aqui')
 
     useEffect(() => {
-        const LoginByToken = async() => {
-            const token = await AsyncStorage.getItem('@1trainer')
-            console.log('token =', token)
-
-            if (token) {
-                // const user = await doLoginByToken(token)
-                setUser(user)
+        const LoginByToken = async () => {
+            const authToken = await AsyncStorage.getItem('@1trainer')
+            console.log('token =', authToken)
+            if (authToken) {
+                setAuth(authToken)
+            }else{
+                setAuth(null)
             }
         }
         LoginByToken()
-    }, [])
+    },[])
 
 
     const { startLoading, stopLoading, loading } = useContext(AppContext)
 
     const handleLogout = async () => {
         startLoading({ msg: 'Carregando...' })
-        await setUser(null)
+        await AsyncStorage.removeItem('@MyBank')
+        setAuth(null)
+        setUser(null)
         stopLoading()
     }
 
@@ -43,6 +45,8 @@ export const AuthProvider = ({ children }) => {
     return (
         <AuthContext.Provider value={{
             user,
+            auth,
+            setAuth,
             setUser,
             handleLogout
         }}

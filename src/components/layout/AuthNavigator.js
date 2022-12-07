@@ -22,6 +22,7 @@ const Stack = createNativeStackNavigator();
 export const AuthNavigator = () => {
 
     const { user, setUser } = useContext(AuthContext)
+    const {auth, setAuth} = useContext(AuthContext)
 
     return (
         <Stack.Navigator>
