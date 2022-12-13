@@ -6,6 +6,7 @@ import api from '../../../config/api';
 import { AppContext } from '../../../context/validators/AppContext';
 import { AuthContext } from '../../../context/validators/AuthContext';
 import Colors from '../../atoms/Colors';
+import { FontAwesome5, Ionicons } from '../../atoms/icons';
 import { Spacer } from '../../atoms/Spacer';
 import Actions from '../../Moviments/Actions';
 import Moviments from '../../Moviments/moviments';
@@ -97,7 +98,16 @@ export default function Dashboard({ navigation }) {
 
       {/* <ScrollView showsVerticalScrollIndicator={false}> */}
       <View style={{ width: '100%', minHeight: 300, }}>
-        <Text style={{ fontWeight: 'bold', fontSize: 18, margin: 10, color: Colors.darkGray, }}>Ultimas movimentações</Text>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Text style={{ fontWeight: 'bold', fontSize: 18, margin: 10, color: Colors.darkGray, }}>Ultimas movimentações</Text>
+          <TouchableOpacity style={{ marginRight: 20 }} onPress={() => setShowButton(!showButton)}>
+            <Ionicons name="trash" size={25} color={Colors.darkGray}></Ionicons>
+          </TouchableOpacity>
+          {showButton ? (
+            <TouchableOpacity style={{ marginRight: 10 }} onPress={() => setShowButton(!showButton)}>
+              <Ionicons name="close" size={25} color={Colors.darkGray}></Ionicons>
+            </TouchableOpacity>) : ''}
+        </View>
 
         {/* <FlatList
           style={styles.list}
@@ -106,26 +116,26 @@ export default function Dashboard({ navigation }) {
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => <Moviments data={item} />}
         /> */}
-        <SafeAreaView>
-        <ScrollView>
-          {listMoviment?.map((item) => (
-            <TouchableOpacity key={item._id} style={styles.containerList} onPress={() => setShowButton(!showButton)}>
-              <Text style={styles.date}>{item.createdAt}</Text>
-              <View style={styles.content}>
-                <Text style={styles.label}>{item.label}</Text>
-                <Text style={item.type == 'income' ? styles.value : styles.expenses}>
-                  {item.type == 'income' ? `R$ ${item.value}` : `R$ -${item.value}`}
-                </Text>
-                {/* {showButton ? ( */}
-                <TouchableOpacity style={styles.buttonDelete} onPress={() => deleteMoviment(item._id)}>
-                  <Text style={{ color: '#fff', textAlign: 'center', justifyContent: 'center' }}>Apagar</Text>
-                </TouchableOpacity>
-                {/* ) : ""} */}
-              </View>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-        </SafeAreaView>
+        <View style={styles.list}>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            {listMoviment?.map((item) => (
+              <TouchableOpacity key={item._id} style={styles.containerList}>
+                <Text style={styles.date}>{item.createdAt}</Text>
+                <View style={styles.content}>
+                  <Text style={styles.label}>{item.label}</Text>
+                  <Text style={item.type == 'income' ? styles.value : styles.expenses}>
+                    {item.type == 'income' ? `R$ ${item.value}` : `R$ -${item.value}`}
+                  </Text>
+                  {showButton ? (
+                    <TouchableOpacity style={styles.buttonDelete} onPress={() => deleteMoviment(item._id)}>
+                      <Text style={{ color: '#fff', textAlign: 'center', justifyContent: 'center' }}>Apagar</Text>
+                    </TouchableOpacity>
+                  ) : ""}
+                </View>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
 
       </View>
       {/* </ScrollView> */}
@@ -209,7 +219,7 @@ const styles = StyleSheet.create({
     padding: 14,
     marginTop: 10,
     width: '100%',
-    maxHeight: 300,
+    maxHeight: 350,
   },
   containerList: {
     flex: 1,
@@ -257,5 +267,6 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     textAlign: 'center',
     borderRadius: 5
-  }
+  },
+
 });
