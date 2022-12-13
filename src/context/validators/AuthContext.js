@@ -6,8 +6,6 @@ import { Alert } from "react-native";
 import { doLogout } from "../../interface/auth-interface";
 import { AppContext } from "./AppContext";
 
-
-
 export const AuthContext = createContext();
 
 
@@ -15,7 +13,9 @@ export const AuthProvider = ({ children }) => {
 
     const [auth, setAuth] = useState(null);
     const [user, setUser] = useState(null)
-    console.log(user, 'authcontext aqui')
+    console.log(user, 'user - authcontext aqui')
+    console.log(auth, 'auth - authcontext aqui')
+
 
     useEffect(() => {
         const LoginByToken = async () => {
