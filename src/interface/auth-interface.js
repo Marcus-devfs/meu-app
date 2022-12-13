@@ -2,9 +2,6 @@ import api from "../config/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Alert } from "react-native";
 import { beforeLogin, beforeCreateAccount, beforeUserDataUpdate, } from "../context/validators/auth-validators";
-import { setStatusBarNetworkActivityIndicatorVisible } from "expo-status-bar";
-import { AuthContext } from "../context/validators/AuthContext";
-import { useContext } from "react";
 
 // Ok - trocar no Signin o email e password por ..login
 
@@ -33,11 +30,12 @@ export const loginUser = async (login) => {
 //Ok
 export const doLoginByToken = async (token) => {
     try {
+        api.defaults.headers['Authorization'] = `Bearer ${token}`;
 
-        api.defaults.headers['authorization'] = `Bearer ${token}`;
-        const response = await api.get('/')
+        const response = await api.post('/login/token', token)
 
         const { user, token: newToken } = response.data
+        console.log('user',user, '',newToken)
 
         if (newToken) AsyncStorage.setItem('@1trainer', newToken)
 
@@ -46,7 +44,7 @@ export const doLoginByToken = async (token) => {
         console.log(user, 'doLoginByToken aqui')
         return user
     } catch (error) {
-        console.error(error.response.data, 'Invalid credentials')
+        console.log(error.data, 'Invalid credentials')
         return false
     }
 }
