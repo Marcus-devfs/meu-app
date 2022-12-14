@@ -118,7 +118,8 @@ export default function Dashboard({ navigation }) {
         /> */}
         <View style={styles.list}>
           <ScrollView showsVerticalScrollIndicator={false}>
-            {listMoviment?.map((item) => (
+            {listMoviment == '' ? <Text style={{fontSize: 15, textAlign: 'center', paddingTop: 40}}> Sem Movimentações </Text> : 
+            listMoviment?.map((item) => (
               <TouchableOpacity key={item._id} style={styles.containerList}>
                 <Text style={styles.date}>{item.createdAt}</Text>
                 <View style={styles.content}>
