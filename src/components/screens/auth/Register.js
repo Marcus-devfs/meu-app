@@ -64,10 +64,14 @@ export const RegisterScreen = ({ navigation }) => {
             if (!email) { Alert.alert('MyBank', "O campo 'E-mail' é obrigatório") }
             if (!emailValidator(email)) { Alert.alert('MyBank', "O e-mail digitado está incorreto") }
             if (!password) { Alert.alert('MyBank', "O campo 'Senha' é obrigatório") }
+            if (password.length < 6 || confirmpassword.length < 6) { Alert.alert('MayBank', 'A senha deve conter no mínimo 6 digitos.') }
             if (password !== confirmpassword) { Alert.alert('MyBank', 'As senhas não conferem! Verifique e tente novamente') }
 
             await createUser(userData)
+            setUserData('');
         } catch (error) {
+            setUserData('')
+            Alert.alert('MyBank', 'Ocorreu um erro. Verifique se os dados estão corretos');
             console.error(error, 'Ocorreu um erro com os dados')
         }
     }
@@ -146,7 +150,9 @@ export const RegisterScreen = ({ navigation }) => {
                         <Spacer size={1} />
 
                         <TouchableOpacity
-                            style={styles.buttonRegister} onPress={handleCreateAccount}>
+                            style={styles.buttonRegister} onPress={() => {
+                                handleCreateAccount()
+                                }}>
 
                             <Text style={{ color: '#fff', fontSize: 17 }}>Cadastrar</Text>
                         </TouchableOpacity>

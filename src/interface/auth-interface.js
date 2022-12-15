@@ -2,6 +2,7 @@ import api from "../config/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Alert } from "react-native";
 import { beforeLogin, beforeCreateAccount, beforeUserDataUpdate, } from "../context/validators/auth-validators";
+import { useNavigation } from "@react-navigation/native";
 
 // Ok - trocar no Signin o email e password por ..login
 
@@ -87,6 +88,7 @@ export const createUser = async (userData) => {
         Alert.alert('MyBank', 'Usuario cadastrado com sucesso!')
         return response.data
     } catch (error) {
+        Alert.alert('MyBank', 'Ocorreu um erro. Verifique se os dados estão corretos')
         console.log(error.data, 'Ocorreu um erro ao cadastrar seu usuario');
     }
 }
