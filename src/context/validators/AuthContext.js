@@ -6,30 +6,12 @@ import { Alert } from "react-native";
 import { doLogout } from "../../interface/auth-interface";
 import { AppContext } from "./AppContext";
 
-export const AuthContext = createContext();
-
+export const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
 
-    const [auth, setAuth] = useState(null);
     const [user, setUser] = useState(null)
     console.log(user, 'user - authcontext aqui')
-    console.log(auth, 'auth - authcontext aqui')
-
-
-    useEffect(() => {
-        const LoginByToken = async () => {
-            const authToken = await AsyncStorage.getItem('@1trainer')
-            console.log('token =', authToken)
-            if (authToken) {
-                setAuth(authToken)
-            }else{
-                setAuth(null)
-            }
-        }
-        LoginByToken()
-    },[])
-
 
     const { startLoading, stopLoading, loading } = useContext(AppContext)
 
@@ -40,7 +22,6 @@ export const AuthProvider = ({ children }) => {
         setUser(null)
         stopLoading()
     }
-
 
     return (
         <AuthContext.Provider value={{
@@ -53,7 +34,6 @@ export const AuthProvider = ({ children }) => {
         >{children}
 
         </AuthContext.Provider>
-
     );
 
 }

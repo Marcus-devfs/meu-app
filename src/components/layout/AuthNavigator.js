@@ -22,21 +22,26 @@ const Stack = createNativeStackNavigator();
 export const AuthNavigator = () => {
 
     const { user, setUser } = useContext(AuthContext)
-    const {auth, setAuth} = useContext(AuthContext)
+
+    useEffect(async () => {
+        const token = await AsyncStorage.getItem('@MyBank', token)
+        console.log('----auth aqui ----', token)
+
+        if (token) {
+            const user = await doLoginByToken(token)
+            setUser(user)
+            console.log('user')
+        }
+    }, [])
 
     return (
         <Stack.Navigator>
             {user && isLoggedInStack}
             {!user && <>
-                {/* <Stack.Screen
-                    name="DoLoginByToken"
-                    component={DoLoginToken}
-                    options={{ headerShown: false, }} /> */}
                 <Stack.Screen
                     name="Signin"
                     component={Signin}
                     options={{ headerShown: false, }} />
-
                 <Stack.Screen
                     name="Register-Screen"
                     component={RegisterScreen}

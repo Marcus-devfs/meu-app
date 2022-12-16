@@ -32,14 +32,13 @@ export const loginUser = async (login) => {
 export const doLoginByToken = async (token) => {
     try {
         api.defaults.headers['Authorization'] = `Bearer ${token}`;
-
-        const response = await api.post('/login/token', token)
+        const response = await api.post('/login/token')
 
         const { user, token: newToken } = response.data
-        console.log('user',user, '',newToken)
+        console.log('user: ', response.data)
 
         if (newToken) AsyncStorage.setItem('@1trainer', newToken)
-
+        
         api.defaults.headers['Authorization'] = `Bearer ${newToken}`;
 
         console.log(user, 'doLoginByToken aqui')
