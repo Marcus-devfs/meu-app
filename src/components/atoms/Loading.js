@@ -5,8 +5,6 @@ import Colors from "./Colors"
 
 export const Loading = () => {
     const { loading } = useContext(AppContext)
-    console.log(loading)
-  
 
     if (!!loading)
         return (

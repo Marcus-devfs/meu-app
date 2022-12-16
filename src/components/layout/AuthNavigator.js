@@ -23,15 +23,15 @@ export const AuthNavigator = () => {
 
     const { user, setUser } = useContext(AuthContext)
 
-    useEffect(async () => {
-        const token = await AsyncStorage.getItem('@MyBank', token)
-        console.log('----auth aqui ----', token)
-
-        if (token) {
-            const user = await doLoginByToken(token)
-            setUser(user)
-            console.log('user')
+    useEffect(() => {
+        const loginRefreshToken = async () => {
+            const token = await AsyncStorage.getItem('@MyBank', token)
+            if (token) {
+                const user = await doLoginByToken(token)
+                setUser(user)
+            }
         }
+        loginRefreshToken();
     }, [])
 
     return (
@@ -50,7 +50,6 @@ export const AuthNavigator = () => {
             }
         </Stack.Navigator>
     );
-
 }
 
 const isLoggedInStack =
@@ -58,14 +57,6 @@ const isLoggedInStack =
         <Stack.Screen
             name="TabNavigator"
             component={TabNavigator}
-            options={{ headerShown: false, }} />
-        <Stack.Screen
-            name="dashboard"
-            component={Dashboard}
-            options={{ headerShown: false, }} />
-        <Stack.Screen
-            name="userProfile"
-            component={UserProfile}
             options={{ headerShown: false, }} />
         <Stack.Screen
             name="spendControll"

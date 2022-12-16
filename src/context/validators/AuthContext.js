@@ -11,14 +11,12 @@ export const AuthContext = createContext({});
 export const AuthProvider = ({ children }) => {
 
     const [user, setUser] = useState(null)
-    console.log(user, 'user - authcontext aqui')
 
     const { startLoading, stopLoading, loading } = useContext(AppContext)
 
     const handleLogout = async () => {
         startLoading({ msg: 'Carregando...' })
         await AsyncStorage.removeItem('@MyBank')
-        setAuth(null)
         setUser(null)
         stopLoading()
     }
@@ -26,13 +24,10 @@ export const AuthProvider = ({ children }) => {
     return (
         <AuthContext.Provider value={{
             user,
-            auth,
-            setAuth,
             setUser,
             handleLogout
         }}
         >{children}
-
         </AuthContext.Provider>
     );
 
