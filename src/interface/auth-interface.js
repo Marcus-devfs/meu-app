@@ -2,12 +2,10 @@ import api from "../config/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Alert } from "react-native";
 import { beforeLogin, beforeCreateAccount, beforeUserDataUpdate, } from "../context/validators/auth-validators";
-
-// Ok - trocar no Signin o email e password por ..login
+import { useNavigation } from "@react-navigation/native";
 
 export const loginUser = async (login) => {
     try {
-
         const isValid = await beforeLogin(login)
         if (!isValid) return false
 
@@ -16,39 +14,33 @@ export const loginUser = async (login) => {
         const { user, token } = response.data
 
         if (token) AsyncStorage.setItem('@MyBank', token)
-        console.log('token aqui', token)
+
         api.defaults.headers['Authorization'] = `Bearer ${token}`;
 
         return user
     } catch (error) {
-        console.log(error, 'Usuario não encontrado');
+       Alert.alert('MyBank', 'Usuario não encontrado');
         return false
     }
 
 }
-
 //Ok
 export const doLoginByToken = async (token) => {
     try {
         api.defaults.headers['Authorization'] = `Bearer ${token}`;
-
-        const response = await api.post('/login/token', token)
+        const response = await api.post('/login/token')
 
         const { user, token: newToken } = response.data
-        console.log('user',user, '',newToken)
 
         if (newToken) AsyncStorage.setItem('@1trainer', newToken)
-
+        
         api.defaults.headers['Authorization'] = `Bearer ${newToken}`;
-
-        console.log(user, 'doLoginByToken aqui')
         return user
     } catch (error) {
         console.log(error.data, 'Invalid credentials')
         return false
     }
 }
-
 // Ok
 export const doLogout = async (user) => {
     try {
@@ -59,7 +51,6 @@ export const doLogout = async (user) => {
         console.log(error)
     }
 }
-
 // Verificar depois - "Esqueci a senha"
 
 // export const passRecover = async (email) => {
@@ -75,34 +66,15 @@ export const doLogout = async (user) => {
 //     }
 // }
 
-//
-
 // Ok - trocar no Register o email,password, confirm, etc por ..userDate
 export const createUser = async (userData) => {
-    console.log(userData, 'auth')
 
     try {
-        // await beforeCreateAccount(userData)
         const response = await api.post("/auth/register", userData)
         Alert.alert('MyBank', 'Usuario cadastrado com sucesso!')
         return response.data
     } catch (error) {
+        Alert.alert('MyBank', 'Ocorreu um erro. Verifique se os dados estão corretos')
         console.log(error.data, 'Ocorreu um erro ao cadastrar seu usuario');
     }
 }
-
-// Ok
-// export const userDataUpdate = async (userData) => {
-//     console.log(userData)
-//     try {
-//         beforeUserDataUpdate(userData)
-//         const response = await api.patch(`/user/${userData._id}`, { user: userData })
-//         const { data } = response
-//         const { user: updatedUser } = data
-
-//         return updatedUser
-//     } catch (error) {
-//         console.log(error)
-//         return false
-//     }
-// }

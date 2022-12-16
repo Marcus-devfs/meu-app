@@ -52,7 +52,6 @@ export const Signin = ({ navigation }) => {
     try {
 
       const { email, password } = login
-      console.log(login, 'login-screen')
 
       if (!email || email.length < 6 || email == "" || !email.includes('@')) {
         Alert.alert("MyBank", "email inválido. Verifique os dados e tente novamente!")

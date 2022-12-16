@@ -6,13 +6,9 @@ import Colors from '../atoms/Colors';
 
 export default function Moviments({ data }) {
 
-    // console.log(data)
-
     const deleteMoviment = async (_id) => {
         const response = await api.delete(`/moviments/${_id}`)
         const { msg } = response.data
-        console.log('aqui dados', response.data);
-        console.log('aqui id', msg);
     }
 
     const [showButton, setShowButton] = useState(false);
