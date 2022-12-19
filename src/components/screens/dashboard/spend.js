@@ -12,7 +12,7 @@ export default function SpendControll() {
     const navigation = useNavigation()
 
     useEffect(() => {
-        
+
     }, [])
 
     const [load, setLoad] = useState(true)
@@ -28,18 +28,18 @@ export default function SpendControll() {
         user: idUser,
     })
 
-    const formatDateChange = ({date = null}) => {
-        let dataUsEn = date;
-        let dataPtBr = dataUsEn.replace(/(\d+[/])(\d+[/])/, '$2$1');
-        console.log("Data formato PT-BR:", dataPtBr);
-    }
-
     const handleChange = (name, value) => {
+        if (name == 'createdAt') {
+            if (value.length == 2 || value.length == 5) {
+                value = value + '/'
+            }
+        }
         useSpend({
             ...spend,
-            [name]: value = value.replace(/(\d+[/])(\d+[/])/, '$2$1')
+            [name]: value
         })
     }
+
     const handleSend = async () => {
 
         try {
@@ -52,6 +52,7 @@ export default function SpendControll() {
                 return
             }
             else {
+
                 await createMovimentSpend(spend)
                 navigation.goBack();
             }
@@ -94,7 +95,6 @@ export default function SpendControll() {
                     value={spend.createdAt}
                     autoCapitalize="none"
                     handleChange={(name, value) => handleChange(name, value)}
-                    
                 />
             </View>
 
