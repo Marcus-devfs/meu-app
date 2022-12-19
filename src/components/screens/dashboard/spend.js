@@ -15,14 +15,10 @@ export default function SpendControll() {
 
     }, [])
 
-
-
     const [load, setLoad] = useState(true)
-
     const { user } = useContext(AuthContext)
     const { _id } = user
     const idUser = _id
-
     const [spend, useSpend] = useState({
         label: '',
         value: '',
@@ -33,23 +29,30 @@ export default function SpendControll() {
     })
 
     const handleChange = (name, value) => {
+        if (name == 'createdAt') {
+            if (value.length == 2 || value.length == 5) {
+                value = value + '/'
+            }
+        }
         useSpend({
             ...spend,
             [name]: value
         })
     }
+
     const handleSend = async () => {
 
         try {
             const { createdAt, value, label } = spend
 
             if (!label || label == "") { return Alert.alert("MyBank", "Dados preenchidos de forma inválida.") }
-            if (!createdAt || createdAt == "") {return Alert.alert("MyBank", "Data preenchida de forma inválida")}
+            if (!createdAt || createdAt == "") { return Alert.alert("MyBank", "Data preenchida de forma inválida") }
             if (!value) {
                 Alert.alert("MyBank", "Valor inválido")
                 return
             }
             else {
+
                 await createMovimentSpend(spend)
                 navigation.goBack();
             }
@@ -59,6 +62,8 @@ export default function SpendControll() {
         }
 
     }
+
+    console.log('---spend: ', spend)
 
     return (
         <View style={styles.container}>
@@ -92,8 +97,8 @@ export default function SpendControll() {
                     handleChange={(name, value) => handleChange(name, value)}
                 />
             </View>
-            
-            <View style={{flexDirection:'row-reverse', top: 30}}>
+
+            <View style={{ flexDirection: 'row-reverse', top: 30 }}>
                 <TouchableOpacity
                     style={styles.buttonLogin} onPress={handleSend}>
                     <Text style={{ color: '#fff', fontSize: 17 }}>Enviar</Text>

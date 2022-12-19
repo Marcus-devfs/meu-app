@@ -33,11 +33,17 @@ export default function DepositControll() {
     })
 
     const handleChange = (name, value) => {
+        if (name == 'createdAt') {
+            if (value.length == 2 || value.length == 5) {
+                value = value + '/'
+            }
+        }
         useDeposit({
             ...deposit,
             [name]: value
         })
     }
+    
     const handleSend = async () => {
 
         try {
