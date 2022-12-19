@@ -12,17 +12,13 @@ export default function SpendControll() {
     const navigation = useNavigation()
 
     useEffect(() => {
-
+        
     }, [])
 
-
-
     const [load, setLoad] = useState(true)
-
     const { user } = useContext(AuthContext)
     const { _id } = user
     const idUser = _id
-
     const [spend, useSpend] = useState({
         label: '',
         value: '',
@@ -32,10 +28,16 @@ export default function SpendControll() {
         user: idUser,
     })
 
+    const formatDateChange = ({date = null}) => {
+        let dataUsEn = date;
+        let dataPtBr = dataUsEn.replace(/(\d+[/])(\d+[/])/, '$2$1');
+        console.log("Data formato PT-BR:", dataPtBr);
+    }
+
     const handleChange = (name, value) => {
         useSpend({
             ...spend,
-            [name]: value
+            [name]: value = value.replace(/(\d+[/])(\d+[/])/, '$2$1')
         })
     }
     const handleSend = async () => {
@@ -44,7 +46,7 @@ export default function SpendControll() {
             const { createdAt, value, label } = spend
 
             if (!label || label == "") { return Alert.alert("MyBank", "Dados preenchidos de forma inválida.") }
-            if (!createdAt || createdAt == "") {return Alert.alert("MyBank", "Data preenchida de forma inválida")}
+            if (!createdAt || createdAt == "") { return Alert.alert("MyBank", "Data preenchida de forma inválida") }
             if (!value) {
                 Alert.alert("MyBank", "Valor inválido")
                 return
@@ -59,6 +61,8 @@ export default function SpendControll() {
         }
 
     }
+
+    console.log('---spend: ', spend)
 
     return (
         <View style={styles.container}>
@@ -90,10 +94,11 @@ export default function SpendControll() {
                     value={spend.createdAt}
                     autoCapitalize="none"
                     handleChange={(name, value) => handleChange(name, value)}
+                    
                 />
             </View>
-            
-            <View style={{flexDirection:'row-reverse', top: 30}}>
+
+            <View style={{ flexDirection: 'row-reverse', top: 30 }}>
                 <TouchableOpacity
                     style={styles.buttonLogin} onPress={handleSend}>
                     <Text style={{ color: '#fff', fontSize: 17 }}>Enviar</Text>
