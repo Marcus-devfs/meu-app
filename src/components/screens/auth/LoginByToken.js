@@ -12,7 +12,6 @@ export function DoLoginToken(props) {
         const signinToken = async () => {
 
             const userToken = await AsyncStorage.getItem('@MyBank', token)
-            console.log(token, 'signinTOken')
 
             if (userToken)
                 try {
@@ -22,7 +21,6 @@ export function DoLoginToken(props) {
                         },
                     });
                     navigation.navigate('dashboard')
-                    console.log(data.data, 'data SigninToken');
                 } catch (error) {
                     console.error(error.data);
                     navigation.navigate('Signin')

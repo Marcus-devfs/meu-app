@@ -7,7 +7,6 @@ export const createMovimentSpend = async (spend) => {
 
         const response = api.post('/moviment/create', spend)
         const { msg } = (await response).data
-        console.log('spend validation: ', spend)
         Alert.alert('MyBank', msg)
 
         return;

@@ -66,8 +66,6 @@ export default function SpendControll() {
 
     }
 
-    console.log('---spend: ', spend)
-
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Adicionar Despesas</Text>
