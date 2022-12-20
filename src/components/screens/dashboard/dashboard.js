@@ -40,7 +40,7 @@ export default function Dashboard({ navigation }) {
 
     const expenseStatusCalc = amountExpanse?.reduce((acc, cur) => acc + cur, 0).toFixed(2);
     const incomeStatusCalc = amountIncome?.reduce((acc, cur) => acc + cur, 0).toFixed(2);
-    const valueTotalStatus = Math.abs(incomeStatusCalc - expenseStatusCalc).toFixed(2);
+    const valueTotalStatus = Math.abs(incomeStatusCalc - expenseStatusCalc).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
 
     useExpenseStatus(`R$ ${expenseStatusCalc}`);
     useIncomeStatus(`R$ ${incomeStatusCalc}`);
@@ -111,11 +111,11 @@ export default function Dashboard({ navigation }) {
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', }}>
           <TouchableOpacity style={styles.boxRevenue}>
             <Text style={{ color: Colors.darkGray, fontSize: 15 }}>Receita:</Text>
-            <Text style={{ color: '#006400', fontSize: 20, fontWeight: '700' }}>{incomeStatus !== '' ? incomeStatus : '...'}</Text>
+            <Text style={{ color: '#006400', fontSize: 20, fontWeight: '700' }}>{incomeStatus !== '' ? incomeStatus.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.') : '...'}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.boxSpend}>
             <Text style={{ color: Colors.darkGray, fontSize: 15, }}>Dispesas:</Text>
-            <Text style={{ color: '#8B0000', fontSize: 20, fontWeight: '700' }}>{expenseStatus !== '' ? expenseStatus : '...'}</Text>
+            <Text style={{ color: '#8B0000', fontSize: 20, fontWeight: '700' }}>{expenseStatus !== '' ? expenseStatus.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.') : '...'}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -140,7 +140,7 @@ export default function Dashboard({ navigation }) {
                   <View style={styles.content}>
                     <Text style={styles.label}>{item.label}</Text>
                     <Text style={item.type == 'income' ? styles.value : styles.expenses}>
-                      {item.type == 'income' ? `R$ ${item.value.toFixed(2)}` : `R$ -${item.value.toFixed(2)}`}
+                      {item.type == 'income' ? `R$ ${item.value.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}` : `R$ -${item.value.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}`}
                     </Text>
                     {showButton ? (
                       <TouchableOpacity style={styles.buttonDelete} onPress={() => deleteMoviment(item._id)}>

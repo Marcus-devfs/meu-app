@@ -38,6 +38,9 @@ export default function DepositControll() {
                 value = value + '/'
             }
         }
+        if(name == 'value'){
+            value = value.replace(',', '.');
+        }
         useDeposit({
             ...deposit,
             [name]: value

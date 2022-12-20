@@ -31,8 +31,11 @@ export default function SpendControll() {
     const handleChange = (name, value) => {
         if (name == 'createdAt') {
             if (value.length == 2 || value.length == 5) {
-                value = value + '/'
+                value = value + '/';
             }
+        }
+        if(name == 'value'){
+            value = value.replace(',', '.');
         }
         useSpend({
             ...spend,
