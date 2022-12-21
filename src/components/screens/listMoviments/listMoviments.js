@@ -112,24 +112,24 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         marginTop: 2,
         marginBottom: 8
-      },
-      date: {
+    },
+    date: {
         color: Colors.lightGray,
         fontWeight: '600'
-      },
-      label: {
+    },
+    label: {
         fontWeight: '600',
         fontSize: 16
-    
-      },
-      value: {
+
+    },
+    value: {
         fontWeight: '600',
         fontSize: 16,
         color: '#006400'
-      },
-      expenses: {
+    },
+    expenses: {
         fontWeight: '600',
         fontSize: 16,
         color: '#8B0000'
-      },
+    },
 });
