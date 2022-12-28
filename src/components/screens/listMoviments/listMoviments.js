@@ -6,32 +6,77 @@ import Colors from "../../atoms/Colors";
 import { FontAwesome5 } from "../../atoms/icons";
 import Moviments from "../../Moviments/moviments";
 import { formatDate } from "../../../context/validadores";
+import { AppContext } from "../../../context/validators/AppContext";
 
-export default function MovimentsList() {
-
-    useEffect(() => {
-
-    }, [])
+export default function MovimentsList({ navigation }) {
 
     const { user } = useContext(AuthContext)
+    const [listMoviment, useListItem] = useState();
+    const [filterItem, useFilterItem] = useState('');
+    const [showList, useShowList] = useState(true);
+    const { startLoading, stopLoading } = useContext(AppContext)
     const { name, _id } = user
-
     const idUser = _id
 
     useEffect(() => {
-        movimentList();
-    })
-
-    const [listMoviment, useListItem] = useState();
+        movimentList()
+    }, [navigation, filterItem])
 
     const movimentList = async () => {
+        const response = await api.get(`/moviment/${idUser}`);
+        const { moviments } = response.data
 
-        const response = await api.get(`/moviments`);
-        const { msg } = response.data
-        const list = msg.filter(list => list.createdBy === idUser)
-        useListItem(list);
-
+        if (filterItem != '') {
+            const filterItems = moviments.filter((item) => item.category == filterItem)
+            startLoading({ msg: 'Carregando...' })
+            useListItem(filterItems)
+            stopLoading()
+        }
+        else {
+            startLoading({ msg: 'Carregando...' })
+            useListItem(moviments)
+            stopLoading()
+        }
         return;
+    }
+
+    const listCategory = [
+        {
+            id: 0,
+            name: 'Todos'
+        },
+        {
+            id: 1,
+            name: 'Saúde'
+        },
+        {
+            id: 2,
+            name: 'Combustivel'
+        },
+        {
+            id: 3,
+            name: 'Salario'
+        },
+        {
+            id: 4,
+            name: 'Conta Fixa'
+        },
+        {
+            id: 5,
+            name: 'Viagem'
+        },
+        {
+            id: 6,
+            name: 'Alimentacao'
+        },
+    ]
+
+    async function selectItem(name) {
+        if (name == 'Todos') {
+            useFilterItem('');
+        } else {
+            useFilterItem(name);
+        }
     }
 
     return (
@@ -40,15 +85,42 @@ export default function MovimentsList() {
                 <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-around', alignItems: 'center' }}>
                     <View>
                         <Text style={styles.selectionMonth}>Selecione o mês: </Text>
-                        <View style={{ padding: 5, width: 'auto', backgroundColor: Colors.lightGray, marginTop: 15, borderRadius: 5 }}>
-                            <Text style={{ textAlign: 'center', fontSize: 17 }}>Abril</Text>
+                        <View style={{ padding: 5, width: 'auto', backgroundColor: Colors.primary, marginTop: 15, borderRadius: 5, borderColor: Colors.lightGray, borderWidth: 0.5 }}>
+                            <Text style={{ textAlign: 'center', fontSize: 17, color: Colors.lightGray }}>Abril</Text>
                         </View>
                     </View>
-                    <View>
+                    <View style={!showList ? { paddingTop: 50.5 } : { paddingTop: 0 }}>
                         <Text style={styles.selectionMonth}>Selecione a Categoria: </Text>
-                        <View style={{ padding: 5, width: 'auto', backgroundColor: Colors.lightGray, marginTop: 15, borderRadius: 5 }}>
-                            <Text style={{ textAlign: 'center', fontSize: 17 }}>Saude</Text>
-                        </View>
+                        {showList ?
+                            <TouchableOpacity
+                                style={{
+                                    padding: 5,
+                                    width: 'auto',
+                                    backgroundColor: Colors.primary,
+                                    marginTop: 15,
+                                    borderRadius: 5,
+                                    borderColor: Colors.lightGray,
+                                    borderWidth: 0.5
+                                }}
+                                onPress={() => useShowList(!showList)}>
+                                <Text style={{
+                                    textAlign: 'center',
+                                    fontSize: 17, color: Colors.lightGray
+                                }}>{filterItem == '' ? 'Todos' : filterItem}</Text>
+                            </TouchableOpacity>
+                            :
+                            <ScrollView style={{ marginTop: 15 }}>
+                                {listCategory?.map((item) => (
+                                    <View style={{ width: 'auto', backgroundColor: '#fff', borderColor: Colors.lightGray }}>
+                                        <TouchableOpacity onPress={() => {
+                                            selectItem(item.name)
+                                            useShowList(!showList)
+                                        }}>
+                                            <Text style={styles.listCategoryItem} key={item.id}>{item.name}</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                ))}
+                            </ScrollView>}
                     </View>
                 </View>
             </View>
@@ -68,9 +140,17 @@ export default function MovimentsList() {
                         ))}
                 </ScrollView>
             </View>
-            {/* <TouchableOpacity style={{ bottom: 80, alignItems: 'flex-end', padding: 8, marginRight: 8 }} onPress={() => console.log(listMoviment)}>
-                <FontAwesome5 name="wallet" size={35} color={Colors.darkGray}></FontAwesome5>
-            </TouchableOpacity> */}
+
+            {/* <View style={{ backgroundColor: Colors.darkGray, height: 80, flexDirection: 'row', justifyContent: 'space-around' }}>
+                <View style={{ flexDirection: 'column', width: '48%' }}>
+                    <Text style={{ textAlign: 'center', color: '#fff', fontSize: 20, fontWeight: '600' }}>Receita:</Text>
+                    <Text style={{ textAlign: 'center', fontSize: 30, color: Colors.primary, fontWeight: '600' }}>R$ 350,00</Text>
+                </View>
+                <View style={{ flexDirection: 'column', width: '48%' }}>
+                    <Text style={{ textAlign: 'center', fontSize: 20, color: '#fff', fontWeight: '600' }}>Dispesa:</Text>
+                    <Text style={{ textAlign: 'center', fontSize: 30, color: 'red', fontWeight: '600' }}>R$ 500,00</Text>
+                </View>
+            </View> */}
         </View>
     )
 }
@@ -92,7 +172,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         top: 10,
         fontSize: 16,
-        color: '#fff'
+        color: '#fff',
     },
     title: {
         textAlign: 'center',
@@ -132,4 +212,8 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#8B0000'
     },
+    listCategoryItem: {
+        fontSize: 16,
+        textAlign: 'center'
+    }
 });
