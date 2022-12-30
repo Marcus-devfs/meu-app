@@ -14,6 +14,7 @@ import { doLoginByToken } from '../../interface/auth-interface';
 import { DoLoginToken } from '../screens/auth/LoginByToken';
 import SpendControll from '../screens/dashboard/spend';
 import DepositControll from '../screens/dashboard/deposit';
+import MyData from '../screens/users/myData';
 
 
 
@@ -65,6 +66,10 @@ const isLoggedInStack =
         <Stack.Screen
             name="depositControll"
             component={DepositControll}
+            options={{ headerShown: false, }} />
+        <Stack.Screen
+            name="myData"
+            component={MyData}
             options={{ headerShown: false, }} />
     </>
 

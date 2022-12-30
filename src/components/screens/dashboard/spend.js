@@ -26,6 +26,7 @@ export default function SpendControll() {
         type: 'expense',
         createdBy: idUser,
         user: idUser,
+        category: '',
     })
 
     const handleChange = (name, value) => {
@@ -94,6 +95,15 @@ export default function SpendControll() {
                     placeholderTextColor="#696969"
                     name="createdAt"
                     value={spend.createdAt}
+                    autoCapitalize="none"
+                    handleChange={(name, value) => handleChange(name, value)}
+                />
+                <Spacer size={0.5} />
+                <Text style={styles.textForm}>Categoria:</Text>
+                <TextInputState
+                    placeholderTextColor={Colors.lightGray}
+                    name="category"
+                    value={spend.category}
                     autoCapitalize="none"
                     handleChange={(name, value) => handleChange(name, value)}
                 />

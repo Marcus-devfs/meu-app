@@ -7,6 +7,7 @@ import { FontAwesome5 } from "../../atoms/icons";
 import Moviments from "../../Moviments/moviments";
 import { formatDate } from "../../../context/validadores";
 import { AppContext } from "../../../context/validators/AppContext";
+import { Spacer } from "../../atoms/Spacer";
 
 export default function MovimentsList({ navigation }) {
 
@@ -40,36 +41,12 @@ export default function MovimentsList({ navigation }) {
         return;
     }
 
-    const listCategory = [
-        {
-            id: 0,
-            name: 'Todos'
-        },
-        {
-            id: 1,
-            name: 'Saúde'
-        },
-        {
-            id: 2,
-            name: 'Combustivel'
-        },
-        {
-            id: 3,
-            name: 'Salario'
-        },
-        {
-            id: 4,
-            name: 'Conta Fixa'
-        },
-        {
-            id: 5,
-            name: 'Viagem'
-        },
-        {
-            id: 6,
-            name: 'Alimentacao'
-        },
-    ]
+    const listCategory = async () => {
+        const response = await api.get(`/categoryList`);
+        const { categoryList } = response.data
+        console.log('list category: ',categoryList)
+        return;
+    }
 
     async function selectItem(name) {
         if (name == 'Todos') {
@@ -111,7 +88,7 @@ export default function MovimentsList({ navigation }) {
                             :
                             <ScrollView style={{ marginTop: 15 }}>
                                 {listCategory?.map((item) => (
-                                    <View style={{ width: 'auto', backgroundColor: '#fff', borderColor: Colors.lightGray }}>
+                                    <View style={{ width: 'auto', backgroundColor: '#fff', borderColor: Colors.lightGray, borderBottomWidth: 1 }}>
                                         <TouchableOpacity onPress={() => {
                                             selectItem(item.name)
                                             useShowList(!showList)
@@ -124,6 +101,8 @@ export default function MovimentsList({ navigation }) {
                     </View>
                 </View>
             </View>
+            <Spacer size={2} />
+            <Text style={{ fontSize: 17, textAlign: 'center', fontWeight: 'bold' }}>Relatório de Transações</Text>
             <View style={styles.list}>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     {listMoviment == '' ? <Text style={{ fontSize: 15, textAlign: 'center', paddingTop: 40 }}> Sem Movimentações </Text> :
@@ -140,17 +119,6 @@ export default function MovimentsList({ navigation }) {
                         ))}
                 </ScrollView>
             </View>
-
-            {/* <View style={{ backgroundColor: Colors.darkGray, height: 80, flexDirection: 'row', justifyContent: 'space-around' }}>
-                <View style={{ flexDirection: 'column', width: '48%' }}>
-                    <Text style={{ textAlign: 'center', color: '#fff', fontSize: 20, fontWeight: '600' }}>Receita:</Text>
-                    <Text style={{ textAlign: 'center', fontSize: 30, color: Colors.primary, fontWeight: '600' }}>R$ 350,00</Text>
-                </View>
-                <View style={{ flexDirection: 'column', width: '48%' }}>
-                    <Text style={{ textAlign: 'center', fontSize: 20, color: '#fff', fontWeight: '600' }}>Dispesa:</Text>
-                    <Text style={{ textAlign: 'center', fontSize: 30, color: 'red', fontWeight: '600' }}>R$ 500,00</Text>
-                </View>
-            </View> */}
         </View>
     )
 }
@@ -179,13 +147,16 @@ const styles = StyleSheet.create({
         fontSize: 18
     },
     containerList: {
-        marginTop: 20
+        marginTop: 20,
+        borderBottomWidth: 1,
+        borderColor: Colors.lightGray
     },
     list: {
         padding: 14,
         marginTop: 10,
         width: '100%',
-        maxHeight: 350,
+        maxHeight: 440,
+        minHeight: 440,
     },
     content: {
         flexDirection: 'row',
