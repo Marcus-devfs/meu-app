@@ -30,6 +30,7 @@ export default function DepositControll() {
         type: 'income',
         createdBy: idUser,
         user: idUser,
+        category: '',
     })
 
     const handleChange = (name, value) => {
@@ -50,10 +51,11 @@ export default function DepositControll() {
     const handleSend = async () => {
 
         try {
-            const { createdAt, value, label } = deposit
+            const { createdAt, value, label, category } = deposit
 
             if (!label || label == "") { return Alert.alert("MyBank", "Dados preenchidos de forma inválida.") }
             if (!createdAt || createdAt == "") { return Alert.alert("MyBank", "Data preenchida de forma inválida") }
+            if (!category || category == "") { return Alert.alert("MyBank", "Dados preenchidos de forma inválida.") }
             if (!value) {
                 Alert.alert("MyBank", "Valor inválido")
                 return
@@ -97,6 +99,15 @@ export default function DepositControll() {
                     placeholderTextColor="#696969"
                     name="createdAt"
                     value={deposit.createdAt}
+                    autoCapitalize="none"
+                    handleChange={(name, value) => handleChange(name, value)}
+                />
+                <Spacer size={0.5} />
+                <Text style={styles.textForm}>Category</Text>
+                <TextInputState
+                    placeholderTextColor={Colors.lightGray}
+                    name="category"
+                    value={deposit.category}
                     autoCapitalize="none"
                     handleChange={(name, value) => handleChange(name, value)}
                 />
