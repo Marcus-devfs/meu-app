@@ -8,6 +8,7 @@ import { Spacer } from '../../atoms/Spacer';
 import Colors from '../../atoms/Colors';
 import { AuthContext } from '../../../context/validators/AuthContext';
 import Avatar from '../../organisms/Avatar';
+import { useNavigation } from '@react-navigation/native';
 
 
 
@@ -23,18 +24,20 @@ export default function UserProfile() {
 
   const { handleLogout } = useContext(AuthContext)
 
+  const navigation = useNavigation()
+
   return (
     <View style={styles.container}>
       <View style={styles.containerHeader}>
 
-        <View style={{ display: 'flex', marginTop: 55, height: 50, alignItems:'center'}}>
+        <View style={{ display: 'flex', marginTop: 55, height: 50, alignItems: 'center' }}>
           <Avatar />
           <Text style={styles.userName}>{userName}</Text>
         </View>
 
       </View>
       <Divider style={styles.divider} />
-      <TouchableOpacity style={styles.menuItem}>
+      <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('myData')}>
         <Text style={styles.menuItemText}>Meus Dados</Text>
         <Ionicons name='chevron-forward' color={'#A9A9A9'} size={16} />
       </TouchableOpacity>
