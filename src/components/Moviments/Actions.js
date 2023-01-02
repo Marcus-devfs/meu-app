@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     actionButton: {
         alignItems: 'center',
         marginRight: 30,
-        marginTop: 5
+        marginTop: 13
 
     },
     areaButton: {
