@@ -13,6 +13,7 @@ export default function MovimentsList({ navigation }) {
 
     const { user } = useContext(AuthContext)
     const [listMoviment, useListItem] = useState();
+    const [listCategoryItem, useListCategory] = useState();
     const [filterItem, useFilterItem] = useState('');
     const [showList, useShowList] = useState(true);
     const { startLoading, stopLoading } = useContext(AppContext)
@@ -20,8 +21,15 @@ export default function MovimentsList({ navigation }) {
     const idUser = _id
 
     useEffect(() => {
-        movimentList()
+        handleLoadItems()
     }, [navigation, filterItem])
+
+    const handleLoadItems = async () => {
+        startLoading({ msg: 'Carregando...' })
+        await movimentList()
+        listCategory()
+        stopLoading()
+    }
 
     const movimentList = async () => {
         const response = await api.get(`/moviment/${idUser}`);
@@ -42,17 +50,18 @@ export default function MovimentsList({ navigation }) {
     }
 
     const listCategory = async () => {
-        const response = await api.get(`/categoryList`);
+        const response = await api.get(`/categoryList/${idUser}`);
         const { categoryList } = response.data
-        console.log('list category: ',categoryList)
+        console.log('list aqui: ',categoryList)
+        useListCategory(categoryList)
         return;
     }
 
-    async function selectItem(name) {
-        if (name == 'Todos') {
+    async function selectItem(categoryName) {
+        if (categoryName == 'todos') {
             useFilterItem('');
         } else {
-            useFilterItem(name);
+            useFilterItem(categoryName);
         }
     }
 
@@ -87,13 +96,13 @@ export default function MovimentsList({ navigation }) {
                             </TouchableOpacity>
                             :
                             <ScrollView style={{ marginTop: 15 }}>
-                                {listCategory?.map((item) => (
+                                {listCategoryItem?.map((item) => (
                                     <View style={{ width: 'auto', backgroundColor: '#fff', borderColor: Colors.lightGray, borderBottomWidth: 1 }}>
                                         <TouchableOpacity onPress={() => {
-                                            selectItem(item.name)
+                                            selectItem(item.categoryName)
                                             useShowList(!showList)
                                         }}>
-                                            <Text style={styles.listCategoryItem} key={item.id}>{item.name}</Text>
+                                            <Text style={styles.listCategoryItem} key={item._id}>{item.categoryName}</Text>
                                         </TouchableOpacity>
                                     </View>
                                 ))}
