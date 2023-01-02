@@ -1,22 +1,34 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useContext, useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
+import { AppContext } from '../../../context/validators/AppContext';
 import { AuthContext } from '../../../context/validators/AuthContext';
 import { createMovimentSpend } from '../../../interface/moviments-interface';
 import Colors from '../../atoms/Colors';
+import { FontAwesome5 } from '../../atoms/icons';
 import { Spacer } from '../../atoms/Spacer';
 import { TextInputState } from '../../atoms/TextIput';
+import api from '../../../config/api';
 
 export default function SpendControll() {
 
     const navigation = useNavigation()
 
     useEffect(() => {
-
+        const handleLoadItems = async () => {
+            startLoading({ msg: 'Carregando...' })
+            await listCategory()
+            stopLoading()
+        }
+        handleLoadItems()
     }, [])
 
     const [load, setLoad] = useState(true)
     const { user } = useContext(AuthContext)
+    const [listCategoryItem, useListCategory] = useState();
+    const [categorySelected, useCategorySelected] = useState();
+    const [showList, useShowList] = useState(false);
+    const { startLoading, stopLoading } = useContext(AppContext)
     const { _id } = user
     const idUser = _id
     const [spend, useSpend] = useState({
@@ -26,7 +38,7 @@ export default function SpendControll() {
         type: 'expense',
         createdBy: idUser,
         user: idUser,
-        category: '',
+        category: categorySelected,
     })
 
     const handleChange = (name, value) => {
@@ -35,13 +47,27 @@ export default function SpendControll() {
                 value = value + '/';
             }
         }
-        if(name == 'value'){
+        if (name == 'value') {
             value = value.replace(',', '.');
         }
         useSpend({
             ...spend,
             [name]: value
         })
+    }
+
+    const listCategory = async () => {
+        const response = await api.get(`/categoryList/${idUser}`);
+        const { categoryList } = response.data
+        useListCategory(categoryList)
+        return;
+    }
+
+    async function selectItem(categoryName) {
+        useCategorySelected(categoryName)
+        useSpend({ ...spend, category: categoryName })
+        console.log(spend)
+
     }
 
     const handleSend = async () => {
@@ -100,13 +126,40 @@ export default function SpendControll() {
                 />
                 <Spacer size={0.5} />
                 <Text style={styles.textForm}>Categoria:</Text>
-                <TextInputState
-                    placeholderTextColor={Colors.lightGray}
-                    name="category"
-                    value={spend.category}
-                    autoCapitalize="none"
-                    handleChange={(name, value) => handleChange(name, value)}
-                />
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <TouchableOpacity style={styles.actionButton} onPress={() => useShowList(!showList)}>
+                        <View style={styles.areaButton}>
+                            <FontAwesome5 name="wallet" size={15} color={Colors.darkGray}></FontAwesome5>
+                        </View>
+                    </TouchableOpacity>
+                    <Text style={styles.textCategory}> {!!categorySelected ? categorySelected : 'selecionar'} </Text>
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                </View>
+                {showList ?
+                    <ScrollView style={{ marginTop: 15 }}>
+                        {listCategoryItem?.map((item) => (
+                            <View key={item?._id} style={{ width: '100%', backgroundColor: '#fff', borderColor: Colors.lightGray, borderBottomWidth: 1, borderRadius: 5, padding: 8, marginBottom: 5 }}>
+                                <TouchableOpacity onPress={() => {
+                                    selectItem(item.categoryName)
+                                    useShowList(!showList)
+                                }}>
+                                    <Text style={styles.listCategoryItem}>{item?.categoryName}</Text>
+                                </TouchableOpacity>
+                            </View>
+                        ))}
+
+                        <View style={{ flexDirection: 'row' }}>
+                            <TouchableOpacity style={styles.addCategory} onPress={() => console.log(spend)}>
+                                <View style={styles.areaButton}>
+                                    <FontAwesome5 name="plus" size={15} color={Colors.darkGray}></FontAwesome5>
+                                </View>
+                            </TouchableOpacity>
+                            <Text style={styles.addCategoryText}> Nova categoria</Text>
+                        </View>
+                    </ScrollView>
+                    : ''
+                }
             </View>
 
             <View style={{ flexDirection: 'row-reverse', top: 30 }}>
@@ -164,5 +217,37 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         marginTop: 10,
         marginRight: 8
+    },
+    actionButton: {
+        marginTop: 13,
+        marginLeft: 20
+    },
+    areaButton: {
+        backgroundColor: '#dadada',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 35,
+        height: 35,
+        borderRadius: 100,
+    },
+    textCategory: {
+        marginTop: 13,
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginLeft: 10,
+        alignItems: 'center',
+        color: '#fff'
+    },
+    listCategoryItem: {
+        fontSize: 16,
+        textAlign: 'center'
+    },
+    addCategory: {
+        marginTop: 10,
+    },
+    addCategoryText: {
+        color: '#fff',
+        padding: 10,
+        marginTop: 10,
     }
 });

@@ -6,19 +6,30 @@ import { createMovimentDeposit } from '../../../interface/moviments-interface';
 import Colors from '../../atoms/Colors';
 import { Spacer } from '../../atoms/Spacer';
 import { TextInputState } from '../../atoms/TextIput';
+import { FontAwesome5 } from '../../atoms/icons';
+import { AppContext } from '../../../context/validators/AppContext';
+import api from '../../../config/api';
 
 export default function DepositControll() {
 
     const navigation = useNavigation()
 
     useEffect(() => {
-
+        const handleLoadItems = async () => {
+            startLoading({ msg: 'Carregando...' })
+            await listCategory()
+            stopLoading()
+        }
+        handleLoadItems()
     }, [])
 
 
 
     const [load, setLoad] = useState(true)
-
+    const [listCategoryItem, useListCategory] = useState();
+    const [categorySelected, useCategorySelected] = useState();
+    const [showList, useShowList] = useState(false);
+    const { startLoading, stopLoading } = useContext(AppContext)
     const { user } = useContext(AuthContext)
     const { _id } = user
     const idUser = _id
@@ -30,7 +41,7 @@ export default function DepositControll() {
         type: 'income',
         createdBy: idUser,
         user: idUser,
-        category: '',
+        category: categorySelected,
     })
 
     const handleChange = (name, value) => {
@@ -39,7 +50,7 @@ export default function DepositControll() {
                 value = value + '/'
             }
         }
-        if(name == 'value'){
+        if (name == 'value') {
             value = value.replace(',', '.');
         }
         useDeposit({
@@ -47,7 +58,21 @@ export default function DepositControll() {
             [name]: value
         })
     }
-    
+
+    const listCategory = async () => {
+        const response = await api.get(`/categoryList/${idUser}`);
+        const { categoryList } = response.data
+        useListCategory(categoryList)
+        return;
+    }
+
+    async function selectItem(categoryName) {
+        useCategorySelected(categoryName)
+        useDeposit({ ...deposit, category: categoryName })
+        console.log(deposit)
+
+    }
+
     const handleSend = async () => {
 
         try {
@@ -62,6 +87,7 @@ export default function DepositControll() {
             }
             else {
                 await createMovimentDeposit(deposit)
+                console.log(deposit)
                 navigation.goBack();
             }
 
@@ -70,6 +96,7 @@ export default function DepositControll() {
         }
 
     }
+
 
     return (
         <View style={styles.container}>
@@ -84,7 +111,6 @@ export default function DepositControll() {
                     handleChange={(name, value) => handleChange(name, value)}
                 />
                 <Spacer size={0.5} />
-
                 <Text style={styles.textForm}>Valor</Text>
                 <TextInputState
                     placeholderTextColor="#696969"
@@ -104,13 +130,40 @@ export default function DepositControll() {
                 />
                 <Spacer size={0.5} />
                 <Text style={styles.textForm}>Category</Text>
-                <TextInputState
-                    placeholderTextColor={Colors.lightGray}
-                    name="category"
-                    value={deposit.category}
-                    autoCapitalize="none"
-                    handleChange={(name, value) => handleChange(name, value)}
-                />
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <TouchableOpacity style={styles.actionButton} onPress={() => useShowList(!showList)}>
+                        <View style={styles.areaButton}>
+                            <FontAwesome5 name="wallet" size={15} color={Colors.darkGray}></FontAwesome5>
+                        </View>
+                    </TouchableOpacity>
+                    <Text style={styles.textCategory}> {!!categorySelected ? categorySelected : 'selecionar'} </Text>
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                </View>
+                {showList ?
+                    <ScrollView style={{ marginTop: 15 }}>
+                        {listCategoryItem?.map((item) => (
+                            <View key={item?._id} style={{ width: '100%', backgroundColor: '#fff', borderColor: Colors.lightGray, borderBottomWidth: 1, borderRadius: 5, padding: 8, marginBottom: 5 }}>
+                                <TouchableOpacity onPress={() => {
+                                    selectItem(item.categoryName)
+                                    useShowList(!showList)
+                                }}>
+                                    <Text style={styles.listCategoryItem}>{item?.categoryName}</Text>
+                                </TouchableOpacity>
+                            </View>
+                        ))}
+
+                        <View style={{ flexDirection: 'row' }}>
+                            <TouchableOpacity style={styles.addCategory} onPress={() => console.log(deposit)}>
+                                <View style={styles.areaButton}>
+                                    <FontAwesome5 name="plus" size={15} color={Colors.darkGray}></FontAwesome5>
+                                </View>
+                            </TouchableOpacity>
+                            <Text style={styles.addCategoryText}> Nova categoria</Text>
+                        </View>
+                    </ScrollView>
+                    : ''
+                }
             </View>
             <View style={{ flexDirection: 'row-reverse', top: 30 }}>
                 <TouchableOpacity
@@ -123,7 +176,6 @@ export default function DepositControll() {
                 </TouchableOpacity>
             </View>
         </View>
-
     );
 }
 
@@ -146,10 +198,6 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         fontSize: 15
     },
-    // containerForm: {
-    //     flex: 1,
-
-    // },
     buttonLogin: {
         backgroundColor: '#B22222',
         padding: 7,
@@ -166,5 +214,37 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         marginTop: 10,
         marginRight: 8
+    },
+    actionButton: {
+        marginTop: 13,
+        marginLeft: 20
+    },
+    areaButton: {
+        backgroundColor: '#dadada',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 35,
+        height: 35,
+        borderRadius: 100,
+    },
+    textCategory: {
+        marginTop: 13,
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginLeft: 10,
+        alignItems: 'center',
+        color: '#fff'
+    },
+    listCategoryItem: {
+        fontSize: 16,
+        textAlign: 'center'
+    },
+    addCategory: {
+        marginTop: 10,
+    },
+    addCategoryText: {
+        color: '#fff',
+        padding: 10,
+        marginTop: 10,
     }
 });

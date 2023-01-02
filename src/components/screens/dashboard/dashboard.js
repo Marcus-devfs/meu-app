@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     maxHeight: 15,
-    width: '100%'
+    width: '100%',
   },
   boxRevenue: {
     alignItems: 'center',

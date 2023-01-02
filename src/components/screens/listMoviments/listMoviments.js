@@ -52,7 +52,6 @@ export default function MovimentsList({ navigation }) {
     const listCategory = async () => {
         const response = await api.get(`/categoryList/${idUser}`);
         const { categoryList } = response.data
-        console.log('list aqui: ',categoryList)
         useListCategory(categoryList)
         return;
     }
@@ -97,20 +96,29 @@ export default function MovimentsList({ navigation }) {
                             :
                             <ScrollView style={{ marginTop: 15 }}>
                                 {listCategoryItem?.map((item) => (
-                                    <View style={{ width: 'auto', backgroundColor: '#fff', borderColor: Colors.lightGray, borderBottomWidth: 1 }}>
+                                    <View key={item?._id} style={{ width: 'auto', backgroundColor: '#fff', borderColor: Colors.lightGray, borderBottomWidth: 1 }}>
                                         <TouchableOpacity onPress={() => {
                                             selectItem(item.categoryName)
                                             useShowList(!showList)
                                         }}>
-                                            <Text style={styles.listCategoryItem} key={item._id}>{item.categoryName}</Text>
+                                            <Text style={styles.listCategoryItem}>{item?.categoryName}</Text>
                                         </TouchableOpacity>
                                     </View>
                                 ))}
-                            </ScrollView>}
+                            </ScrollView>
+                        }
                     </View>
                 </View>
             </View>
             <Spacer size={2} />
+            <View style={{ flexDirection: 'row', padding: 10 }}>
+                <TouchableOpacity style={styles.addCategory} onPress={() => {
+                    useFilterItem('')
+                }}>
+                    <FontAwesome5 name="filter" size={15} color={Colors.darkGray}></FontAwesome5>
+                    <Text style={styles.addCategoryText}> Limpar</Text>
+                </TouchableOpacity>
+            </View>
             <Text style={{ fontSize: 17, textAlign: 'center', fontWeight: 'bold' }}>Relatório de Transações</Text>
             <View style={styles.list}>
                 <ScrollView showsVerticalScrollIndicator={false}>
@@ -128,7 +136,7 @@ export default function MovimentsList({ navigation }) {
                         ))}
                 </ScrollView>
             </View>
-        </View>
+        </View >
     )
 }
 
@@ -195,5 +203,8 @@ const styles = StyleSheet.create({
     listCategoryItem: {
         fontSize: 16,
         textAlign: 'center'
+    },
+    addCategory: {
+        flexDirection: 'row'
     }
 });
