@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, Text, FlatList, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, FlatList, StyleSheet, ScrollView, TouchableOpacity, Alert } from "react-native";
 import api from "../../../config/api";
 import { AuthContext } from "../../../context/validators/AuthContext";
 import Colors from "../../atoms/Colors";
@@ -8,6 +8,7 @@ import Moviments from "../../Moviments/moviments";
 import { formatDate } from "../../../context/validadores";
 import { AppContext } from "../../../context/validators/AppContext";
 import { Spacer } from "../../atoms/Spacer";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function MovimentsList({ navigation }) {
 
@@ -19,6 +20,12 @@ export default function MovimentsList({ navigation }) {
     const { startLoading, stopLoading } = useContext(AppContext)
     const { name, _id } = user
     const idUser = _id
+    const [data_filter, useStatusFilterDate] = useState({
+        // date_start: '2022-01-11T00:00:00.000Z',
+        // date_finished: '2023-01-03T00:00:00.000Z'
+        date_start: '01/01/2022',
+        date_finished: '03/01/2023'
+    });
 
     useEffect(() => {
         handleLoadItems()
@@ -32,6 +39,7 @@ export default function MovimentsList({ navigation }) {
     }
 
     const movimentList = async () => {
+
         const response = await api.get(`/moviment/${idUser}`);
         const { moviments } = response.data
 
@@ -64,15 +72,45 @@ export default function MovimentsList({ navigation }) {
         }
     }
 
+    const filterMovimentsToDate = async () => {
+
+        let { date_start, date_finished } = data_filter
+
+        startLoading({ msg: 'Carregando...' })
+        if (date_start == '') { return Alert.alert('MyBank', 'Verificar datas') }
+        if (date_finished == '') { return Alert.alert('MyBank', 'Verificar datas') }
+
+        const response = await api.post('/movimentsList', data_filter)
+        const { movimentsFilterDate } = response.data
+        // stopLoading()
+        try {
+            console.log('datas aqui: ', movimentsFilterDate)
+            stopLoading()
+        } catch (error) {
+            console.log(error.data)
+            stopLoading()
+        }
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.containerHeader}>
                 <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-around', alignItems: 'center' }}>
                     <View>
                         <Text style={styles.selectionMonth}>Selecione o mês: </Text>
-                        <View style={{ padding: 5, width: 'auto', backgroundColor: Colors.primary, marginTop: 15, borderRadius: 5, borderColor: Colors.lightGray, borderWidth: 0.5 }}>
+                        <TouchableOpacity style={{
+                            padding: 5, width: 'auto',
+                            backgroundColor: Colors.primary,
+                            marginTop: 15,
+                            borderRadius: 5,
+                            borderColor: Colors.lightGray,
+                            borderWidth: 0.5
+                        }}
+                            onPress={(e) => {
+                                filterMovimentsToDate()
+                            }}>
                             <Text style={{ textAlign: 'center', fontSize: 17, color: Colors.lightGray }}>Abril</Text>
-                        </View>
+                        </TouchableOpacity>
                     </View>
                     <View style={!showList ? { paddingTop: 50.5 } : { paddingTop: 0 }}>
                         <Text style={styles.selectionMonth}>Selecione a Categoria: </Text>
