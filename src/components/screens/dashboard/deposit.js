@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useContext, useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, TouchableOpacity, Alert, TextInput } from 'react-native';
 import { AuthContext } from '../../../context/validators/AuthContext';
 import { createMovimentDeposit } from '../../../interface/moviments-interface';
 import Colors from '../../atoms/Colors';
@@ -41,7 +41,7 @@ export default function DepositControll() {
         type: 'income',
         createdBy: idUser,
         user: idUser,
-        category: categorySelected,
+        category: !categorySelected ? 'Outros' : categorySelected,
     })
 
     const handleChange = (name, value) => {
