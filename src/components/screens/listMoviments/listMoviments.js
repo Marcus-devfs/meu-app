@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, Text, FlatList, StyleSheet, ScrollView, TouchableOpacity, Alert } from "react-native";
+import { View, Text, FlatList, StyleSheet, ScrollView, TouchableOpacity, Alert, TextInput } from "react-native";
 import api from "../../../config/api";
 import { AuthContext } from "../../../context/validators/AuthContext";
 import Colors from "../../atoms/Colors";
@@ -9,6 +9,7 @@ import { formatDate } from "../../../context/validadores";
 import { AppContext } from "../../../context/validators/AppContext";
 import { Spacer } from "../../atoms/Spacer";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { TextInputState } from "../../atoms/TextIput";
 
 export default function MovimentsList({ navigation }) {
 
@@ -17,45 +18,48 @@ export default function MovimentsList({ navigation }) {
     const [listCategoryItem, useListCategory] = useState();
     const [filterItem, useFilterItem] = useState('');
     const [showList, useShowList] = useState(true);
+    const [showDate, useShowDate] = useState(true);
     const { startLoading, stopLoading } = useContext(AppContext)
     const { name, _id } = user
     const idUser = _id
     const [data_filter, useStatusFilterDate] = useState({
-        // date_start: '2022-01-11T00:00:00.000Z',
-        // date_finished: '2023-01-03T00:00:00.000Z'
-        date_start: '01/01/2022',
-        date_finished: '03/01/2023'
+        date_start: '',
+        date_finished: '',
+        categorySelected: filterItem != '' ? filterItem : '',
+        user_find: idUser
     });
+
 
     useEffect(() => {
         handleLoadItems()
-    }, [navigation, filterItem])
+    }, [navigation, data_filter])
 
     const handleLoadItems = async () => {
         startLoading({ msg: 'Carregando...' })
-        await movimentList()
+        // await movimentList()
         listCategory()
         stopLoading()
     }
 
-    const movimentList = async () => {
+    // const movimentList = async () => {
 
-        const response = await api.get(`/moviment/${idUser}`);
-        const { moviments } = response.data
+    //     const response = await api.get(`/moviment/${idUser}`);
+    //     const { moviments } = response.data
 
-        if (filterItem != '') {
-            const filterItems = moviments.filter((item) => item.category == filterItem)
-            startLoading({ msg: 'Carregando...' })
-            useListItem(filterItems)
-            stopLoading()
-        }
-        else {
-            startLoading({ msg: 'Carregando...' })
-            useListItem(moviments)
-            stopLoading()
-        }
-        return;
-    }
+    //     if (filterItem != '') {
+    //         const filterItems = moviments.filter((item) => item.category == filterItem)
+    //         startLoading({ msg: 'Carregando...' })
+    //         useListItem(filterItems)
+    //         useStatusFilterDate({ ...data_filter, categorySelected: filterItem })
+    //         stopLoading()
+    //     }
+    //     else {
+    //         startLoading({ msg: 'Carregando...' })
+    //         useListItem(moviments)
+    //         stopLoading()
+    //     }
+    //     return;
+    // }
 
     const listCategory = async () => {
         const response = await api.get(`/categoryList/${idUser}`);
@@ -63,55 +67,93 @@ export default function MovimentsList({ navigation }) {
         useListCategory(categoryList)
         return;
     }
-
+    
+    //ok
     async function selectItem(categoryName) {
         if (categoryName == 'todos') {
             useFilterItem('');
+            useStatusFilterDate({...data_filter, categorySelected: filterItem})
         } else {
             useFilterItem(categoryName);
+            useStatusFilterDate({...data_filter, categorySelected: filterItem})
         }
     }
 
-    const filterMovimentsToDate = async () => {
-
-        let { date_start, date_finished } = data_filter
-
-        startLoading({ msg: 'Carregando...' })
-        if (date_start == '') { return Alert.alert('MyBank', 'Verificar datas') }
-        if (date_finished == '') { return Alert.alert('MyBank', 'Verificar datas') }
-
-        const response = await api.post('/movimentsList', data_filter)
-        const { movimentsFilterDate } = response.data
-        // stopLoading()
+    const filterData = async () => {
+       
         try {
-            console.log('datas aqui: ', movimentsFilterDate)
+            startLoading({ msg: 'Carregando...' })
+            const response = await api.get('/movimentsList', data_filter)
+            const { movimentsFilterDate } = response.data
+            useListItem(movimentsFilterDate)
             stopLoading()
+            return
         } catch (error) {
-            console.log(error.data)
             stopLoading()
+            console.log(error)
         }
+    }
+
+    const handleChange = (name, value) => {
+        if (name == 'date_start') {
+            if (value.length == 2 || value.length == 5) {
+                value = value + '/'
+            }
+        }
+        if (name == 'value') {
+            value = value.replace(',', '.');
+        }
+        useStatusFilterDate({
+            ...data_filter,
+            [name]: value
+        })
     }
 
     return (
         <View style={styles.container}>
             <View style={styles.containerHeader}>
                 <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-around', alignItems: 'center' }}>
-                    <View>
-                        <Text style={styles.selectionMonth}>Selecione o mês: </Text>
-                        <TouchableOpacity style={{
-                            padding: 5, width: 'auto',
-                            backgroundColor: Colors.primary,
-                            marginTop: 15,
-                            borderRadius: 5,
-                            borderColor: Colors.lightGray,
-                            borderWidth: 0.5
-                        }}
-                            onPress={(e) => {
-                                filterMovimentsToDate()
-                            }}>
-                            <Text style={{ textAlign: 'center', fontSize: 17, color: Colors.lightGray }}>Abril</Text>
-                        </TouchableOpacity>
+                    <View style={!showDate ? { paddingTop: 10.5 } : { paddingTop: 19 }}>
+                        <Text style={styles.selectionMonth}>Selecione a data: </Text>
+                        {showDate ?
+                            <TouchableOpacity style={{
+                                padding: 5, width: 'auto',
+                                backgroundColor: Colors.primary,
+                                marginTop: 15,
+                                borderRadius: 5,
+                                borderColor: Colors.lightGray,
+                                borderWidth: 0.5,
+                                marginBottom: 20
+                            }}
+                                onPress={(e) => {
+                                    useShowDate(!showDate)
+                                }}>
+                                <Text style={{ textAlign: 'center', fontSize: 17, color: Colors.lightGray }}>Abril</Text>
+                            </TouchableOpacity>
+                            :
+                            <View style={{ backgroundColor: '#fff', width: 155, height: 60, top: 12, alignItems: 'center', borderRadius: 5 }}>
+                                <TextInput
+                                    placeholder="de:"
+                                    name="date_start"
+                                    value={data_filter.date_start}
+                                    underlineColorAndroid={'rgba(0,0,0,0)'}
+                                    onChangeText={(name, value) => handleChange(name, value)}
+                                    style={{ width: 150, borderBottomWidth: 1, borderBottomColor: Colors.darkGray, textAlign: 'center', height: 15, marginTop: 10 }}
+                                />
+                                <TextInput
+                                    placeholder="até:"
+                                    name="date_finished"
+                                    value={data_filter.date_finished}
+                                    underlineColorAndroid={'rgba(0,0,0,0)'}
+                                    onChangeText={(name, value) => handleChange(name, value)}
+                                    style={{ width: 150, borderBottomWidth: 1, borderBottomColor: Colors.darkGray, marginTop: 10, height: 15, textAlign: 'center' }}
+                                />
+                            </View>
+
+                        }
+
                     </View>
+
                     <View style={!showList ? { paddingTop: 50.5 } : { paddingTop: 0 }}>
                         <Text style={styles.selectionMonth}>Selecione a Categoria: </Text>
                         {showList ?
@@ -148,15 +190,35 @@ export default function MovimentsList({ navigation }) {
                     </View>
                 </View>
             </View>
-            <Spacer size={2} />
-            <View style={{ flexDirection: 'row', padding: 10 }}>
+            <Spacer size={0.5} />
+            <View style={{ padding: 10, flexDirection: 'row' }}>
+                <TouchableOpacity onPress={() => {
+                    filterData()
+                }}
+                    style={{
+                        backgroundColor: Colors.lightGray,
+                        width: 60,
+                        height: 22,
+                        borderRadius: 5,
+                        marginRight: 10
+                    }}>
+                    <Text style={{ fontWeight: 'bold', textAlign: 'center', justifyContent: 'center' }}>Filtrar</Text>
+                </TouchableOpacity>
+
                 <TouchableOpacity style={styles.addCategory} onPress={() => {
                     useFilterItem('')
+                    useStatusFilterDate({
+                        date_start: '',
+                        date_finished: '',
+                        categorySelected: '',
+                        user_find: idUser
+                    })
                 }}>
                     <FontAwesome5 name="filter" size={15} color={Colors.darkGray}></FontAwesome5>
                     <Text style={styles.addCategoryText}> Limpar</Text>
                 </TouchableOpacity>
             </View>
+            <Spacer size={1} />
             <Text style={{ fontSize: 17, textAlign: 'center', fontWeight: 'bold' }}>Relatório de Transações</Text>
             <View style={styles.list}>
                 <ScrollView showsVerticalScrollIndicator={false}>
@@ -194,6 +256,12 @@ const styles = StyleSheet.create({
     selectionMonth: {
         textAlign: 'center',
         top: 10,
+        fontSize: 16,
+        color: '#fff',
+    },
+    selectionDate: {
+        textAlign: 'center',
+        paddingBottom: 0,
         fontSize: 16,
         color: '#fff',
     },
