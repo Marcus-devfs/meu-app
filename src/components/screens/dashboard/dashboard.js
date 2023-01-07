@@ -22,7 +22,6 @@ export default function Dashboard({ navigation }) {
   const { user } = useContext(AuthContext)
   const { name, _id } = user
   const userName = name.split(" ")[0];
-  const idUser = _id
 
   useEffect(() => {
     navigation.addListener('focus', () =>
@@ -56,7 +55,7 @@ export default function Dashboard({ navigation }) {
   }
 
   const movimentList = async () => {
-    const response = await api.get(`/moviment/${idUser}`);
+    const response = await api.get(`/moviment/${user._id}`);
     const { moviments } = response.data
     useListItem(moviments);
     return;
@@ -64,8 +63,11 @@ export default function Dashboard({ navigation }) {
 
   async function deleteMoviment(_id) {
     const response = await api.delete(`/moviment/${_id}`);
+    console.log(response)
+    console.log('id item: ', _id)
     const newList = listMoviment.filter((item) => item._id !== _id);
     useListItem(newList);
+    movimentList()
     Alert.alert('MyBank', 'Movimentação deletada!')
   }
 

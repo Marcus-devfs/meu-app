@@ -16,6 +16,7 @@ export default function MovimentsList({ navigation }) {
     const { user } = useContext(AuthContext)
     const [listMoviment, useListItem] = useState();
     const [listCategoryItem, useListCategory] = useState();
+    const [cleanFilter, useCleanFilter] = useState();
     const [filterItem, useFilterItem] = useState('');
     const [showList, useShowList] = useState(true);
     const [showDate, useShowDate] = useState(false);
@@ -50,7 +51,7 @@ export default function MovimentsList({ navigation }) {
         movimentList()
         handleLoadItems()
 
-    }, [navigation])
+    }, [navigation, cleanFilter])
 
     const handleLoadItems = async () => {
         startLoading({ msg: 'Carregando...' })
@@ -218,6 +219,7 @@ export default function MovimentsList({ navigation }) {
                     useFilterItem('')
                     useShowDate(false)
                     useShowList(true)
+                    useCleanFilter(!cleanFilter)
                     useStatusFilterDate({
                         date_start: '',
                         date_finished: '',
