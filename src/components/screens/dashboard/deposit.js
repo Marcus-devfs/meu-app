@@ -36,7 +36,7 @@ export default function DepositControll() {
 
     const [deposit, useDeposit] = useState({
         label: '',
-        value: '',
+        value: '0.00',
         createdAt: '',
         type: 'income',
         createdBy: idUser,
@@ -56,6 +56,16 @@ export default function DepositControll() {
         useDeposit({
             ...deposit,
             [name]: value
+        })
+    }
+
+    const handleChangeValueDeposit = async (text) => {
+        if (text) {
+            text = text.replace(',', '.');
+        }
+        useDeposit({
+            ...deposit,
+            value: text
         })
     }
 
@@ -100,22 +110,31 @@ export default function DepositControll() {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Adicionar Receitas</Text>
+            <View style={{alignItems: 'center', bottom: 60}}>
+                <Text style={styles.title}>Adicionar Receitas</Text>
+                <View>
+                    <FontAwesome5 name="chart-line" size={65} color={'#FFF'}></FontAwesome5>
+                </View>
+            </View>
             <View>
+                <Text style={styles.textForm}>Valor</Text>
+                <View style={{ flexDirection: 'row' }}>
+                    <Text style={{ fontSize: 35, color: '#FFF', top: 5, textAlign: 'center' }}>R$ </Text>
+                    <TextInput
+                        name="value"
+                        value={deposit.value}
+                        type="number"
+                        underlineColorAndroid={'rgba(0,0,0,0)'}
+                        onChangeText={(text) => handleChangeValueDeposit(text)}
+                        style={{ width: 250, fontSize: 40, fontWeight: 'bold', color: '#fff', borderWidth: 1, borderColor: Colors.darkGray, textAlign: 'left', borderRadius: 3, marginLeft: 15 }}
+                    />
+                </View>
+                <Spacer size={2} />
                 <Text style={styles.textForm}>Descrição</Text>
                 <TextInputState
                     placeholderTextColor={Colors.lightGray}
                     name="label"
                     value={deposit.label}
-                    autoCapitalize="none"
-                    handleChange={(name, value) => handleChange(name, value)}
-                />
-                <Spacer size={0.5} />
-                <Text style={styles.textForm}>Valor</Text>
-                <TextInputState
-                    placeholderTextColor="#696969"
-                    name="value"
-                    value={deposit.value}
                     autoCapitalize="none"
                     handleChange={(name, value) => handleChange(name, value)}
                 />
@@ -189,8 +208,7 @@ const styles = StyleSheet.create({
     title: {
         color: '#fff',
         fontSize: 25,
-        bottom: 90
-
+        bottom: 20
     },
     textForm: {
         color: '#fff',

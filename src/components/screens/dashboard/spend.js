@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useContext, useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, TouchableOpacity, Alert, TextInput } from 'react-native';
 import { AppContext } from '../../../context/validators/AppContext';
 import { AuthContext } from '../../../context/validators/AuthContext';
 import { createMovimentSpend } from '../../../interface/moviments-interface';
@@ -33,7 +33,7 @@ export default function SpendControll() {
     const idUser = _id
     const [spend, useSpend] = useState({
         label: '',
-        value: '',
+        value: '0.00',
         createdAt: '',
         type: 'expense',
         createdBy: idUser,
@@ -53,6 +53,16 @@ export default function SpendControll() {
         useSpend({
             ...spend,
             [name]: value
+        })
+    }
+
+    const handleChangeValueSpend = async (text) => {
+        if (text) {
+            text = text.replace(',', '.');
+        }
+        useSpend({
+            ...spend,
+            value: text
         })
     }
 
@@ -95,8 +105,27 @@ export default function SpendControll() {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Adicionar Despesas</Text>
+            <View style={{ alignItems: 'center', bottom: 60 }}>
+                <Text style={styles.title}>Adicionar Dispesas</Text>
+                <View>
+                    <FontAwesome5 name="hand-holding-usd" size={65} color={'#FFF'}></FontAwesome5>
+
+                </View>
+            </View>
             <View style={styles.containerForm}>
+                <Text style={styles.textForm}>Valor</Text>
+                <View style={{ flexDirection: 'row' }}>
+                    <Text style={{ fontSize: 35, color: '#FFF', top: 5, textAlign: 'center' }}>R$ </Text>
+                    <TextInput
+                        name="value"
+                        value={spend.value}
+                        type="number"
+                        underlineColorAndroid={'rgba(0,0,0,0)'}
+                        onChangeText={(text) => handleChangeValueSpend(text)}
+                        style={{ width: 250, fontSize: 40, fontWeight: 'bold', color: '#fff', borderWidth: 1, borderColor: Colors.darkGray, textAlign: 'left', borderRadius: 3, marginLeft: 15 }}
+                    />
+                </View>
+                <Spacer size={2} />
                 <Text style={styles.textForm}>Descrição</Text>
                 <TextInputState
                     placeholderTextColor={Colors.lightGray}
@@ -107,15 +136,6 @@ export default function SpendControll() {
                 />
                 <Spacer size={0.5} />
 
-                <Text style={styles.textForm}>Valor</Text>
-                <TextInputState
-                    placeholderTextColor="#696969"
-                    name="value"
-                    value={spend.value}
-                    autoCapitalize="none"
-                    handleChange={(name, value) => handleChange(name, value)}
-                />
-                <Spacer size={0.5} />
                 <Text style={styles.textForm}>Data</Text>
                 <TextInputState
                     placeholderTextColor="#696969"
@@ -187,8 +207,7 @@ const styles = StyleSheet.create({
     title: {
         color: '#fff',
         fontSize: 25,
-        bottom: 90
-
+        bottom: 20
     },
     textForm: {
         color: '#fff',
