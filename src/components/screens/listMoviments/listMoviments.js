@@ -18,48 +18,46 @@ export default function MovimentsList({ navigation }) {
     const [listCategoryItem, useListCategory] = useState();
     const [filterItem, useFilterItem] = useState('');
     const [showList, useShowList] = useState(true);
-    const [showDate, useShowDate] = useState(true);
+    const [showDate, useShowDate] = useState(false);
     const { startLoading, stopLoading } = useContext(AppContext)
     const { name, _id } = user
     const idUser = _id
     const [data_filter, useStatusFilterDate] = useState({
         date_start: '',
         date_finished: '',
-        categorySelected: filterItem != '' ? filterItem : '',
+        categorySelected: '',
         user_find: idUser
     });
 
-
     useEffect(() => {
+        const movimentList = async () => {
+            const response = await api.get(`/moviment/${idUser}`);
+            const { moviments } = response.data
+
+            if (filterItem != '') {
+                const filterItems = moviments.filter((item) => item.category == filterItem)
+                startLoading({ msg: 'Carregando...' })
+                useListItem(filterItems)
+                stopLoading()
+            }
+            else {
+                startLoading({ msg: 'Carregando...' })
+                useListItem(moviments)
+                stopLoading()
+            }
+            return;
+        }
+        movimentList()
         handleLoadItems()
-    }, [navigation, data_filter])
+
+    }, [navigation])
 
     const handleLoadItems = async () => {
         startLoading({ msg: 'Carregando...' })
-        // await movimentList()
+        await filterData()
         listCategory()
         stopLoading()
     }
-
-    // const movimentList = async () => {
-
-    //     const response = await api.get(`/moviment/${idUser}`);
-    //     const { moviments } = response.data
-
-    //     if (filterItem != '') {
-    //         const filterItems = moviments.filter((item) => item.category == filterItem)
-    //         startLoading({ msg: 'Carregando...' })
-    //         useListItem(filterItems)
-    //         useStatusFilterDate({ ...data_filter, categorySelected: filterItem })
-    //         stopLoading()
-    //     }
-    //     else {
-    //         startLoading({ msg: 'Carregando...' })
-    //         useListItem(moviments)
-    //         stopLoading()
-    //     }
-    //     return;
-    // }
 
     const listCategory = async () => {
         const response = await api.get(`/categoryList/${idUser}`);
@@ -67,45 +65,49 @@ export default function MovimentsList({ navigation }) {
         useListCategory(categoryList)
         return;
     }
-    
-    //ok
+
     async function selectItem(categoryName) {
         if (categoryName == 'todos') {
             useFilterItem('');
-            useStatusFilterDate({...data_filter, categorySelected: filterItem})
+            useStatusFilterDate({ ...data_filter, categorySelected: categoryName })
         } else {
             useFilterItem(categoryName);
-            useStatusFilterDate({...data_filter, categorySelected: filterItem})
+            useStatusFilterDate({ ...data_filter, categorySelected: categoryName })
         }
     }
 
     const filterData = async () => {
-       
-        try {
-            startLoading({ msg: 'Carregando...' })
-            const response = await api.get('/movimentsList', data_filter)
-            const { movimentsFilterDate } = response.data
-            useListItem(movimentsFilterDate)
-            stopLoading()
-            return
-        } catch (error) {
-            stopLoading()
-            console.log(error)
-        }
+
+        startLoading({ msg: 'Carregando...' })
+
+        await api.post('/movimentsList', data_filter)
+            .then(response => {
+                const { data } = response
+                useListItem(data)
+                stopLoading()
+            })
+            .catch(error => {
+                stopLoading()
+                console.log(error)
+            })
+
     }
 
-    const handleChange = (name, value) => {
-        if (name == 'date_start') {
-            if (value.length == 2 || value.length == 5) {
-                value = value + '/'
-            }
-        }
-        if (name == 'value') {
-            value = value.replace(',', '.');
+    const handleChangeStart = (text) => {
+        if (text.length == 2 || text.length == 5) {
+            text = text + '/'
         }
         useStatusFilterDate({
-            ...data_filter,
-            [name]: value
+            ...data_filter, date_start: text
+        })
+    }
+
+    const handleChangeFinished = (text) => {
+        if (text.length == 2 || text.length == 5) {
+            text = text + '/'
+        }
+        useStatusFilterDate({
+            ...data_filter, date_finished: text
         })
     }
 
@@ -113,43 +115,49 @@ export default function MovimentsList({ navigation }) {
         <View style={styles.container}>
             <View style={styles.containerHeader}>
                 <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-around', alignItems: 'center' }}>
-                    <View style={!showDate ? { paddingTop: 10.5 } : { paddingTop: 19 }}>
+                    <View style={!showDate ? { paddingTop: 18 } : { paddingTop: 50 }}>
                         <Text style={styles.selectionMonth}>Selecione a data: </Text>
+                        <TouchableOpacity style={{
+                            padding: 5,
+                            width: 'auto',
+                            backgroundColor: Colors.primary,
+                            marginTop: 15,
+                            borderRadius: 5,
+                            borderColor: Colors.lightGray,
+                            borderWidth: 0.5,
+                            marginBottom: 20,
+                            height: 32,
+                            justifyContent: 'center',
+
+                        }}
+                            onPress={(e) => {
+                                useShowDate(!showDate)
+                            }}>
+                            <Text style={data_filter.date_start != '' ? { textAlign: 'center', fontSize: 13, color: Colors.lightGray } : { textAlign: 'center', fontSize: 17, color: Colors.lightGray }}>{data_filter.date_start != '' ? `${data_filter.date_start} - ${data_filter.date_finished}` : '-'}</Text>
+                        </TouchableOpacity>
                         {showDate ?
-                            <TouchableOpacity style={{
-                                padding: 5, width: 'auto',
-                                backgroundColor: Colors.primary,
-                                marginTop: 15,
-                                borderRadius: 5,
-                                borderColor: Colors.lightGray,
-                                borderWidth: 0.5,
-                                marginBottom: 20
-                            }}
-                                onPress={(e) => {
-                                    useShowDate(!showDate)
-                                }}>
-                                <Text style={{ textAlign: 'center', fontSize: 17, color: Colors.lightGray }}>Abril</Text>
-                            </TouchableOpacity>
-                            :
-                            <View style={{ backgroundColor: '#fff', width: 155, height: 60, top: 12, alignItems: 'center', borderRadius: 5 }}>
+                            <View style={{ backgroundColor: '#fff', width: 180, height: 30, top: -15, alignItems: 'center', borderRadius: 5, flexDirection: 'row' }}>
                                 <TextInput
                                     placeholder="de:"
+                                    placeholderTextColor={Colors.darkGray}
                                     name="date_start"
                                     value={data_filter.date_start}
                                     underlineColorAndroid={'rgba(0,0,0,0)'}
-                                    onChangeText={(name, value) => handleChange(name, value)}
-                                    style={{ width: 150, borderBottomWidth: 1, borderBottomColor: Colors.darkGray, textAlign: 'center', height: 15, marginTop: 10 }}
+                                    onChangeText={(text) => handleChangeStart(text)}
+                                    style={{ width: 80, borderWidth: 1, borderColor: Colors.darkGray, textAlign: 'center', height: 27, borderRadius: 3, marginLeft: 2 }}
                                 />
+                                <Text> -</Text>
                                 <TextInput
                                     placeholder="até:"
+                                    placeholderTextColor={Colors.darkGray}
                                     name="date_finished"
                                     value={data_filter.date_finished}
                                     underlineColorAndroid={'rgba(0,0,0,0)'}
-                                    onChangeText={(name, value) => handleChange(name, value)}
-                                    style={{ width: 150, borderBottomWidth: 1, borderBottomColor: Colors.darkGray, marginTop: 10, height: 15, textAlign: 'center' }}
+                                    onChangeText={(text) => handleChangeFinished(text)}
+                                    style={{ width: 80, borderWidth: 1, borderColor: Colors.darkGray, textAlign: 'center', height: 27, borderRadius: 3, marginLeft: 5 }}
                                 />
                             </View>
-
+                            : ''
                         }
 
                     </View>
@@ -165,7 +173,8 @@ export default function MovimentsList({ navigation }) {
                                     marginTop: 15,
                                     borderRadius: 5,
                                     borderColor: Colors.lightGray,
-                                    borderWidth: 0.5
+                                    borderWidth: 0.5,
+                                    height: 32
                                 }}
                                 onPress={() => useShowList(!showList)}>
                                 <Text style={{
@@ -207,6 +216,8 @@ export default function MovimentsList({ navigation }) {
 
                 <TouchableOpacity style={styles.addCategory} onPress={() => {
                     useFilterItem('')
+                    useShowDate(false)
+                    useShowList(true)
                     useStatusFilterDate({
                         date_start: '',
                         date_finished: '',
