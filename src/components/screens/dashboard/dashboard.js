@@ -67,7 +67,7 @@ export default function Dashboard({ navigation }) {
     console.log('id item: ', _id)
     const newList = listMoviment.filter((item) => item._id !== _id);
     useListItem(newList);
-    movimentList()
+
     Alert.alert('MyBank', 'Movimentação deletada!')
   }
 

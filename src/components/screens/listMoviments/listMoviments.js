@@ -212,7 +212,7 @@ export default function MovimentsList({ navigation }) {
                         borderRadius: 5,
                         marginRight: 10
                     }}>
-                    <Text style={{ fontWeight: 'bold', textAlign: 'center', justifyContent: 'center' }}>Filtrar</Text>
+                    <Text style={{ fontWeight: 'bold', textAlign: 'center', justifyContent:'center' }}>Filtrar</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.addCategory} onPress={() => {
@@ -245,6 +245,7 @@ export default function MovimentsList({ navigation }) {
                                         {item.type == 'income' ? `R$ ${item.value.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}` : `R$ -${item.value.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}`}
                                     </Text>
                                 </View>
+                                <Text style={{color:Colors.primary  }}>{item.category}</Text>
                             </TouchableOpacity>
                         ))}
                 </ScrollView>
@@ -283,7 +284,7 @@ const styles = StyleSheet.create({
         fontSize: 18
     },
     containerList: {
-        marginTop: 20,
+        marginBottom: 10,
         borderBottomWidth: 1,
         borderColor: Colors.lightGray
     },

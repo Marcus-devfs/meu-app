@@ -21,19 +21,21 @@ export default function DepositControll() {
             stopLoading()
         }
         handleLoadItems()
-    }, [])
-
-
+    }, [listCategoryItem])
 
     const [load, setLoad] = useState(true)
     const [listCategoryItem, useListCategory] = useState();
     const [categorySelected, useCategorySelected] = useState();
     const [showList, useShowList] = useState(false);
+    const [showCreateCategory, useShowCreateCategory] = useState(false);
     const { startLoading, stopLoading } = useContext(AppContext)
     const { user } = useContext(AuthContext)
     const { _id } = user
     const idUser = _id
-
+    const [addCategoryList, useAddCategoryList] = useState({
+        categoryName: '',
+        user_id: idUser
+    })
     const [deposit, useDeposit] = useState({
         label: '',
         value: '0.00',
@@ -106,11 +108,35 @@ export default function DepositControll() {
         }
 
     }
+    const handleChangeCategoryName = (name, value) => {
+        useAddCategoryList({
+            ...addCategoryList,
+            [name]: value
+        })
+    }
 
+    const handleCreateNewCategory = async () => {
+        const { categoryName } = addCategoryList
+
+        if (categoryName == '' || categoryName == null || categoryName == undefined) {
+            Alert.alert('MyBank', 'Por favor, inserir um nome valido!')
+        }
+
+        await api.post('/categoryList/create', addCategoryList)
+            .then(response => {
+                const { dados } = response
+                Alert.alert('MyBank', 'Nova categoria criada.')
+                useAddCategoryList({ ...addCategoryList, categoryName: '' })
+                useShowCreateCategory(!showCreateCategory)
+            })
+            .catch(error => {
+                console.log(error.dados)
+            })
+    }
 
     return (
         <View style={styles.container}>
-            <View style={{alignItems: 'center', bottom: 60}}>
+            <View style={{ alignItems: 'center', bottom: 40 }}>
                 <Text style={styles.title}>Adicionar Receitas</Text>
                 <View>
                     <FontAwesome5 name="chart-line" size={65} color={'#FFF'}></FontAwesome5>
@@ -160,7 +186,7 @@ export default function DepositControll() {
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 </View>
                 {showList ?
-                    <ScrollView style={{ marginTop: 15 }}>
+                    <ScrollView style={{ top: 15, marginBottom: 50 }}>
                         {listCategoryItem?.map((item) => (
                             <View key={item?._id} style={{ width: '100%', backgroundColor: '#fff', borderColor: Colors.lightGray, borderBottomWidth: 1, borderRadius: 5, padding: 8, marginBottom: 5 }}>
                                 <TouchableOpacity onPress={() => {
@@ -173,13 +199,33 @@ export default function DepositControll() {
                         ))}
 
                         <View style={{ flexDirection: 'row' }}>
-                            <TouchableOpacity style={styles.addCategory} onPress={() => console.log(deposit)}>
+                            <TouchableOpacity style={styles.addCategory} onPress={() => {
+                                useShowCreateCategory(!showCreateCategory)
+                            }}>
                                 <View style={styles.areaButton}>
                                     <FontAwesome5 name="plus" size={15} color={Colors.darkGray}></FontAwesome5>
                                 </View>
                             </TouchableOpacity>
                             <Text style={styles.addCategoryText}> Nova categoria</Text>
                         </View>
+                        {showCreateCategory ?
+                            <View style={{ marginTop: 10 }}>
+                                <TextInputState
+                                    placeholderTextColor="#696969"
+                                    name="categoryName"
+                                    value={addCategoryList.categoryName}
+                                    autoCapitalize="none"
+                                    handleChange={(name, value) => handleChangeCategoryName(name, value)}
+                                />
+                                <TouchableOpacity onPress={() => {
+                                    handleCreateNewCategory()
+                                }}
+                                    style={{ backgroundColor: '#B22222', height: 30, width: 80, justifyContent: 'center', borderRadius: 5 }}>
+                                    <Text style={{ fontSize: 16, textAlign: 'center', color: '#fff' }}>Criar</Text>
+                                </TouchableOpacity>
+                            </View>
+                            : ''
+                        }
                     </ScrollView>
                     : ''
                 }

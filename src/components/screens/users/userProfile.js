@@ -43,12 +43,12 @@ export default function UserProfile() {
       </TouchableOpacity>
       <Divider style={styles.divider} />
       <TouchableOpacity style={styles.menuItem}>
-        <Text style={styles.menuItemText}>Alterar idioma</Text>
+        <Text style={styles.menuItemText}>Alterar senha</Text>
         <Ionicons name='chevron-forward' color={'#A9A9A9'} size={16} />
       </TouchableOpacity>
       <Divider style={styles.divider} />
       <TouchableOpacity style={styles.menuItem}>
-        <Text style={styles.menuItemText}>Alterar senha</Text>
+        <Text style={styles.menuItemText}>Sobre o app</Text>
         <Ionicons name='chevron-forward' color={'#A9A9A9'} size={16} />
       </TouchableOpacity>
       <Divider style={styles.divider} />
