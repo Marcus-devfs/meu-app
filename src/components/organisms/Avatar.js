@@ -1,8 +1,9 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { useContext } from "react";
-import { View, StyleSheet, Text, Image, borderRadius } from 'react-native';
+import { View, StyleSheet, Text, Image, borderRadius, TouchableOpacity } from 'react-native';
 import { AuthContext } from "../../context/validators/AuthContext";
 import Colors from "../atoms/Colors";
-import { Ionicons } from "../atoms/icons";
+import { FontAwesome5, Ionicons } from "../atoms/icons";
 import { MaterialCommunityIcons } from "../atoms/icons";
 
 const firstName = "Marcus"
@@ -14,13 +15,17 @@ export default function Avatar() {
     const { user } = useContext(AuthContext)
     const { name, email } = user
 
+    const navigation = useNavigation()
+
     return (
-        <View style={styles.containerAvatar}>
-            <Image style={styles.avatarImg}
+        <TouchableOpacity style={styles.containerAvatar} onPress={() => navigation.navigate('Profile')}>
+            <FontAwesome5 name="user" size={32} color={'#fff'}></FontAwesome5>
+            {/* <Image style={styles.avatarImg}
+
                 source={imageAvatar}
                 resizeMode="cover"
-            />
-        </View>
+            /> */}
+        </TouchableOpacity>
     )
 
 }
@@ -30,7 +35,8 @@ export default function Avatar() {
 const styles = StyleSheet.create({
     containerAvatar: {
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        marginLeft: 10,
     },
     avatarImg: {
         width: 60,

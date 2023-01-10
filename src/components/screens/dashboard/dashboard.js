@@ -5,7 +5,7 @@ import api from '../../../config/api';
 import { AppContext } from '../../../context/validators/AppContext';
 import { AuthContext } from '../../../context/validators/AuthContext';
 import Colors from '../../atoms/Colors';
-import { Ionicons } from '../../atoms/icons';
+import { FontAwesome5, Ionicons } from '../../atoms/icons';
 import { Spacer } from '../../atoms/Spacer';
 import Actions from '../../Moviments/Actions';
 import Avatar from '../../organisms/Avatar';
@@ -17,6 +17,7 @@ export default function Dashboard({ navigation }) {
   const [incomeStatus, useIncomeStatus] = useState("");
   const [expenseStatus, useExpenseStatus] = useState("");
   const [showButton, setShowButton] = useState(false);
+  const [showButtonAddMoviment, setShowButtonAddMoviment] = useState(false);
   const [listMoviment, useListItem] = useState();
   const { startLoading, stopLoading, loading } = useContext(AppContext)
   const { user } = useContext(AuthContext)
@@ -51,6 +52,7 @@ export default function Dashboard({ navigation }) {
   const handleLoadItems = async () => {
     startLoading({ msg: 'Carregando...' })
     await movimentList()
+    setShowButtonAddMoviment(false)
     stopLoading()
   }
 
@@ -62,9 +64,7 @@ export default function Dashboard({ navigation }) {
   }
 
   async function deleteMoviment(_id) {
-    const response = await api.delete(`/moviment/${_id}`);
-    console.log(response)
-    console.log('id item: ', _id)
+    await api.delete(`/moviment/${_id}`);
     const newList = listMoviment.filter((item) => item._id !== _id);
     useListItem(newList);
 
@@ -74,13 +74,13 @@ export default function Dashboard({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.containerHeader}>
-        <View style={{ display: 'flex', marginTop: 55, height: 50, marginLeft: 6 }}>
+        <View style={{ display: 'flex', top: 60, height: 50, marginLeft: 6 }}>
           <Avatar />
           <Text style={styles.userName}>{userName}</Text>
         </View>
         <View style={{ marginTop: 55 }}>
-          <Text style={{ color: Colors.lightGray, display: 'flex', height: 30, marginLeft: 65 }}> Saldo em conta</Text>
-          <Text style={{ color: Colors.primaryText, display: 'flex', height: 50, fontSize: 28, marginLeft: 45, fontWeight: '700' }}>
+          <Text style={{ color: Colors.lightGray, display: 'flex', height: 30, marginLeft: 80 }}> Saldo em conta</Text>
+          <Text style={{ color: Colors.primaryText, display: 'flex', height: 50, fontSize: 30, marginLeft: 45, fontWeight: '700' }}>
             {valueTotal !== '' || valueTotal !== undefined ? valueTotal : '...'}</Text>
         </View>
       </View>
@@ -96,8 +96,12 @@ export default function Dashboard({ navigation }) {
           </TouchableOpacity>
         </View>
       </View>
-      <Actions />
-      <View style={{ width: '100%', minHeight: 300, }}>
+      <Spacer size={7} />
+      <View style={{ height: 100, backgroundColor: Colors.lightGray }}>
+        <Text> Dashboard</Text>
+      </View>
+      {/* <Actions /> */}
+      <View style={{ width: '100%', minHeight: 270, maxHeight: 270 }}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
           <Text style={{ fontWeight: 'bold', fontSize: 18, margin: 10, color: Colors.darkGray, }}>Ultimas movimentações</Text>
           <TouchableOpacity style={{ marginRight: 20 }} onPress={() => setShowButton(!showButton)}>
@@ -132,6 +136,36 @@ export default function Dashboard({ navigation }) {
       </View>
       <Spacer size={1} />
       <StatusBar style="auto" />
+
+      {showButtonAddMoviment ?
+        <View style={{ alignItems: 'flex-end' }}>
+          <View style={{ marginBottom: 5 }}>
+            <TouchableOpacity style={{ backgroundColor: Colors.primary, paddingHorizontal: 10, marginBottom: 5, marginRight: 5, borderRadius: 5 }}
+              onPress={() => navigation.navigate('depositControll')}>
+              <Text style={{ color: '#fff' }}> Receitas +</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={{ backgroundColor: '#B22222', paddingHorizontal: 10, marginRight: 5, borderRadius: 5 }}
+              onPress={() => navigation.navigate('spendControll')}>
+              <Text style={{ color: '#fff' }}>Dispesas --</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        : ''}
+      <View style={showButtonAddMoviment ? { alignItems: 'flex-end', marginRight: 20 } : { alignItems: 'flex-end', marginRight: 20, top: 40 }}>
+        <TouchableOpacity style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: Colors.primary,
+          width: 60,
+          height: 60,
+          borderRadius: 30
+        }} onPress={() => {
+          setShowButtonAddMoviment(!showButtonAddMoviment)
+        }}>
+          <FontAwesome5 name="cart-plus" size={35} color={'#fff'}></FontAwesome5>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -195,14 +229,13 @@ const styles = StyleSheet.create({
     padding: 14,
     marginTop: 10,
     width: '100%',
-    maxHeight: 350,
+    maxHeight: 330,
   },
   containerList: {
     flex: 1,
     marginBottom: 15,
     borderBottomWidth: 0.5,
     borderBottomColor: Colors.lightGray
-
   },
   content: {
     flexDirection: 'row',

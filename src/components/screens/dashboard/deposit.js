@@ -81,8 +81,6 @@ export default function DepositControll() {
     async function selectItem(categoryName) {
         useCategorySelected(categoryName)
         useDeposit({ ...deposit, category: categoryName })
-        console.log(deposit)
-
     }
 
     const handleSend = async () => {
@@ -99,7 +97,6 @@ export default function DepositControll() {
             }
             else {
                 await createMovimentDeposit(deposit)
-                console.log(deposit)
                 navigation.goBack();
             }
 

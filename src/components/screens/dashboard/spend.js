@@ -86,8 +86,6 @@ export default function SpendControll() {
     async function selectItem(categoryName) {
         useCategorySelected(categoryName)
         useSpend({ ...spend, category: categoryName })
-        console.log(spend)
-
     }
 
     const handleSend = async () => {

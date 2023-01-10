@@ -15,8 +15,12 @@ export const TabNavigator = ({ navigation }) => {
         <Tab.Navigator
             screenOptions={({ route }) => ({
                 tabBarStyle: {
-                    backgroundColor: Colors.lightGray, height: 68, paddingBottom: 15, paddingTop: 5,
+                    backgroundColor: Colors.lightGray,
+                    height: 68,
+                    paddingBottom: 15,
+                    paddingTop: 5,
                 },
+                tabBarActiveTintColor:Colors.primary,
                 tabBarShowLabel: true,
                 headerShown: false
             })}>
@@ -29,7 +33,7 @@ export const TabNavigator = ({ navigation }) => {
             <Tab.Screen name="Moviments" component={MovimentsList}
                 options={{
                     tabBarIcon: ({ focused, color, size }) => {
-                        return <FontAwesome5 name='exchange-alt' size={30} color={focused ? Colors.primary : Colors.primary - 0.5} style={styles.tabConfig} />;
+                        return (<FontAwesome5 name='exchange-alt' size={30} color={focused ? Colors.primary : Colors.primary - 0.5} style={styles.tabConfig} />);
                     }
                 }} />
             <Tab.Screen name="Profile" component={UserProfile}
