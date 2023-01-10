@@ -74,7 +74,7 @@ export default function Dashboard({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.containerHeader}>
-        <View style={{ display: 'flex', top: 60, height: 50, marginLeft: 6 }}>
+        <View style={{ display: 'flex', top: 65, height: 50, marginLeft: 6 }}>
           <Avatar />
           <Text style={styles.userName}>{userName}</Text>
         </View>
@@ -97,11 +97,9 @@ export default function Dashboard({ navigation }) {
         </View>
       </View>
       <Spacer size={7} />
-      <View style={{ height: 100, backgroundColor: Colors.lightGray }}>
-        <Text> Dashboard</Text>
-      </View>
+      
       {/* <Actions /> */}
-      <View style={{ width: '100%', minHeight: 270, maxHeight: 270 }}>
+      <View style={{ width: '100%', minHeight: 340, maxHeight: 340 }}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
           <Text style={{ fontWeight: 'bold', fontSize: 18, margin: 10, color: Colors.darkGray, }}>Ultimas movimentações</Text>
           <TouchableOpacity style={{ marginRight: 20 }} onPress={() => setShowButton(!showButton)}>
@@ -136,18 +134,18 @@ export default function Dashboard({ navigation }) {
       </View>
       <Spacer size={1} />
       <StatusBar style="auto" />
-
+<Spacer size={4} />
       {showButtonAddMoviment ?
         <View style={{ alignItems: 'flex-end' }}>
           <View style={{ marginBottom: 5 }}>
-            <TouchableOpacity style={{ backgroundColor: Colors.primary, paddingHorizontal: 10, marginBottom: 5, marginRight: 5, borderRadius: 5 }}
+            <TouchableOpacity style={{ backgroundColor: Colors.primary, paddingHorizontal: 10, marginBottom: 5, marginRight: 5, borderRadius: 5, paddingVertical: 4 }}
               onPress={() => navigation.navigate('depositControll')}>
               <Text style={{ color: '#fff' }}> Receitas +</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={{ backgroundColor: '#B22222', paddingHorizontal: 10, marginRight: 5, borderRadius: 5 }}
+            <TouchableOpacity style={{ backgroundColor: '#B22222', paddingHorizontal: 10, marginRight: 5, borderRadius: 5, paddingVertical: 4 }}
               onPress={() => navigation.navigate('spendControll')}>
-              <Text style={{ color: '#fff' }}>Dispesas --</Text>
+              <Text style={{ color: '#fff' }}>Dispesas -</Text>
             </TouchableOpacity>
           </View>
         </View>
