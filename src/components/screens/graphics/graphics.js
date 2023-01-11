@@ -4,9 +4,10 @@ import api from "../../../config/api";
 import { AuthContext } from "../../../context/validators/AuthContext";
 import Colors from "../../atoms/Colors";
 import { AppContext } from "../../../context/validators/AppContext";
-import { PieChart } from "react-native-svg-charts"
 import { Spacer } from "../../atoms/Spacer";
 import { FontAwesome5 } from "../../atoms/icons";
+import { VictoryPie } from "victory-native";
+import { formatDate } from "../../../context/validadores";
 
 export default function Graphics({ navigation }) {
 
@@ -55,14 +56,6 @@ export default function Graphics({ navigation }) {
             .then(response => {
                 const { data } = response
                 useListItem(data)
-                const pieData = data?.map((item) => item.value)?.map((value, index) => ({
-                    value,
-                    svg: {
-                        fill: randomColor()
-                    },
-                    key: `value-${index}`
-                }))
-                useDataPieGraphics(pieData)
                 stopLoading()
             })
             .catch(error => {
@@ -187,7 +180,6 @@ export default function Graphics({ navigation }) {
                     </View>
                 </View>
             </View>
-            <Text> Gráficos aqui</Text>
             <Spacer size={0.5} />
             <View style={{ padding: 10, flexDirection: 'row' }}>
                 <TouchableOpacity onPress={() => {
@@ -203,7 +195,7 @@ export default function Graphics({ navigation }) {
                     <Text style={{ fontWeight: 'bold', textAlign: 'center', justifyContent: 'center' }}>Filtrar</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.addCategory} onPress={() => {
+                <TouchableOpacity style={{flexDirection: 'row'}} onPress={() => {
                     useFilterItem('')
                     useShowDate(false)
                     useShowList(true)
@@ -219,9 +211,38 @@ export default function Graphics({ navigation }) {
                     <Text style={styles.addCategoryText}> Limpar</Text>
                 </TouchableOpacity>
             </View>
+            <View style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff' }}>
+                <VictoryPie
+                    data={listMoviment}
+                    x="label"
+                    y="value"
+                    colorScale={"green"}
+                    innerRadius={45}
+                    animate={{
+                        duration: 200,
+                        easing: "back"
+                    }}
+                    width={350}
+                    height={320}
+                />
+            </View>
 
-            <PieChart data={dataPieGraphics} style={{ height: 250 }}>
-            </PieChart>
+            <View style={{height: 200}}>
+                <ScrollView showsVerticalScrollIndicator={false}>
+                    {listMoviment == '' ? <Text style={{ fontSize: 15, textAlign: 'center', paddingTop: 40 }}> Sem Movimentações </Text> :
+                        listMoviment?.map((item) => (
+                            <TouchableOpacity key={item._id} style={styles.containerList}>
+                                <Text style={styles.date}>{formatDate({ date: item.createdAt })}</Text>
+                                <View style={styles.content}>
+                                    <Text style={styles.label}>{item.label}</Text>
+                                    <Text style={item.type == 'income' ? styles.value : styles.expenses}>
+                                        {item.type == 'income' ? `R$ ${item.value.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}` : `R$ -${item.value.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}`}
+                                    </Text>
+                                </View>
+                            </TouchableOpacity>
+                        ))}
+                </ScrollView>
+            </View>
         </View>
     );
 }
@@ -254,4 +275,35 @@ const styles = StyleSheet.create({
         fontSize: 16,
         textAlign: 'center'
     },
+    containerList: {
+        padding: 7,
+        paddingHorizontal: 20,
+        flex: 1,
+        marginTop: 8,
+        backgroundColor: '#fff',
+        shadowColor: '#171717',
+        shadowOffset: { width: -2, height: 4 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 5,
+      },
+      content: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 2,
+        marginBottom: 8
+      },
+      date: {
+        color: Colors.lightGray,
+        fontWeight: '600'
+      },
+      label: {
+        fontWeight: '600',
+        fontSize: 16
+      },
+      value: {
+        fontWeight: '600',
+        fontSize: 16,
+        color: '#006400'
+      },
 })
