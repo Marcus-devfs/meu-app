@@ -7,7 +7,6 @@ import { AuthContext } from '../../../context/validators/AuthContext';
 import Colors from '../../atoms/Colors';
 import { FontAwesome5, Ionicons } from '../../atoms/icons';
 import { Spacer } from '../../atoms/Spacer';
-import Actions from '../../Moviments/Actions';
 import Avatar from '../../organisms/Avatar';
 import { formatDate } from '../../../context/validadores';
 
@@ -97,8 +96,6 @@ export default function Dashboard({ navigation }) {
         </View>
       </View>
       <Spacer size={7} />
-      
-      {/* <Actions /> */}
       <View style={{ width: '100%', minHeight: 340, maxHeight: 340 }}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
           <Text style={{ fontWeight: 'bold', fontSize: 18, margin: 10, color: Colors.darkGray, }}>Ultimas movimentações</Text>
@@ -134,7 +131,7 @@ export default function Dashboard({ navigation }) {
       </View>
       <Spacer size={1} />
       <StatusBar style="auto" />
-<Spacer size={4} />
+      <Spacer size={4} />
       {showButtonAddMoviment ?
         <View style={{ alignItems: 'flex-end' }}>
           <View style={{ marginBottom: 5 }}>
@@ -224,16 +221,21 @@ const styles = StyleSheet.create({
     elevation: 20,
   },
   list: {
-    padding: 14,
     marginTop: 10,
-    width: '100%',
+    paddingHorizontal: 2,
     maxHeight: 330,
   },
   containerList: {
+    padding: 7,
+    paddingHorizontal: 20,
     flex: 1,
-    marginBottom: 15,
-    borderBottomWidth: 0.5,
-    borderBottomColor: Colors.lightGray
+    marginTop: 8,
+    backgroundColor: '#fff',
+    shadowColor: '#171717',
+    shadowOffset: { width: -2, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 5,
   },
   content: {
     flexDirection: 'row',
@@ -248,7 +250,6 @@ const styles = StyleSheet.create({
   label: {
     fontWeight: '600',
     fontSize: 16
-
   },
   value: {
     fontWeight: '600',
