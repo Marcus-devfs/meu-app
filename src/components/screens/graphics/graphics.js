@@ -3,22 +3,21 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput } from 
 import api from "../../../config/api";
 import { AuthContext } from "../../../context/validators/AuthContext";
 import Colors from "../../atoms/Colors";
-import { FontAwesome5 } from "../../atoms/icons";
-import { formatDate } from "../../../context/validadores";
 import { AppContext } from "../../../context/validators/AppContext";
+import { PieChart } from "react-native-svg-charts"
 import { Spacer } from "../../atoms/Spacer";
+import { FontAwesome5 } from "../../atoms/icons";
 
-export default function MovimentsList({ navigation }) {
+export default function Graphics({ navigation }) {
 
     const { user } = useContext(AuthContext)
     const [listMoviment, useListItem] = useState();
     const [listCategoryItem, useListCategory] = useState();
     const [cleanFilter, useCleanFilter] = useState();
     const [filterItem, useFilterItem] = useState('');
+    const [dataPieGraphics, useDataPieGraphics] = useState('');
     const [showList, useShowList] = useState(true);
     const [showDate, useShowDate] = useState(false);
-    const [incomeStatus, useIncomeStatus] = useState("");
-    const [expenseStatus, useExpenseStatus] = useState("");
     const { startLoading, stopLoading } = useContext(AppContext)
     const { name, _id } = user
     const idUser = _id
@@ -30,33 +29,14 @@ export default function MovimentsList({ navigation }) {
     });
 
     useEffect(() => {
-        calculationStatus()
-    }, [listMoviment])
-
-    useEffect(() => {
-        const movimentList = async () => {
-            const response = await api.get(`/moviment/${idUser}`);
-            const { moviments } = response.data
-            return;
-        }
-        movimentList()
         handleLoadItems()
     }, [navigation, cleanFilter])
 
-    const calculationStatus = async () => {
-        const amountExpanse = listMoviment?.
-            filter((item) => item.type == 'expense').
-            map((item) => Number(item.value));
-
-        const amountIncome = listMoviment?.
-            filter((item) => item.type == 'income').
-            map((item) => Number(item.value));
-
-        const expenseStatusCalc = amountExpanse?.reduce((acc, cur) => acc + cur, 0).toFixed(2);
-        const incomeStatusCalc = amountIncome?.reduce((acc, cur) => acc + cur, 0).toFixed(2);
-
-        useExpenseStatus(`R$ ${expenseStatusCalc}`);
-        useIncomeStatus(`R$ ${incomeStatusCalc}`);
+    const listCategory = async () => {
+        const response = await api.get(`/categoryList/${idUser}`);
+        const { categoryList } = response.data
+        useListCategory(categoryList)
+        return;
     }
 
     const handleLoadItems = async () => {
@@ -66,22 +46,7 @@ export default function MovimentsList({ navigation }) {
         stopLoading()
     }
 
-    const listCategory = async () => {
-        const response = await api.get(`/categoryList/${idUser}`);
-        const { categoryList } = response.data
-        useListCategory(categoryList)
-        return;
-    }
-
-    async function selectItem(categoryName) {
-        if (categoryName == 'todos') {
-            useFilterItem('');
-            useStatusFilterDate({ ...data_filter, categorySelected: categoryName })
-        } else {
-            useFilterItem(categoryName);
-            useStatusFilterDate({ ...data_filter, categorySelected: categoryName })
-        }
-    }
+    const randomColor = () => ('#' + (Math.random() * 0xFFFFFF << 0).toString(16) + '000000').slice(0, 7)
 
     const filterData = async () => {
         startLoading({ msg: 'Carregando...' })
@@ -90,6 +55,14 @@ export default function MovimentsList({ navigation }) {
             .then(response => {
                 const { data } = response
                 useListItem(data)
+                const pieData = data?.map((item) => item.value)?.map((value, index) => ({
+                    value,
+                    svg: {
+                        fill: randomColor()
+                    },
+                    key: `value-${index}`
+                }))
+                useDataPieGraphics(pieData)
                 stopLoading()
             })
             .catch(error => {
@@ -114,6 +87,16 @@ export default function MovimentsList({ navigation }) {
         useStatusFilterDate({
             ...data_filter, date_finished: text
         })
+    }
+
+    async function selectItem(categoryName) {
+        if (categoryName == 'todos') {
+            useFilterItem('');
+            useStatusFilterDate({ ...data_filter, categorySelected: categoryName })
+        } else {
+            useFilterItem(categoryName);
+            useStatusFilterDate({ ...data_filter, categorySelected: categoryName })
+        }
     }
 
     return (
@@ -204,6 +187,7 @@ export default function MovimentsList({ navigation }) {
                     </View>
                 </View>
             </View>
+            <Text> Gráficos aqui</Text>
             <Spacer size={0.5} />
             <View style={{ padding: 10, flexDirection: 'row' }}>
                 <TouchableOpacity onPress={() => {
@@ -235,44 +219,16 @@ export default function MovimentsList({ navigation }) {
                     <Text style={styles.addCategoryText}> Limpar</Text>
                 </TouchableOpacity>
             </View>
-            <Spacer size={1} />
-            <Text style={{ fontSize: 17, textAlign: 'center', fontWeight: 'bold' }}>Relatório de Transações</Text>
-            <View style={styles.list}>
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    {listMoviment == '' ? <Text style={{ fontSize: 15, textAlign: 'center', paddingTop: 40 }}> Sem Movimentações </Text> :
-                        listMoviment?.map((item) => (
-                            <TouchableOpacity key={item._id} style={styles.containerList}>
-                                <Text style={styles.date}>{formatDate({ date: item.createdAt })}</Text>
-                                <View style={styles.content}>
-                                    <Text style={styles.label}>{item.label}</Text>
-                                    <Text style={item.type == 'income' ? styles.value : styles.expenses}>
-                                        {item.type == 'income' ? `R$ ${item.value.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}` : `R$ -${item.value.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}`}
-                                    </Text>
-                                </View>
-                                <Text style={{ color: Colors.primary }}>{item.category}</Text>
-                            </TouchableOpacity>
-                        ))}
-                </ScrollView>
-            </View>
-            <Spacer size={4} />
-            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', bottom: 15, backgroundColor: Colors.primary, height: 100, borderRadius: 15 }}>
-                <TouchableOpacity style={styles.boxRevenue}>
-                    <Text style={{ color: Colors.darkGray, fontSize: 15 }}>Receita:</Text>
-                    <Text style={{ color: '#006400', fontSize: 20, fontWeight: '700' }}>{incomeStatus !== '' ? incomeStatus.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.') : '...'}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.boxSpend}>
-                    <Text style={{ color: Colors.darkGray, fontSize: 15, }}>Dispesas:</Text>
-                    <Text style={{ color: '#8B0000', fontSize: 20, fontWeight: '700' }}>{expenseStatus !== '' ? expenseStatus.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.') : '...'}</Text>
-                </TouchableOpacity>
-            </View>
-        </View >
-    )
+
+            <PieChart data={dataPieGraphics} style={{ height: 250 }}>
+            </PieChart>
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
     },
     containerHeader: {
         backgroundColor: '#06373d',
@@ -294,81 +250,8 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#fff',
     },
-    title: {
-        textAlign: 'center',
-        fontSize: 18
-    },
-    containerList: {
-        borderBottomWidth: 1,
-        borderColor: Colors.lightGray,
-        padding: 5,
-        paddingHorizontal: 10,
-    },
-    list: {
-        paddingHorizontal: 2,
-        marginTop: 10,
-        width: '100%',
-        maxHeight: 400,
-        minHeight: 400,
-    },
-    content: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginTop: 2,
-        marginBottom: 8
-    },
-    date: {
-        color: Colors.lightGray,
-        fontWeight: '600'
-    },
-    label: {
-        fontWeight: '600',
-        fontSize: 16
-
-    },
-    value: {
-        fontWeight: '600',
-        fontSize: 16,
-        color: '#006400'
-    },
-    expenses: {
-        fontWeight: '600',
-        fontSize: 16,
-        color: '#8B0000'
-    },
     listCategoryItem: {
         fontSize: 16,
         textAlign: 'center'
     },
-    addCategory: {
-        flexDirection: 'row'
-    },
-    boxRevenue: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '45%',
-        height: 60,
-        borderTopLeftRadius: 12,
-        backgroundColor: '#fff',
-        shadowColor: '#171717',
-        shadowOffset: { width: -2, height: 4 },
-        shadowOpacity: 0.5,
-        shadowRadius: 3,
-        elevation: 20,
-        bottom: 10
-    },
-    boxSpend: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '45%',
-        height: 60,
-        borderTopRightRadius: 12,
-        backgroundColor: '#fff',
-        shadowColor: '#171717',
-        shadowOffset: { width: -2, height: 4 },
-        shadowOpacity: 0.5,
-        shadowRadius: 3,
-        elevation: 20,
-        bottom: 10
-    },
-});
+})

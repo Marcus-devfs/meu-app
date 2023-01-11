@@ -30,7 +30,7 @@ export default function UserProfile() {
     <View style={styles.container}>
       <View style={styles.containerHeader}>
 
-        <View style={{ display: 'flex', marginTop: 55, height: 50, alignItems: 'center' }}>
+        <View style={{ display: 'flex', top: 60, height: 50, alignItems: 'center' }}>
           <Avatar />
           <Text style={styles.userName}>{userName}</Text>
         </View>
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: 'center',
     marginLeft: 10,
-    marginTop: 5
+    marginTop: 10
   },
   divider: {
     width: "100%",
