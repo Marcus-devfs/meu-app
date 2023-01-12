@@ -16,9 +16,6 @@ export default function Graphics({ navigation }) {
     const [listCategoryItem, useListCategory] = useState();
     const [cleanFilter, useCleanFilter] = useState();
     const [filterItem, useFilterItem] = useState('');
-    const [dataPieGraphics, useDataPieGraphics] = useState('');
-    const [showList, useShowList] = useState(true);
-    const [showDate, useShowDate] = useState(false);
     const { startLoading, stopLoading } = useContext(AppContext)
     const { name, _id } = user
     const idUser = _id
@@ -30,8 +27,12 @@ export default function Graphics({ navigation }) {
     });
 
     useEffect(() => {
+        navigation.addListener('focus', () =>
         handleLoadItems()
-    }, [navigation, cleanFilter])
+        )
+        handleLoadItems()
+    }, [navigation, cleanFilter, data_filter])
+
 
     const listCategory = async () => {
         const response = await api.get(`/categoryList/${idUser}`);
@@ -95,88 +96,29 @@ export default function Graphics({ navigation }) {
     return (
         <View style={styles.container}>
             <View style={styles.containerHeader}>
-                <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-around', alignItems: 'center' }}>
-                    <View style={!showDate ? { paddingTop: 18 } : { paddingTop: 50 }}>
+                <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'center', }}>
+                    <View style={{ paddingTop: 30, width: '98%', alignItems: 'center' }}>
                         <Text style={styles.selectionMonth}>Selecione a data: </Text>
-                        <TouchableOpacity style={{
-                            padding: 5,
-                            width: 'auto',
-                            backgroundColor: Colors.primary,
-                            marginTop: 15,
-                            borderRadius: 5,
-                            borderColor: Colors.lightGray,
-                            borderWidth: 0.5,
-                            marginBottom: 20,
-                            height: 32,
-                            justifyContent: 'center',
-
-                        }}
-                            onPress={(e) => {
-                                useShowDate(!showDate)
-                            }}>
-                            <Text style={data_filter.date_start != '' ? { textAlign: 'center', fontSize: 13, color: Colors.lightGray } : { textAlign: 'center', fontSize: 17, color: Colors.lightGray }}>{data_filter.date_start != '' ? `${data_filter.date_start} - ${data_filter.date_finished}` : '-'}</Text>
-                        </TouchableOpacity>
-                        {showDate ?
-                            <View style={{ backgroundColor: '#fff', width: 180, height: 30, top: -15, alignItems: 'center', borderRadius: 5, flexDirection: 'row' }}>
-                                <TextInput
-                                    placeholder="de:"
-                                    placeholderTextColor={Colors.darkGray}
-                                    name="date_start"
-                                    value={data_filter.date_start}
-                                    underlineColorAndroid={'rgba(0,0,0,0)'}
-                                    onChangeText={(text) => handleChangeStart(text)}
-                                    style={{ width: 80, borderWidth: 1, borderColor: Colors.darkGray, textAlign: 'center', height: 27, borderRadius: 3, marginLeft: 2 }}
-                                />
-                                <Text> -</Text>
-                                <TextInput
-                                    placeholder="até:"
-                                    placeholderTextColor={Colors.darkGray}
-                                    name="date_finished"
-                                    value={data_filter.date_finished}
-                                    underlineColorAndroid={'rgba(0,0,0,0)'}
-                                    onChangeText={(text) => handleChangeFinished(text)}
-                                    style={{ width: 80, borderWidth: 1, borderColor: Colors.darkGray, textAlign: 'center', height: 27, borderRadius: 3, marginLeft: 5 }}
-                                />
-                            </View>
-                            : ''
-                        }
-
-                    </View>
-
-                    <View style={!showList ? { paddingTop: 50.5 } : { paddingTop: 0 }}>
-                        <Text style={styles.selectionMonth}>Selecione a Categoria: </Text>
-                        {showList ?
-                            <TouchableOpacity
-                                style={{
-                                    padding: 5,
-                                    width: 'auto',
-                                    backgroundColor: Colors.primary,
-                                    marginTop: 15,
-                                    borderRadius: 5,
-                                    borderColor: Colors.lightGray,
-                                    borderWidth: 0.5,
-                                    height: 32
-                                }}
-                                onPress={() => useShowList(!showList)}>
-                                <Text style={{
-                                    textAlign: 'center',
-                                    fontSize: 17, color: Colors.lightGray
-                                }}>{filterItem == '' ? 'Todos' : filterItem}</Text>
-                            </TouchableOpacity>
-                            :
-                            <ScrollView style={{ marginTop: 15 }}>
-                                {listCategoryItem?.map((item) => (
-                                    <View key={item?._id} style={{ width: 'auto', backgroundColor: '#fff', borderColor: Colors.lightGray, borderBottomWidth: 1 }}>
-                                        <TouchableOpacity onPress={() => {
-                                            selectItem(item.categoryName)
-                                            useShowList(!showList)
-                                        }}>
-                                            <Text style={styles.listCategoryItem}>{item?.categoryName}</Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                ))}
-                            </ScrollView>
-                        }
+                        <View style={{ width: '95%', height: 30, alignItems: 'center', borderRadius: 5, flexDirection: 'row', paddingHorizontal: 5, justifyContent: 'space-between'  }}>
+                            <Text style={{ color: '#fff'}}>de: </Text>
+                            <TextInput
+                                placeholderTextColor={Colors.darkGray}
+                                name="date_start"
+                                value={data_filter.date_start}
+                                underlineColorAndroid={'rgba(0,0,0,0)'}
+                                onChangeText={(text) => handleChangeStart(text)}
+                                style={{ width: 130, borderWidth: 1, borderColor: Colors.darkGray, textAlign: 'center', height: 27, borderRadius: 5, marginLeft: 2, backgroundColor: '#fff' }}
+                            />
+                            <Text style={{ color: '#fff' }}>até: </Text>
+                            <TextInput
+                                placeholderTextColor={Colors.darkGray}
+                                name="date_finished"
+                                value={data_filter.date_finished}
+                                underlineColorAndroid={'rgba(0,0,0,0)'}
+                                onChangeText={(text) => handleChangeFinished(text)}
+                                style={{ backgroundColor: '#fff', width: 130, borderWidth: 1, borderColor: Colors.darkGray, textAlign: 'center', height: 27, borderRadius: 5, marginLeft: 2 }}
+                            />
+                        </View>
                     </View>
                 </View>
             </View>
@@ -195,10 +137,8 @@ export default function Graphics({ navigation }) {
                     <Text style={{ fontWeight: 'bold', textAlign: 'center', justifyContent: 'center' }}>Filtrar</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={{flexDirection: 'row'}} onPress={() => {
+                <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => {
                     useFilterItem('')
-                    useShowDate(false)
-                    useShowList(true)
                     useCleanFilter(!cleanFilter)
                     useStatusFilterDate({
                         date_start: '',
@@ -218,26 +158,32 @@ export default function Graphics({ navigation }) {
                     y="value"
                     colorScale={"green"}
                     innerRadius={45}
-                    animate={{
-                        duration: 200,
-                        easing: "back"
-                    }}
+                    // animate={{
+                    //     duration: 200,
+                    //     easing: "back"
+                    // }}
                     width={350}
                     height={320}
                 />
             </View>
 
-            <View style={{height: 200}}>
+            <View style={{ height: 200, paddingHorizontal: 12 }}>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    {listMoviment == '' ? <Text style={{ fontSize: 15, textAlign: 'center', paddingTop: 40 }}> Sem Movimentações </Text> :
-                        listMoviment?.map((item) => (
-                            <TouchableOpacity key={item._id} style={styles.containerList}>
-                                <Text style={styles.date}>{formatDate({ date: item.createdAt })}</Text>
-                                <View style={styles.content}>
-                                    <Text style={styles.label}>{item.label}</Text>
-                                    <Text style={item.type == 'income' ? styles.value : styles.expenses}>
-                                        {item.type == 'income' ? `R$ ${item.value.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}` : `R$ -${item.value.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}`}
-                                    </Text>
+                    {listCategoryItem == '' ? <Text style={{ fontSize: 15, textAlign: 'center', paddingTop: 40 }}> Sem Movimentações </Text> :
+                        listCategoryItem?.map((item) => (
+                            <TouchableOpacity key={item._id} style={styles.containerList}
+                                onPress={() => {
+                                    selectItem(item.categoryName)
+                                }}>
+                                <View style={{ height: '100%', width: 5, }} backgroundColor={randomColor()}></View>
+                                <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between', paddingHorizontal: 12 }}>
+                                    <Text style={styles.label}>{item.categoryName}</Text>
+                                    <Text style={{ fontSize: 15 }}>R$ {
+                                        listMoviment?.filter((moviments) => moviments.category == item.categoryName)
+                                            .filter((item) => item.type == 'expense')
+                                            .map((list) => list.value)
+                                            .reduce((acc, cur) => acc += cur, 0).toFixed(2)
+                                    }</Text>
                                 </View>
                             </TouchableOpacity>
                         ))}
@@ -261,9 +207,9 @@ const styles = StyleSheet.create({
     },
     selectionMonth: {
         textAlign: 'center',
-        top: 10,
-        fontSize: 16,
+        fontSize: 17,
         color: '#fff',
+        bottom: 17
     },
     selectionDate: {
         textAlign: 'center',
@@ -276,34 +222,34 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     containerList: {
-        padding: 7,
-        paddingHorizontal: 20,
+        height: 60,
+        // paddingHorizontal: 10,
         flex: 1,
         marginTop: 8,
+        alignItems: 'center',
         backgroundColor: '#fff',
         shadowColor: '#171717',
         shadowOffset: { width: -2, height: 4 },
         shadowOpacity: 0.2,
         shadowRadius: 3,
         elevation: 5,
-      },
-      content: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
+    },
+    content: {
+        justifyContent: 'flex-end',
         marginTop: 2,
         marginBottom: 8
-      },
-      date: {
+    },
+    date: {
         color: Colors.lightGray,
         fontWeight: '600'
-      },
-      label: {
-        fontWeight: '600',
-        fontSize: 16
-      },
-      value: {
+    },
+    label: {
+        fontSize: 17
+    },
+    value: {
         fontWeight: '600',
         fontSize: 16,
         color: '#006400'
-      },
+    },
 })
