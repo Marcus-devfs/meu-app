@@ -28,10 +28,10 @@ export default function Graphics({ navigation }) {
 
     useEffect(() => {
         navigation.addListener('focus', () =>
-        handleLoadItems()
+            handleLoadItems()
         )
         handleLoadItems()
-    }, [navigation, cleanFilter, data_filter])
+    }, [navigation, cleanFilter])
 
 
     const listCategory = async () => {
@@ -99,8 +99,8 @@ export default function Graphics({ navigation }) {
                 <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'center', }}>
                     <View style={{ paddingTop: 30, width: '98%', alignItems: 'center' }}>
                         <Text style={styles.selectionMonth}>Selecione a data: </Text>
-                        <View style={{ width: '95%', height: 30, alignItems: 'center', borderRadius: 5, flexDirection: 'row', paddingHorizontal: 5, justifyContent: 'space-between'  }}>
-                            <Text style={{ color: '#fff'}}>de: </Text>
+                        <View style={{ width: '95%', height: 30, alignItems: 'center', borderRadius: 5, flexDirection: 'row', paddingHorizontal: 5, justifyContent: 'space-between' }}>
+                            <Text style={{ color: '#fff' }}>de: </Text>
                             <TextInput
                                 placeholderTextColor={Colors.darkGray}
                                 name="date_start"
@@ -156,11 +156,11 @@ export default function Graphics({ navigation }) {
                     data={listMoviment}
                     x="label"
                     y="value"
-                    colorScale={"green"}
+                    colorScale={'green'}
                     innerRadius={45}
+                    padding={65}
                     // animate={{
-                    //     duration: 200,
-                    //     easing: "back"
+                    //     duration: 2000,
                     // }}
                     width={350}
                     height={320}
@@ -171,11 +171,8 @@ export default function Graphics({ navigation }) {
                 <ScrollView showsVerticalScrollIndicator={false}>
                     {listCategoryItem == '' ? <Text style={{ fontSize: 15, textAlign: 'center', paddingTop: 40 }}> Sem Movimentações </Text> :
                         listCategoryItem?.map((item) => (
-                            <TouchableOpacity key={item._id} style={styles.containerList}
-                                onPress={() => {
-                                    selectItem(item.categoryName)
-                                }}>
-                                <View style={{ height: '100%', width: 5, }} backgroundColor={randomColor()}></View>
+                            <TouchableOpacity key={item._id} style={styles.containerList}>
+                                <View style={{ height: '100%', width: 5, backgroundColor: item.color}}></View>
                                 <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between', paddingHorizontal: 12 }}>
                                     <Text style={styles.label}>{item.categoryName}</Text>
                                     <Text style={{ fontSize: 15 }}>R$ {
