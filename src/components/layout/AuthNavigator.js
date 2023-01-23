@@ -16,6 +16,7 @@ import SpendControll from '../screens/dashboard/spend';
 import DepositControll from '../screens/dashboard/deposit';
 import MyData from '../screens/users/myData';
 import Graphics from '../screens/graphics/graphics';
+import MovimentsEdit from '../screens/dashboard/movimentsEdit';
 
 
 
@@ -76,6 +77,10 @@ const isLoggedInStack =
             name="graphics"
             component={Graphics}
             options={{ headerShown: false, }} />
+        <Stack.Screen
+            name="movimentEdit"
+            component={MovimentsEdit}
+            options={{ headerShown: false, gestureDirection: 'vertical' }} />
     </>
 
 

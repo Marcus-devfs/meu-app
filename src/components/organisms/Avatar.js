@@ -18,7 +18,7 @@ export default function Avatar() {
     const navigation = useNavigation()
 
     return (
-        <TouchableOpacity style={styles.containerAvatar} onPress={() => navigation.navigate('Profile')}>
+        <TouchableOpacity style={styles.containerAvatar} onPress={() => navigation.navigate('myData')}>
             <FontAwesome5 name="user" size={32} color={'#fff'}></FontAwesome5>
             {/* <Image style={styles.avatarImg}
 
