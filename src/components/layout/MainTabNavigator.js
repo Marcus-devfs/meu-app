@@ -37,13 +37,13 @@ export const TabNavigator = ({ navigation }) => {
                         return (<FontAwesome5 name='exchange-alt' size={30} color={focused ? Colors.primary : Colors.primary - 0.5} style={styles.tabConfig} />);
                     }
                 }} />
-            <Tab.Screen name="Gráficos" component={Graphics}
+            {/* <Tab.Screen name="Gráficos" component={Graphics}
                 options={{
                     tabBarIcon: ({ focused, color, size }) => {
                         return (<FontAwesome5 name='chart-bar' size={30} color={focused ? Colors.primary : Colors.primary - 0.5} style={styles.tabConfig} />);
 
                     }
-                }} />
+                }} /> */}
             <Tab.Screen name="Perfil" component={UserProfile}
                 options={{
                     tabBarIcon: ({ focused, color, size }) => {

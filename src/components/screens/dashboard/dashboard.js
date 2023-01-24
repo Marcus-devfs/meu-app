@@ -26,6 +26,9 @@ export default function Dashboard({ navigation }) {
   const { user } = useContext(AuthContext)
   const { name, _id } = user
   const userName = name.split(" ")[0];
+  const [porcentIncome, usePorentIncome] = useState("");
+  const [porcentExpense, usePorcentExpense] = useState("");
+
 
   useEffect(() => {
     navigation.addListener('focus', () =>
@@ -45,10 +48,14 @@ export default function Dashboard({ navigation }) {
     //dados para grafico
     const expenseGraphic = Number(amountExpanse?.reduce((acc, cur) => acc + cur, 0));
     const incomeGraphic = Number(amountIncome?.reduce((acc, cur) => acc + cur, 0));
+    const incomeGraphicPorcent = `${(incomeGraphic / (incomeGraphic + expenseGraphic) * 100).toString().split(".")[0]}%`
+    const expenseGraphicPorcent = `${(expenseGraphic / (incomeGraphic + expenseGraphic) * 100).toString().split(".")[0]}%`
+    usePorentIncome(incomeGraphicPorcent)
+    usePorcentExpense(expenseGraphicPorcent)
     useExpenseGraphicData(expenseGraphic)
     useIncomeGraphicData(incomeGraphic)
-    useDataGraphic([income = { label: 'receita', value: incomeGraphic, color: 'green' },
-    expense = { label: 'dispesas', value: expenseGraphic, color: 'red' }])
+    useDataGraphic([income = { label: porcentIncome, value: incomeGraphic, color: 'green', },
+    expense = { label: porcentExpense , value: expenseGraphic, color: 'red', }])
 
     //dados para status dash
     const expenseStatusCalc = amountExpanse?.reduce((acc, cur) => acc + cur, 0).toFixed(2);
@@ -58,7 +65,7 @@ export default function Dashboard({ navigation }) {
     useIncomeStatus(`R$ ${incomeStatusCalc}`);
     useValueTotal(`R$ ${valueTotalStatus}`);
 
-  }, [listMoviment])
+  }, [listMoviment, navigation])
 
   const handleLoadItems = async () => {
     startLoading({ msg: 'Carregando...' })
@@ -109,75 +116,62 @@ export default function Dashboard({ navigation }) {
           </TouchableOpacity>
         </View>
       </View>
-      <ScrollView>
+
+      <ScrollView style={{height: '100%'}}>
         <View style={styles.viewGraphic}>
           <VictoryPie
             data={dataGraphic}
-            x="label"
+            x={dataGraphic.percent}
             y="value"
             colorScale={dataGraphic.map((item) => item.color)}
             innerRadius={30}
             padding={35}
             width={350}
             height={200}
+            labels={({ datum }) => datum.x}
             labelPosition={({ index }) => index
               ? "centroid"
               : "endAngle"
             }
-            style={{ labels: { fill: "black", fontSize: 15, fontWeight: "bold" } }}
+            style={{ labels: { fill: "black", fontSize: 15, } }}
           />
+          <View style={{ flexDirection: 'row', width: '50%', justifyContent: 'space-around', bottom: 15 }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+              <View style={{ backgroundColor: 'red', width: 8, height: 5, marginRight: 5 }}></View>
+              <Text style={{}}>Dispesa</Text>
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={{ backgroundColor: 'green', width: 8, height: 5, marginRight: 5 }}></View>
+              <Text>Receita</Text>
+            </View>
+          </View>
+
         </View>
+
         <Spacer size={5} />
 
         <View style={{ width: '100%', alignItems: 'center' }}>
           <TouchableOpacity style={{ paddingVertical: 20, flexDirection: 'row', width: '90%', borderRadius: 5, borderWidth: 1, borderColor: Colors.lightGray, justifyContent: 'space-between' }}
             onPress={() => navigation.navigate('movimentEdit')}>
-            <Text style={{ marginLeft: 20 }}>Ultimas Movimentação</Text>
+            <Text style={{ marginLeft: 20 }}>Ultimas Movimentações</Text>
             <Ionicons name='chevron-forward' color={'#A9A9A9'} size={20} />
           </TouchableOpacity>
         </View>
 
-        {/* <View style={styles.bodyDash}>
+        <Spacer size={2} />
 
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Text style={{ fontWeight: 'bold', fontSize: 18, margin: 10, color: Colors.darkGray, }}>Ultimas movimentações</Text>
-          <TouchableOpacity style={{ marginRight: 20 }} onPress={() => setShowButton(!showButton)}>
-            <Ionicons name="trash" size={25} color={Colors.darkGray}></Ionicons>
+        <View style={{ width: '100%', alignItems: 'center' }}>
+          <TouchableOpacity style={{ paddingVertical: 20, flexDirection: 'row', width: '90%', borderRadius: 5, borderWidth: 1, borderColor: Colors.lightGray, justifyContent: 'space-between' }}
+            onPress={() => navigation.navigate('graphics')}>
+            <Text style={{ marginLeft: 20 }}>Dispesas por categoria</Text>
+            <Ionicons name='chevron-forward' color={'#A9A9A9'} size={20} />
           </TouchableOpacity>
-          {showButton ? (
-            <TouchableOpacity style={{ marginRight: 10 }} onPress={() => setShowButton(!showButton)}>
-              <Ionicons name="close" size={25} color={Colors.darkGray}></Ionicons>
-            </TouchableOpacity>) : ''}
         </View>
-
-        <View style={styles.list}>
-          <ScrollView showsVerticalScrollIndicator={false}>
-            {listMoviment == '' ? <Text style={{ fontSize: 15, textAlign: 'center', paddingTop: 40 }}> Sem Movimentações </Text> :
-              listMoviment?.map((item) => (
-                <TouchableOpacity key={item._id} style={styles.containerList}>
-                  <Text style={styles.date}>{formatDate({ date: item.createdAt })}</Text>
-                  <View style={styles.content}>
-                    <Text style={styles.label}>{item.label}</Text>
-                    <Text style={item.type == 'income' ? styles.value : styles.expenses}>
-                      {item.type == 'income' ? `R$ ${item.value.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}` : `R$ -${item.value.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}`}
-                    </Text>
-                    {showButton ? (
-                      <TouchableOpacity style={styles.buttonDelete} onPress={() => deleteMoviment(item._id)}>
-                        <Text style={{ color: '#fff', textAlign: 'center', justifyContent: 'center' }}>Apagar</Text>
-                      </TouchableOpacity>
-                    ) : ""}
-                  </View>
-                </TouchableOpacity>
-              ))}
-          </ScrollView>
-        </View>
-      </View> */}
-
         <StatusBar style="auto" />
       </ScrollView >
       {
         showButtonAddMoviment ?
-          <View style={{ alignItems: 'flex-end' }
+          <View style={{ alignItems: 'flex-end', bottom: 50 }
           } >
             <View style={{ bottom: 15 }}>
               <TouchableOpacity style={{ backgroundColor: Colors.primary, paddingHorizontal: 10, marginBottom: 5, marginRight: 5, borderRadius: 5, paddingVertical: 4 }}
@@ -194,7 +188,7 @@ export default function Dashboard({ navigation }) {
           : ''
       }
 
-      <View style={showButtonAddMoviment ? { alignItems: 'flex-end', marginRight: 20, top: -10 } : { alignItems: 'flex-end', marginRight: 20, top: 45 }}>
+      <View style={showButtonAddMoviment ? { alignItems: 'flex-end', marginRight: 20, bottom: 60 } : { alignItems: 'flex-end', marginRight: 20, bottom: 60 }}>
         <TouchableOpacity style={{
           alignItems: 'center',
           justifyContent: 'center',
@@ -268,18 +262,13 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     elevation: 20,
   },
-  bodyDash: {
-    width: '100%',
-    minHeight: 230,
-    maxHeight: 230
-  },
   viewGraphic: {
     // backgroundColor: 'rgba(0, 102, 0, 0.2)',
     alignItems: 'center',
     borderRadius: 10,
     justifyContent: 'center',
-    maxHeight: 200,
-    minHeight: 200,
+    // maxHeight: 200,
+    // minHeight: 200,
     width: '92%',
     marginLeft: '4%',
     top: 20,
