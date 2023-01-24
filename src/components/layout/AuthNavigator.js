@@ -81,6 +81,7 @@ const isLoggedInStack =
             name="movimentEdit"
             component={MovimentsEdit}
             options={{ headerShown: false, gestureDirection: 'vertical' }} />
+
     </>
 
 
