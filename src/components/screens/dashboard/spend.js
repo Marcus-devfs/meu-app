@@ -18,14 +18,16 @@ export default function SpendControll() {
         const handleLoadItems = async () => {
             startLoading({ msg: 'Carregando...' })
             await listCategory()
+            movimentList()
             stopLoading()
         }
         handleLoadItems()
-    }, [listCategoryItem])
+    }, [listCategoryItem, listMoviment])
 
     const [load, setLoad] = useState(true)
     const { user } = useContext(AuthContext)
     const [listCategoryItem, useListCategory] = useState();
+    const [listMoviment, useListItem] = useState();
     const [categorySelected, useCategorySelected] = useState();
     const [showList, useShowList] = useState(false);
     const [showCreateCategory, useShowCreateCategory] = useState(false);
@@ -45,6 +47,13 @@ export default function SpendControll() {
         user: idUser,
         category: categorySelected,
     })
+
+    const movimentList = async () => {
+        const response = await api.get(`/moviment/${user._id}`);
+        const { moviments } = response.data
+        useListItem(moviments);
+        return;
+    }
 
     const handleChange = (name, value) => {
         if (name == 'createdAt') {
@@ -93,6 +102,10 @@ export default function SpendControll() {
         try {
             const { createdAt, value, label } = spend
 
+            const valueBeforeCategory = listMoviment?.filter((item) => item.category == deposit.category).map((item) => (item.value)).reduce((acc, cur) => acc + cur, 0)
+            const valueStatusCategory = Number(valueBeforeCategory) + Number(spend.value)
+
+
             if (!label || label == "") { return Alert.alert("MyBank", "Dados preenchidos de forma inválida.") }
             if (!createdAt || createdAt == "") { return Alert.alert("MyBank", "Data preenchida de forma inválida") }
             if (!value) {
@@ -100,8 +113,16 @@ export default function SpendControll() {
                 return
             }
             else {
-
                 await createMovimentSpend(spend)
+                await api.patch(`/categoryList/${idUser}`, {
+                    category, valueStatusCategory
+                })
+                    .then(response => {
+                        console.log(response.data)
+                    })
+                    .catch(error => {
+                        console.log(error.dados)
+                    })
                 navigation.goBack();
             }
 

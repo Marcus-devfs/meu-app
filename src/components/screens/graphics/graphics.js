@@ -34,6 +34,10 @@ export default function Graphics({ navigation }) {
     }, [navigation, cleanFilter])
 
 
+    useEffect(() => {
+
+    }, [])
+
     const listCategory = async () => {
         const response = await api.get(`/categoryList/${idUser}`);
         const { categoryList } = response.data
@@ -153,17 +157,18 @@ export default function Graphics({ navigation }) {
             </View>
             <View style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff' }}>
                 <VictoryPie
-                    data={listMoviment}
-                    x="label"
+                    data={listCategoryItem}
+                    x={"categoryName"}
                     y="value"
-                    colorScale={'green'}
+                    colorScale={listCategoryItem?.map((item) => item.color)}
                     innerRadius={45}
                     padding={65}
-                    // animate={{
-                    //     duration: 2000,
-                    // }}
                     width={350}
                     height={320}
+                    labelPosition={({ index }) => index
+                        ? "centroid"
+                        : "endAngle"
+                    }
                 />
             </View>
 
@@ -172,12 +177,11 @@ export default function Graphics({ navigation }) {
                     {listCategoryItem == '' ? <Text style={{ fontSize: 15, textAlign: 'center', paddingTop: 40 }}> Sem Movimentações </Text> :
                         listCategoryItem?.map((item) => (
                             <TouchableOpacity key={item._id} style={styles.containerList}>
-                                <View style={{ height: '100%', width: 5, backgroundColor: item.color}}></View>
+                                <View style={{ height: '100%', width: 5, backgroundColor: item.color }}></View>
                                 <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between', paddingHorizontal: 12 }}>
                                     <Text style={styles.label}>{item.categoryName}</Text>
                                     <Text style={{ fontSize: 15 }}>R$ {
                                         listMoviment?.filter((moviments) => moviments.category == item.categoryName)
-                                            .filter((item) => item.type == 'expense')
                                             .map((list) => list.value)
                                             .reduce((acc, cur) => acc += cur, 0).toFixed(2)
                                     }</Text>
