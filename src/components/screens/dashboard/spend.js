@@ -154,7 +154,7 @@ export default function SpendControll() {
     return (
         <View style={styles.container}>
             <View style={{ alignItems: 'center', bottom: 40 }}>
-                <Text style={styles.title}>Adicionar Dispesas</Text>
+                <Text style={styles.title}>Adicionar Despesa</Text>
                 <View>
                     <FontAwesome5 name="hand-holding-usd" size={65} color={'#FFF'}></FontAwesome5>
 

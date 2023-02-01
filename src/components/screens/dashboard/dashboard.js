@@ -20,6 +20,7 @@ export default function Dashboard({ navigation }) {
   const [incomeStatus, useIncomeStatus] = useState("");
   const [expenseStatus, useExpenseStatus] = useState("");
   const [showButton, setShowButton] = useState(false);
+  const [showInvestment, setShowInvestment] = useState(true);
   const [showButtonAddMoviment, setShowButtonAddMoviment] = useState(false);
   const [listMoviment, useListItem] = useState();
   const { startLoading, stopLoading, loading } = useContext(AppContext)
@@ -54,8 +55,8 @@ export default function Dashboard({ navigation }) {
     usePorcentExpense(expenseGraphicPorcent)
     useExpenseGraphicData(expenseGraphic)
     useIncomeGraphicData(incomeGraphic)
-    useDataGraphic([income = { label: porcentIncome, value: incomeGraphic, color: 'green', },
-    expense = { label: porcentExpense , value: expenseGraphic, color: 'red', }])
+    useDataGraphic([income = { label: incomeGraphicPorcent, value: incomeGraphic, color: 'green', },
+    expense = { label: expenseGraphicPorcent, value: expenseGraphic, color: 'red', }])
 
     //dados para status dash
     const expenseStatusCalc = amountExpanse?.reduce((acc, cur) => acc + cur, 0).toFixed(2);
@@ -111,13 +112,13 @@ export default function Dashboard({ navigation }) {
             <Text style={{ color: '#006400', fontSize: 20, fontWeight: '700' }}>{incomeStatus !== '' ? incomeStatus.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.') : '...'}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.boxSpend}>
-            <Text style={{ color: Colors.darkGray, fontSize: 15, }}>Dispesas:</Text>
+            <Text style={{ color: Colors.darkGray, fontSize: 15, }}>Despesa:</Text>
             <Text style={{ color: '#8B0000', fontSize: 20, fontWeight: '700' }}>{expenseStatus !== '' ? expenseStatus.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.') : '...'}</Text>
           </TouchableOpacity>
         </View>
       </View>
 
-      <ScrollView style={{height: '100%'}}>
+      <ScrollView style={{ height: '100%', marginBottom: 20 }}>
         <View style={styles.viewGraphic}>
           <VictoryPie
             data={dataGraphic}
@@ -138,7 +139,7 @@ export default function Dashboard({ navigation }) {
           <View style={{ flexDirection: 'row', width: '50%', justifyContent: 'space-around', bottom: 15 }}>
             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
               <View style={{ backgroundColor: 'red', width: 8, height: 5, marginRight: 5 }}></View>
-              <Text style={{}}>Dispesa</Text>
+              <Text style={{}}>Despesa</Text>
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <View style={{ backgroundColor: 'green', width: 8, height: 5, marginRight: 5 }}></View>
@@ -163,10 +164,45 @@ export default function Dashboard({ navigation }) {
         <View style={{ width: '100%', alignItems: 'center' }}>
           <TouchableOpacity style={{ paddingVertical: 20, flexDirection: 'row', width: '90%', borderRadius: 5, borderWidth: 1, borderColor: Colors.lightGray, justifyContent: 'space-between' }}
             onPress={() => navigation.navigate('graphics')}>
-            <Text style={{ marginLeft: 20 }}>Dispesas por categoria</Text>
+            <Text style={{ marginLeft: 20 }}>Movimentações por categoria</Text>
             <Ionicons name='chevron-forward' color={'#A9A9A9'} size={20} />
           </TouchableOpacity>
         </View>
+
+        <Spacer size={2} />
+
+        <View style={{ width: '100%', alignItems: 'center' }}>
+          <TouchableOpacity onPress={() => { navigation.navigate('investiment')}}
+            style={showInvestment ? { paddingVertical: 20, flexDirection: 'row', width: '90%', borderRadius: 5, borderWidth: 1, borderColor: Colors.lightGray, justifyContent: 'space-between' } : { paddingVertical: 20, width: '90%', borderRadius: 5, borderWidth: 1, borderColor: Colors.lightGray }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
+              <Text style={showInvestment ? { marginLeft: 20 } : { bottom: 10, marginLeft: 10, color: Colors.lightGray }}>Investimentos</Text>
+              <Ionicons name='arrow-down' color={'#A9A9A9'} size={20} onPress={() => {
+                setShowInvestment(!showInvestment)
+                console.log(showInvestment)
+              }} />
+            </View>
+            {!showInvestment ?
+              <View>
+                <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
+                  <Text style={{ marginLeft: 20 }}>Valor Investido:</Text>
+                  <Text style={{ marginLeft: 30, justifyContent: 'flex-end', fontSize: 25, top: 5, color: 'green', fontWeight: 'bold' }}>R$ 5000,00</Text>
+                </View>
+                <TouchableOpacity style={{alignItems: 'center'}} onPress={()=> {navigation.navigate('investiment')}}>
+                  <Text style={{ borderBottomWidth: 1, borderStyle: 'dashed', width: '60%',  
+                    color: Colors.primary, textAlign: 'center', top: 15 }}>
+                    detalhes dos Investimentos
+                  </Text>
+                </TouchableOpacity>
+              </View>
+
+              :
+              ''}
+          </TouchableOpacity>
+
+        </View>
+
+        <Spacer size={8} />
+
         <StatusBar style="auto" />
       </ScrollView >
       {

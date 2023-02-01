@@ -101,7 +101,7 @@ export default function MovimentsEdit({ navigation }) {
 
                             <TouchableOpacity style={{ backgroundColor: '#B22222', paddingHorizontal: 10, marginRight: 5, borderRadius: 5, paddingVertical: 4 }}
                                 onPress={() => navigation.navigate('spendControll')}>
-                                <Text style={{ color: '#fff' }}>Dispesas -</Text>
+                                <Text style={{ color: '#fff' }}>Despesas -</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

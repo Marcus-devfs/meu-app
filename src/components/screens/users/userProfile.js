@@ -47,7 +47,7 @@ export default function UserProfile() {
         <Ionicons name='chevron-forward' color={'#A9A9A9'} size={16} />
       </TouchableOpacity>
       <Divider style={styles.divider} />
-      <TouchableOpacity style={styles.menuItem}>
+      <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('aboutUs')}>
         <Text style={styles.menuItemText}>Sobre o app</Text>
         <Ionicons name='chevron-forward' color={'#A9A9A9'} size={16} />
       </TouchableOpacity>
