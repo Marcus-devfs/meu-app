@@ -255,13 +255,13 @@ export default function MovimentsList({ navigation }) {
                 </ScrollView>
             </View>
             <Spacer size={4} />
-            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', bottom: 15, backgroundColor: Colors.primary, height: 100, borderRadius: 15 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', bottom: 15, height: 100, borderRadius: 15 }}>
                 <TouchableOpacity style={styles.boxRevenue}>
                     <Text style={{ color: Colors.darkGray, fontSize: 15 }}>Receita:</Text>
                     <Text style={{ color: '#006400', fontSize: 20, fontWeight: '700' }}>{incomeStatus !== '' ? incomeStatus.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.') : '...'}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.boxSpend}>
-                    <Text style={{ color: Colors.darkGray, fontSize: 15, }}>Dispesas:</Text>
+                    <Text style={{ color: Colors.darkGray, fontSize: 15, }}>Despesas:</Text>
                     <Text style={{ color: '#8B0000', fontSize: 20, fontWeight: '700' }}>{expenseStatus !== '' ? expenseStatus.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.') : '...'}</Text>
                 </TouchableOpacity>
             </View>

@@ -17,6 +17,8 @@ import DepositControll from '../screens/dashboard/deposit';
 import MyData from '../screens/users/myData';
 import Graphics from '../screens/graphics/graphics';
 import MovimentsEdit from '../screens/dashboard/movimentsEdit';
+import Investiments from '../screens/investiments/InvestimentsList';
+import AboutUs from '../screens/users/About';
 
 
 
@@ -81,10 +83,15 @@ const isLoggedInStack =
             name="movimentEdit"
             component={MovimentsEdit}
             options={{ headerShown: false, gestureDirection: 'vertical' }} />
-
+        <Stack.Screen
+            name="investiment"
+            component={Investiments}
+            options={{ headerShown: false, gestureDirection: 'vertical' }} />
+        <Stack.Screen
+            name="aboutUs"
+            component={AboutUs}
+            options={{ headerShown: false, gestureDirection: 'vertical' }} />
     </>
-
-
 
 
 
