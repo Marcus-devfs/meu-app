@@ -101,8 +101,9 @@ export default function SpendControll() {
 
         try {
             const { createdAt, value, label } = spend
+            console.log(spend)
 
-            const valueBeforeCategory = listMoviment?.filter((item) => item.category == deposit.category).map((item) => (item.value)).reduce((acc, cur) => acc + cur, 0)
+            const valueBeforeCategory = listMoviment?.filter((item) => item.category == spend.category).map((item) => (item.value)).reduce((acc, cur) => acc + cur, 0)
             const valueStatusCategory = Number(valueBeforeCategory) + Number(spend.value)
 
 
@@ -113,6 +114,7 @@ export default function SpendControll() {
                 return
             }
             else {
+
                 await createMovimentSpend(spend)
                 await api.patch(`/categoryList/${idUser}`, {
                     category, valueStatusCategory
@@ -134,6 +136,7 @@ export default function SpendControll() {
 
     const handleCreateNewCategory = async () => {
         const { categoryName } = addCategoryList
+
 
         if (categoryName == '' || categoryName == null || categoryName == undefined) {
             Alert.alert('MyBank', 'Por favor, inserir um nome valido!')
