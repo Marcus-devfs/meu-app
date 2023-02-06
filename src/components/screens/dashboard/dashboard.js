@@ -10,7 +10,7 @@ import { Spacer } from '../../atoms/Spacer';
 import Avatar from '../../organisms/Avatar';
 import { formatDate } from '../../../context/validadores';
 import { VictoryPie } from "victory-native"
-import filtro from '../../../interface/month-select';
+import filtro, { listMonths } from '../../../interface/month-select';
 
 export default function Dashboard({ navigation }) {
 
@@ -23,7 +23,7 @@ export default function Dashboard({ navigation }) {
   const [showButton, setShowButton] = useState(false);
   const [showInvestment, setShowInvestment] = useState(true);
   const [showButtonAddMoviment, setShowButtonAddMoviment] = useState(false);
-  const [listMoviment, useListItem] = useState();
+  const [listFilterMoviments, useListFilterMoviments] = useState();
   const { startLoading, stopLoading, loading } = useContext(AppContext)
   const { user } = useContext(AuthContext)
   const { name, _id } = user
@@ -31,20 +31,20 @@ export default function Dashboard({ navigation }) {
   const [porcentIncome, usePorentIncome] = useState("");
   const [porcentExpense, usePorcentExpense] = useState("");
   const [monthSelect, useMonthSelect] = useState('fevereiro');
-  const [dataFilter, useDataFilter] = useState()
+  const [showMonth, useShowMonth] = useState(false);
 
   useEffect(() => {
     navigation.addListener('focus', () =>
       handleLoadItems()
     )
-  }, [navigation, listMoviment])
+  }, [navigation, listFilterMoviments, monthSelect])
 
   useEffect(() => {
-    const amountExpanse = listMoviment?.
+    const amountExpanse = listFilterMoviments?.
       filter((item) => item.type == 'expense').
       map((item) => Number(item.value));
 
-    const amountIncome = listMoviment?.
+    const amountIncome = listFilterMoviments?.
       filter((item) => item.type == 'income').
       map((item) => Number(item.value));
 
@@ -67,44 +67,35 @@ export default function Dashboard({ navigation }) {
     useExpenseStatus(`R$ ${expenseStatusCalc}`);
     useIncomeStatus(`R$ ${incomeStatusCalc}`);
     useValueTotal(`R$ ${valueTotalStatus}`);
+    filterMonth()
 
-  }, [listMoviment, navigation])
+  }, [listFilterMoviments, navigation])
 
   const handleLoadItems = async () => {
     startLoading({ msg: 'Carregando...' })
-    await movimentList()
     setShowButtonAddMoviment(false)
     stopLoading()
   }
 
-  const movimentList = async () => {
-    const response = await api.get(`/moviment/${user._id}`);
-    const { moviments } = response.data
-    useListItem(moviments);
-    return;
-  }
 
   const filterMonth = async () => {
     const filtrando = await filtro(monthSelect)
-    console.log('-----',filtrando)
     await api.post('/movimentsList', filtrando)
       .then(response => {
         const { data } = response
-        console.log(data)
+        startLoading({ msg: 'Carregando...' })
+        useListFilterMoviments(data)
+        stopLoading()
+
       })
       .catch(error => {
         console.log(error)
       })
   }
 
-  async function deleteMoviment(_id) {
-    await api.delete(`/moviment/${_id}`);
-    const newList = listMoviment.filter((item) => item._id !== _id);
-    useListItem(newList);
-
-    Alert.alert('MyBank', 'Movimentação deletada!')
+  async function selectItem(month) {
+    useMonthSelect(month);
   }
-
 
   return (
 
@@ -114,19 +105,36 @@ export default function Dashboard({ navigation }) {
           <Avatar />
           <Text style={styles.userName}>{userName}</Text>
         </View>
-        <View style={{ marginTop: 50 }}>
-          {monthSelect ?
-            <Text style={{ color: Colors.lightGray, display: 'flex', marginLeft: 100, fontSize: 17 }}> Janeiro ^</Text>
+        <View style={{ marginTop: 45, flex: 1, alignItems: 'center', right: 28 }}>
+          {!showMonth ?
+            <TouchableOpacity style={{ borderColor: Colors.lightGray, width: 100, alignItems: 'center', flexDirection: 'row', justifyContent: 'space-around' }} onPress={() => {
+              useShowMonth(!showMonth)
+            }}>
+              <Text style={{ color: Colors.lightGray, display: 'flex', fontSize: 17 }}> {monthSelect ? monthSelect : 'Mês'}</Text>
+              <Ionicons name='chevron-forward' color={'#A9A9A9'} size={20} />
+            </TouchableOpacity>
             :
-            ''}
-          <Text style={{ color: Colors.primaryText, top: 10, display: 'flex', height: 50, fontSize: 30, marginLeft: 45, fontWeight: '700' }}>
+            <ScrollView horizontal={true} style={{ width: 200, minHeight: 25, borderWidth: 1, borderColor: Colors.lightGray }}>
+              {listMonths?.map((item) => (
+                <View key={item.id} style={{ backgroundColor: Colors.primary, borderColor: Colors.lightGray, width: 100, alignItems: 'center' }}>
+                  <TouchableOpacity onPress={() => {
+                    selectItem(item.month)
+                    useShowMonth(!showMonth)
+                  }}>
+                    <Text style={{ color: Colors.lightGray, fontSize: 18, fontWeight: '500' }}>{item.month}</Text>
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </ScrollView>
+          }
+          <Text style={{ color: Colors.primaryText, top: 10, display: 'flex', height: 50, fontSize: 30, fontWeight: '700' }}>
             {valueTotal !== '' || valueTotal !== undefined ? valueTotal : '...'}</Text>
-          <Text style={{ color: Colors.lightGray, display: 'flex', height: 30, marginLeft: 80, }}> Saldo em conta</Text>
+          <Text style={{ color: Colors.lightGray, display: 'flex', height: 30, }}> Saldo em conta</Text>
         </View>
       </View>
       <View style={styles.containerDash}>
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', }}>
-          <TouchableOpacity style={styles.boxRevenue} onPress={() => { filterMonth() }}>
+          <TouchableOpacity style={styles.boxRevenue}>
             <Text style={{ color: Colors.darkGray, fontSize: 15 }}>Receita:</Text>
             <Text style={{ color: '#006400', fontSize: 20, fontWeight: '700' }}>{incomeStatus !== '' ? incomeStatus.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.') : '...'}</Text>
           </TouchableOpacity>
@@ -197,7 +205,6 @@ export default function Dashboard({ navigation }) {
               <Text style={showInvestment ? { marginLeft: 20 } : { bottom: 10, marginLeft: 10, color: Colors.lightGray }}>Investimentos</Text>
               <Ionicons name='arrow-down' color={'#A9A9A9'} size={20} onPress={() => {
                 setShowInvestment(!showInvestment)
-                console.log(showInvestment)
               }} />
             </View>
             {!showInvestment ?
@@ -281,7 +288,6 @@ const styles = StyleSheet.create({
     width: '100%',
     minHeight: 150,
     maxHeight: 150,
-    justifyContent: 'flex-start',
   },
   containerDash: {
     flex: 1,
