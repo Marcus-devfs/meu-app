@@ -10,6 +10,7 @@ import { Spacer } from '../../atoms/Spacer';
 import Avatar from '../../organisms/Avatar';
 import { formatDate } from '../../../context/validadores';
 import { VictoryPie } from "victory-native"
+import filtro from '../../../interface/month-select';
 
 export default function Dashboard({ navigation }) {
 
@@ -29,7 +30,8 @@ export default function Dashboard({ navigation }) {
   const userName = name.split(" ")[0];
   const [porcentIncome, usePorentIncome] = useState("");
   const [porcentExpense, usePorcentExpense] = useState("");
-
+  const [monthSelect, useMonthSelect] = useState('fevereiro');
+  const [dataFilter, useDataFilter] = useState()
 
   useEffect(() => {
     navigation.addListener('focus', () =>
@@ -82,6 +84,19 @@ export default function Dashboard({ navigation }) {
     return;
   }
 
+  const filterMonth = async () => {
+    const filtrando = await filtro(monthSelect)
+    console.log('-----',filtrando)
+    await api.post('/movimentsList', filtrando)
+      .then(response => {
+        const { data } = response
+        console.log(data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }
+
   async function deleteMoviment(_id) {
     await api.delete(`/moviment/${_id}`);
     const newList = listMoviment.filter((item) => item._id !== _id);
@@ -99,15 +114,19 @@ export default function Dashboard({ navigation }) {
           <Avatar />
           <Text style={styles.userName}>{userName}</Text>
         </View>
-        <View style={{ marginTop: 55 }}>
-          <Text style={{ color: Colors.lightGray, display: 'flex', height: 30, marginLeft: 80 }}> Saldo em conta</Text>
-          <Text style={{ color: Colors.primaryText, display: 'flex', height: 50, fontSize: 30, marginLeft: 45, fontWeight: '700' }}>
+        <View style={{ marginTop: 50 }}>
+          {monthSelect ?
+            <Text style={{ color: Colors.lightGray, display: 'flex', marginLeft: 100, fontSize: 17 }}> Janeiro ^</Text>
+            :
+            ''}
+          <Text style={{ color: Colors.primaryText, top: 10, display: 'flex', height: 50, fontSize: 30, marginLeft: 45, fontWeight: '700' }}>
             {valueTotal !== '' || valueTotal !== undefined ? valueTotal : '...'}</Text>
+          <Text style={{ color: Colors.lightGray, display: 'flex', height: 30, marginLeft: 80, }}> Saldo em conta</Text>
         </View>
       </View>
       <View style={styles.containerDash}>
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', }}>
-          <TouchableOpacity style={styles.boxRevenue}>
+          <TouchableOpacity style={styles.boxRevenue} onPress={() => { filterMonth() }}>
             <Text style={{ color: Colors.darkGray, fontSize: 15 }}>Receita:</Text>
             <Text style={{ color: '#006400', fontSize: 20, fontWeight: '700' }}>{incomeStatus !== '' ? incomeStatus.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.') : '...'}</Text>
           </TouchableOpacity>
@@ -172,7 +191,7 @@ export default function Dashboard({ navigation }) {
         <Spacer size={2} />
 
         <View style={{ width: '100%', alignItems: 'center' }}>
-          <TouchableOpacity onPress={() => { navigation.navigate('investiment')}}
+          <TouchableOpacity onPress={() => { navigation.navigate('investiment') }}
             style={showInvestment ? { paddingVertical: 20, flexDirection: 'row', width: '90%', borderRadius: 5, borderWidth: 1, borderColor: Colors.lightGray, justifyContent: 'space-between' } : { paddingVertical: 20, width: '90%', borderRadius: 5, borderWidth: 1, borderColor: Colors.lightGray }}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
               <Text style={showInvestment ? { marginLeft: 20 } : { bottom: 10, marginLeft: 10, color: Colors.lightGray }}>Investimentos</Text>
@@ -187,9 +206,11 @@ export default function Dashboard({ navigation }) {
                   <Text style={{ marginLeft: 20 }}>Valor Investido:</Text>
                   <Text style={{ marginLeft: 30, justifyContent: 'flex-end', fontSize: 25, top: 5, color: 'green', fontWeight: 'bold' }}>R$ 5000,00</Text>
                 </View>
-                <TouchableOpacity style={{alignItems: 'center'}} onPress={()=> {navigation.navigate('investiment')}}>
-                  <Text style={{ borderBottomWidth: 1, borderStyle: 'dashed', width: '60%',  
-                    color: Colors.primary, textAlign: 'center', top: 15 }}>
+                <TouchableOpacity style={{ alignItems: 'center' }} onPress={() => { navigation.navigate('investiment') }}>
+                  <Text style={{
+                    borderBottomWidth: 1, borderStyle: 'dashed', width: '60%',
+                    color: Colors.primary, textAlign: 'center', top: 15
+                  }}>
                     detalhes dos Investimentos
                   </Text>
                 </TouchableOpacity>
