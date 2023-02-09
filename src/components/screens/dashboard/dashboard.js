@@ -11,6 +11,7 @@ import Avatar from '../../organisms/Avatar';
 import { formatDate } from '../../../context/validadores';
 import { VictoryPie } from "victory-native"
 import filtro, { listMonths } from '../../../interface/month-select';
+import Investiments from '../investiments/InvestimentsList';
 
 export default function Dashboard({ navigation }) {
 
@@ -22,6 +23,7 @@ export default function Dashboard({ navigation }) {
   const [expenseStatus, useExpenseStatus] = useState("");
   const [showButton, setShowButton] = useState(false);
   const [showInvestment, setShowInvestment] = useState(true);
+  const [showScreenInvestment, setShowScreenInvestment] = useState(true);
   const [showButtonAddMoviment, setShowButtonAddMoviment] = useState(false);
   const [listFilterMoviments, useListFilterMoviments] = useState();
   const { startLoading, stopLoading, loading } = useContext(AppContext)
@@ -30,7 +32,7 @@ export default function Dashboard({ navigation }) {
   const userName = name.split(" ")[0];
   const [porcentIncome, usePorentIncome] = useState("");
   const [porcentExpense, usePorcentExpense] = useState("");
-  const [monthSelect, useMonthSelect] = useState('fevereiro');
+  const [monthSelect, useMonthSelect] = useState('janeiro');
   const [showMonth, useShowMonth] = useState(false);
 
   useEffect(() => {
@@ -114,7 +116,7 @@ export default function Dashboard({ navigation }) {
               <Ionicons name='chevron-forward' color={'#A9A9A9'} size={20} />
             </TouchableOpacity>
             :
-            <ScrollView horizontal={true} style={{ width: 200, minHeight: 25, borderWidth: 1, borderColor: Colors.lightGray }}>
+            <ScrollView horizontal={true} style={{ width: 200, minHeight: 25, borderBottomWidth: 1, borderColor: Colors.lightGray }}>
               {listMonths?.map((item) => (
                 <View key={item.id} style={{ backgroundColor: Colors.primary, borderColor: Colors.lightGray, width: 100, alignItems: 'center' }}>
                   <TouchableOpacity onPress={() => {
@@ -132,6 +134,7 @@ export default function Dashboard({ navigation }) {
           <Text style={{ color: Colors.lightGray, display: 'flex', height: 30, }}> Saldo em conta</Text>
         </View>
       </View>
+      
       <View style={styles.containerDash}>
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', }}>
           <TouchableOpacity style={styles.boxRevenue}>
@@ -199,7 +202,7 @@ export default function Dashboard({ navigation }) {
         <Spacer size={2} />
 
         <View style={{ width: '100%', alignItems: 'center' }}>
-          <TouchableOpacity onPress={() => { navigation.navigate('investiment') }}
+          <TouchableOpacity onPress={() => { setShowScreenInvestment(!showScreenInvestment)}}
             style={showInvestment ? { paddingVertical: 20, flexDirection: 'row', width: '90%', borderRadius: 5, borderWidth: 1, borderColor: Colors.lightGray, justifyContent: 'space-between' } : { paddingVertical: 20, width: '90%', borderRadius: 5, borderWidth: 1, borderColor: Colors.lightGray }}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
               <Text style={showInvestment ? { marginLeft: 20 } : { bottom: 10, marginLeft: 10, color: Colors.lightGray }}>Investimentos</Text>
@@ -213,7 +216,7 @@ export default function Dashboard({ navigation }) {
                   <Text style={{ marginLeft: 20 }}>Valor Investido:</Text>
                   <Text style={{ marginLeft: 30, justifyContent: 'flex-end', fontSize: 25, top: 5, color: 'green', fontWeight: 'bold' }}>R$ 5000,00</Text>
                 </View>
-                <TouchableOpacity style={{ alignItems: 'center' }} onPress={() => { navigation.navigate('investiment') }}>
+                <TouchableOpacity style={{ alignItems: 'center' }} onPress={() => { setShowScreenInvestment(!showScreenInvestment)}}>
                   <Text style={{
                     borderBottomWidth: 1, borderStyle: 'dashed', width: '60%',
                     color: Colors.primary, textAlign: 'center', top: 15
@@ -228,7 +231,11 @@ export default function Dashboard({ navigation }) {
           </TouchableOpacity>
 
         </View>
-
+        {!showScreenInvestment ?
+          <Investiments />
+          : ''
+        }
+        
         <Spacer size={8} />
 
         <StatusBar style="auto" />
