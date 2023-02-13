@@ -34,31 +34,34 @@ export default function UserProfile() {
           <Avatar />
           <Text style={styles.userName}>{userName}</Text>
         </View>
-
       </View>
-      <Divider style={styles.divider} />
-      <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('myData')}>
-        <Text style={styles.menuItemText}>Meus Dados</Text>
-        <Ionicons name='chevron-forward' color={'#A9A9A9'} size={16} />
-      </TouchableOpacity>
-      <Divider style={styles.divider} />
-      <TouchableOpacity style={styles.menuItem}>
-        <Text style={styles.menuItemText}>Alterar senha</Text>
-        <Ionicons name='chevron-forward' color={'#A9A9A9'} size={16} />
-      </TouchableOpacity>
-      <Divider style={styles.divider} />
-      <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('aboutUs')}>
-        <Text style={styles.menuItemText}>Sobre o app</Text>
-        <Ionicons name='chevron-forward' color={'#A9A9A9'} size={16} />
-      </TouchableOpacity>
-      <Divider style={styles.divider} />
-      <TouchableOpacity style={styles.menuItem} onPress={() => handleLogout()}>
-        <Text style={styles.menuItemText}>Sair</Text>
-        <Ionicons name='chevron-forward' color={'#A9A9A9'} size={16} />
-      </TouchableOpacity>
-      <Divider style={styles.divider} />
-      <StatusBar style="auto" />
-
+      <View>
+        <Divider style={styles.divider} />
+        <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('myData')}>
+          <Text style={styles.menuItemText}>Meus Dados</Text>
+          <Ionicons name='chevron-forward' color={'#A9A9A9'} size={16} />
+        </TouchableOpacity>
+        <Divider style={styles.divider} />
+        <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('upDatePass')}>
+          <Text style={styles.menuItemText}>Alterar senha</Text>
+          <Ionicons name='chevron-forward' color={'#A9A9A9'} size={16} />
+        </TouchableOpacity>
+        <Divider style={styles.divider} />
+        <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('aboutUs')}>
+          <Text style={styles.menuItemText}>Sobre o app</Text>
+          <Ionicons name='chevron-forward' color={'#A9A9A9'} size={16} />
+        </TouchableOpacity>
+        <Divider style={styles.divider} />
+        <TouchableOpacity style={styles.menuItem} onPress={() => handleLogout()}>
+          <Text style={styles.menuItemText}>Sair</Text>
+          <Ionicons name='chevron-forward' color={'#A9A9A9'} size={16} />
+        </TouchableOpacity>
+        <Divider style={styles.divider} />
+        <StatusBar style="auto" />
+      </View>
+      <View style={{marginTop: 180}}>
+        <Text style={{ color: Colors.lightGray, textAlign: 'center' }}> Versão atual: 1.0.0</Text>
+      </View>
     </View>
   );
 }
@@ -67,7 +70,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
     // justifyContent: 'center',
   },
   containerHeader: {

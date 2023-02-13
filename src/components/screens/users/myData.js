@@ -8,6 +8,7 @@ import { Spacer } from '../../atoms/Spacer';
 import Colors from '../../atoms/Colors';
 import { AuthContext } from '../../../context/validators/AuthContext';
 import Avatar from '../../organisms/Avatar';
+import { useNavigation } from '@react-navigation/native';
 
 
 
@@ -18,6 +19,8 @@ export default function MyData() {
 
     const firstName = name.split(" ")[0];
     const lastName = name.split(" ")[1];
+
+    const navigation = useNavigation()
 
     const userName = `${firstName} ${lastName}`
 
@@ -31,25 +34,51 @@ export default function MyData() {
                     <Text style={styles.userName}>{userName}</Text>
                 </View>
             </View>
-            <Spacer size={2}/>
-            <Text style={{ fontSize: 18, textAlign: 'center' }}>Meus Dados:</Text>
-            <Spacer size={2}/>
-            <Divider style={styles.divider} />
-            <TouchableOpacity style={styles.menuItem}>
-                <Text style={styles.menuItemText}>E-mail: </Text>
-                <Text style={styles.infoData}>{email}</Text>
-            </TouchableOpacity>
-            <Divider style={styles.divider} />
-            <TouchableOpacity style={styles.menuItem}>
-                <Text style={styles.menuItemText}>Nome completo: </Text>
-                <Text style={styles.infoData}>{name}</Text>
-            </TouchableOpacity>
-            <Divider style={styles.divider} />
-            <TouchableOpacity style={styles.menuItem}>
-                <Text style={styles.menuItemText}>ID usuário: </Text>
-                <Text style={styles.infoData}>{_id}</Text>
-            </TouchableOpacity>
-            <Divider style={styles.divider} />
+            <View style={{ backgroundColor: '#fff', padding: 15 }}>
+                <Text style={{ fontSize: 18, textAlign: 'center' }}>Meus Dados:</Text>
+            </View>
+            <Spacer size={1} />
+            <View style={{ backgroundColor: '#fff' }}>
+                <TouchableOpacity style={styles.menuItem}>
+                    <Text style={styles.menuItemText}>E-mail: </Text>
+                    <Text style={styles.infoData}>{email}</Text>
+                </TouchableOpacity>
+                <Divider style={styles.divider} />
+                <TouchableOpacity style={styles.menuItem}>
+                    <Text style={styles.menuItemText}>Nome completo: </Text>
+                    <Text style={styles.infoData}>{name}</Text>
+                </TouchableOpacity>
+                <Divider style={styles.divider} />
+                <TouchableOpacity style={styles.menuItem}>
+                    <Text style={styles.menuItemText}>ID usuário: </Text>
+                    <Text style={styles.infoData}>{_id}</Text>
+                </TouchableOpacity>
+                <Divider style={styles.divider} />
+                <TouchableOpacity style={styles.menuItemEdit}>
+                    <View style={{ flexDirection: 'column' }}>
+                        <Text style={styles.menuItemText}>Telefone: </Text>
+                        <Text style={styles.infoData}>(11) 96181-9664</Text>
+                    </View>
+                    <Ionicons name='chevron-forward' color={'#A9A9A9'} size={16} />
+                </TouchableOpacity>
+                <Divider style={styles.divider} />
+                <TouchableOpacity style={styles.menuItemEdit}>
+                    <View style={{ flexDirection: 'column' }}>
+                        <Text style={styles.menuItemText}>Data de Nascimento: </Text>
+                        <Text style={styles.infoData}>13/11/2000</Text>
+                    </View>
+                    <Ionicons name='chevron-forward' color={'#A9A9A9'} size={16} />
+                </TouchableOpacity>
+                <Divider style={styles.divider} />
+            </View>
+            <Spacer size={2} />
+            <View style={{ backgroundColor: '#fff' }}>
+                <TouchableOpacity style={styles.menuItemEdit} onPress={() => navigation.navigate('upDatePass')}>
+                    <Text style={styles.menuItemText}>Alterar senha</Text>
+                    <Ionicons name='chevron-forward' color={'#A9A9A9'} size={16} />
+                </TouchableOpacity>
+                <Divider style={styles.divider} />
+            </View>
             <StatusBar style="auto" />
         </View>
     );
@@ -58,7 +87,6 @@ export default function MyData() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
         // alignItems: 'center',
         // justifyContent: 'center',
     },
@@ -89,13 +117,19 @@ const styles = StyleSheet.create({
     },
     menuItem: {
         // flexDirection: 'row',
-        padding: 25,
+        padding: 20,
         justifyContent: 'space-between',
 
     },
     menuItemText: {
         color: Colors.primary,
         fontWeight: 'bold',
+    },
+    menuItemEdit: {
+        flexDirection: 'row',
+        padding: 20,
+        justifyContent: 'space-between',
+        alignItems: 'center'
     },
 
 });

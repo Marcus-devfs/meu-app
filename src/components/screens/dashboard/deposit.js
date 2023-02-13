@@ -167,17 +167,19 @@ export default function DepositControll() {
                     <Text style={{ fontSize: 35, color: '#FFF', top: 5, textAlign: 'center' }}>R$ </Text>
                     <TextInput
                         name="value"
+                        placeholder='0.00'
                         value={deposit.value}
                         type="number"
                         underlineColorAndroid={'rgba(0,0,0,0)'}
                         onChangeText={(text) => handleChangeValueDeposit(text)}
-                        style={{ width: 250, fontSize: 40, fontWeight: 'bold', color: '#fff', borderWidth: 1, borderColor: Colors.darkGray, textAlign: 'left', borderRadius: 3, marginLeft: 15 }}
+                        style={{ width: 250, fontSize: 40, fontWeight: 'bold', color: '#fff', textAlign: 'left', borderRadius: 3, marginLeft: 15 }}
                     />
                 </View>
                 <Spacer size={2} />
                 <Text style={styles.textForm}>Descrição</Text>
                 <TextInputState
                     placeholderTextColor={Colors.lightGray}
+                    placeholder='Ex: Salário'
                     name="label"
                     value={deposit.label}
                     autoCapitalize="none"
@@ -186,7 +188,8 @@ export default function DepositControll() {
                 <Spacer size={0.5} />
                 <Text style={styles.textForm}>Data</Text>
                 <TextInputState
-                    placeholderTextColor="#696969"
+                    placeholderTextColor={Colors.lightGray}
+                    placeholder='01/01/2023'
                     name="createdAt"
                     value={deposit.createdAt}
                     autoCapitalize="none"
@@ -255,7 +258,15 @@ export default function DepositControll() {
                     <Text style={{ color: '#fff', fontSize: 17 }}>Enviar</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={styles.buttonClean} onPress={() => useDeposit('')}>
+                    style={styles.buttonClean} onPress={() => useDeposit({
+                        label: '',
+                        value: '0.00',
+                        createdAt: '',
+                        type: 'income',
+                        createdBy: idUser,
+                        user: idUser,
+                        category: !categorySelected ? 'Outros' : categorySelected,
+                    })}>
                     <Text style={{ color: '#fff', fontSize: 17 }}>Limpar</Text>
                 </TouchableOpacity>
             </View>

@@ -37,8 +37,22 @@ export default function MovimentsEdit({ navigation }) {
         return;
     }
 
-    async function deleteMoviment(_id) {
+    async function deleteMoviment(_id, category, value) {
         await api.delete(`/moviment/${_id}`);
+
+        const valueBeforeCategory = listMoviment?.filter((item) => item.category == category).map((item) => (item.value)).reduce((acc, cur) => acc + cur, 0)
+        const valueStatusCategory = Number(valueBeforeCategory) - Number(value)
+
+        await api.patch(`/categoryList/${user._id}`, {
+            category, valueStatusCategory
+        })
+            .then(response => {
+                console.log('sucess',response.data)
+            })
+            .catch(error => {
+                console.log('error',error.dados)
+            })
+
         const newList = listMoviment.filter((item) => item._id !== _id);
         useListItem(newList);
         setShowButton(!showButton)
@@ -80,7 +94,7 @@ export default function MovimentsEdit({ navigation }) {
                                                 {item.type == 'income' ? `R$ ${item.value.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}` : `R$ -${item.value.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}`}
                                             </Text>
                                             {showButton ? (
-                                                <TouchableOpacity style={styles.buttonDelete} onPress={() => deleteMoviment(item._id)}>
+                                                <TouchableOpacity style={styles.buttonDelete} onPress={() => deleteMoviment(item._id, item.category, item.value)}>
                                                     <Text style={{ color: '#fff', textAlign: 'center', justifyContent: 'center' }}>Apagar</Text>
                                                 </TouchableOpacity>
                                             ) : ""}
