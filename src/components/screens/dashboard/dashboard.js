@@ -22,7 +22,7 @@ export default function Dashboard({ navigation }) {
   const [incomeStatus, useIncomeStatus] = useState("");
   const [expenseStatus, useExpenseStatus] = useState("");
   const [showButton, setShowButton] = useState(false);
-  const [showInvestment, setShowInvestment] = useState(true);
+  const [showInvestment, setShowInvestment] = useState(false);
   const [showScreenInvestment, setShowScreenInvestment] = useState(true);
   const [showButtonAddMoviment, setShowButtonAddMoviment] = useState(false);
   const [listFilterMoviments, useListFilterMoviments] = useState();
@@ -34,6 +34,10 @@ export default function Dashboard({ navigation }) {
   const [porcentExpense, usePorcentExpense] = useState("");
   const [monthSelect, useMonthSelect] = useState('Janeiro');
   const [showMonth, useShowMonth] = useState(false);
+  const [investiments, setInvestiments] = useState()
+  const [totalValueInvestiment, setTotalValueInvestiment] = useState()
+
+
 
   useEffect(() => {
     navigation.addListener('focus', () =>
@@ -41,6 +45,7 @@ export default function Dashboard({ navigation }) {
       calculationValues(),
     )
   }, [navigation, listFilterMoviments, monthSelect])
+
 
   const handleLoadItems = async () => {
     startLoading({ msg: 'Carregando...' })
@@ -78,7 +83,12 @@ export default function Dashboard({ navigation }) {
     useExpenseStatus(`R$ ${expenseStatusCalc}`);
     useIncomeStatus(`R$ ${incomeStatusCalc}`);
     useValueTotal(`R$ ${valueTotalStatus}`);
+
+    const valueInvestiments = investiments?.map((item) => Number(item.value)).reduce((acc, cur) => acc + cur, 0).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+    setTotalValueInvestiment(`R$ ${valueInvestiments}`);
+
     filterMonth()
+    listInvestiment()
     stopLoading()
   }
 
@@ -94,6 +104,19 @@ export default function Dashboard({ navigation }) {
       })
       .catch(error => {
         console.log(error)
+      })
+  }
+
+  const listInvestiment = async () => {
+    await api.get(`/investmentList/${user._id}`)
+      .then(response => {
+        const { investment } = response.data
+        startLoading({ msg: 'Carregando...' })
+        setInvestiments(investment)
+        stopLoading()
+      })
+      .catch(error => {
+        console.log('error investiment', error)
       })
   }
 
@@ -204,40 +227,39 @@ export default function Dashboard({ navigation }) {
         <Spacer size={2} />
 
         <View style={{ width: '100%', alignItems: 'center' }}>
-          <TouchableOpacity onPress={() => { setShowScreenInvestment(!showScreenInvestment) }}
-            style={showInvestment ? { paddingVertical: 20, flexDirection: 'row', width: '90%', borderRadius: 5, borderWidth: 1, borderColor: Colors.lightGray, justifyContent: 'space-between' } : { paddingVertical: 20, width: '90%', borderRadius: 5, borderWidth: 1, borderColor: Colors.lightGray }}>
+          <TouchableOpacity onPress={() => {
+            setShowInvestment(!showInvestment)
+          }}
+            style={{ paddingVertical: 20, width: '90%', borderRadius: 5, borderWidth: 1, borderColor: Colors.lightGray }}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
-              <Text style={showInvestment ? { marginLeft: 20 } : { bottom: 10, marginLeft: 10, color: Colors.lightGray }}>Investimentos</Text>
-              <Ionicons name='arrow-down' color={'#A9A9A9'} size={20} onPress={() => {
+              <Text style={{ bottom: 10, marginLeft: 10, color: Colors.lightGray }}>Investimentos</Text>
+              <Ionicons name={showInvestment ? 'eye-sharp' : 'eye-off-sharp'} size={20} color={Colors.secondaryDisabled} style={{ paddingRight: 8, justifyContent: 'center', }} onPress={() => {
                 setShowInvestment(!showInvestment)
               }} />
             </View>
-            {!showInvestment ?
-              <View>
-                <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
-                  <Text style={{ marginLeft: 20 }}>Valor Investido:</Text>
-                  <Text style={{ marginLeft: 30, justifyContent: 'flex-end', fontSize: 25, top: 5, color: 'green', fontWeight: 'bold' }}>R$ 5000,00</Text>
-                </View>
-                <TouchableOpacity style={{ alignItems: 'center' }} onPress={() => { setShowScreenInvestment(!showScreenInvestment) }}>
-                  <Text style={{
-                    borderBottomWidth: 1, borderStyle: 'dashed', width: '60%',
-                    color: Colors.primary, textAlign: 'center', top: 15
-                  }}>
-                    detalhes dos Investimentos
-                  </Text>
-                </TouchableOpacity>
+            <View>
+              <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
+                <Text style={showInvestment ? { marginLeft: 20 } : { marginLeft: 20, marginTop: 14 }}>Valor Investido:</Text>
+                {showInvestment ?
+                  <Text style={{ marginLeft: 30, justifyContent: 'flex-end', fontSize: 25, top: 5, color: 'green', fontWeight: 'bold' }}>{totalValueInvestiment ? totalValueInvestiment : 'R$ ---'}</Text>
+                  :
+                  <View style={{ marginLeft: 30, backgroundColor: Colors.lightGray, width: 130, height: 20, opacity: 0.5 }}>
+                  </View>}
               </View>
+              <TouchableOpacity style={{ alignItems: 'center' }} onPress={() => { navigation.navigate('investiment') }}>
+                <Text style={{
+                  borderBottomWidth: 1, borderStyle: 'dashed', width: '60%',
+                  color: Colors.primary, textAlign: 'center', top: 15
+                }}>
+                  detalhes dos Investimentos
+                </Text>
+              </TouchableOpacity>
+            </View>
 
-              :
-              ''}
+
           </TouchableOpacity>
 
         </View>
-        {!showScreenInvestment ?
-          <Investiments />
-          : ''
-        }
-
         <Spacer size={8} />
 
         <StatusBar style="auto" />
