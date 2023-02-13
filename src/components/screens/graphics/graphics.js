@@ -13,6 +13,7 @@ export default function Graphics({ navigation }) {
 
     const { user } = useContext(AuthContext)
     const [listMoviment, useListItem] = useState();
+    const [graphicsData, useGraphicsData] = useState();
     const [listCategoryItem, useListCategory] = useState();
     const [cleanFilter, useCleanFilter] = useState();
     const [filterItem, useFilterItem] = useState('');
@@ -33,15 +34,18 @@ export default function Graphics({ navigation }) {
         handleLoadItems()
     }, [navigation, cleanFilter])
 
+   
 
     useEffect(() => {
-
     }, [])
 
     const listCategory = async () => {
         const response = await api.get(`/categoryList/${idUser}`);
         const { categoryList } = response.data
         useListCategory(categoryList)
+
+        const calcDataGraphics = categoryList?.filter((item) => item.value > 0)
+        useGraphicsData(calcDataGraphics)
         return;
     }
 
@@ -51,8 +55,6 @@ export default function Graphics({ navigation }) {
         listCategory()
         stopLoading()
     }
-
-    const randomColor = () => ('#' + (Math.random() * 0xFFFFFF << 0).toString(16) + '000000').slice(0, 7)
 
     const filterData = async () => {
         startLoading({ msg: 'Carregando...' })
@@ -157,18 +159,26 @@ export default function Graphics({ navigation }) {
             </View>
             <View style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff' }}>
                 <VictoryPie
-                    data={listCategoryItem}
-                    x={"categoryName"}
+                    data={graphicsData}
+                    x="categoryName"
                     y="value"
-                    colorScale={listCategoryItem?.map((item) => item.color)}
+                    colorScale={graphicsData?.map((item) => item.color)}
                     innerRadius={45}
                     padding={65}
                     width={350}
                     height={320}
                     labelPosition={({ index }) => index
                         ? "centroid"
-                        : "endAngle"
+                        : "centroid"
                     }
+                    style={{
+                        data: {
+                            fillOpacity: 0.9, stroke: "#fff", strokeWidth: 3
+                        },
+                    }}
+
+
+
                 />
             </View>
 

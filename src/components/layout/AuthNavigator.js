@@ -19,8 +19,9 @@ import Graphics from '../screens/graphics/graphics';
 import MovimentsEdit from '../screens/dashboard/movimentsEdit';
 import Investiments from '../screens/investiments/InvestimentsList';
 import AboutUs from '../screens/users/About';
-
-
+import InvestimentControll from '../screens/dashboard/investiment';
+import UpDatePass from '../screens/users/UpdatePassword';
+import { RecoverScreen } from '../screens/auth/recover';
 
 const Stack = createNativeStackNavigator();
 
@@ -50,6 +51,10 @@ export const AuthNavigator = () => {
                 <Stack.Screen
                     name="Register-Screen"
                     component={RegisterScreen}
+                    options={{ headerShown: false, }} />
+                <Stack.Screen
+                    name="recover-Screen"
+                    component={RecoverScreen}
                     options={{ headerShown: false, }} />
             </>
             }
@@ -90,6 +95,14 @@ const isLoggedInStack =
         <Stack.Screen
             name="aboutUs"
             component={AboutUs}
+            options={{ headerShown: false, gestureDirection: 'vertical' }} />
+        <Stack.Screen
+            name="investimentControll"
+            component={InvestimentControll}
+            options={{ headerShown: false, gestureDirection: 'vertical' }} />
+        <Stack.Screen
+            name="upDatePass"
+            component={UpDatePass}
             options={{ headerShown: false, gestureDirection: 'vertical' }} />
     </>
 

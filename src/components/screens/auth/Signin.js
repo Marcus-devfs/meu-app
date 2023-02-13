@@ -113,7 +113,8 @@ export const Signin = ({ navigation }) => {
               handleChange={(name, value) => handleChange(name, value)}
             />
 
-            <TouchableOpacity style={{ cursor: 'pointer', marginLeft: 140, color: "#fff", marginBottom: 10, fontSize: 14 }}>
+            <TouchableOpacity style={{ cursor: 'pointer', marginLeft: 140, color: "#fff", marginBottom: 10, fontSize: 14 }}
+            onPress={()=>{navigation.navigate('recover-Screen')}}>
               <Text style={{ color: "#fff" }}>Recuperar senha?</Text></TouchableOpacity>
 
             <TouchableOpacity

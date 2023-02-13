@@ -51,22 +51,20 @@ export const doLogout = async (user) => {
         console.log(error)
     }
 }
+
 // Verificar depois - "Esqueci a senha"
 
-// export const passRecover = async (email) => {
-//     try {
-//         const isValid = await beforeForgot(email)
-//         if (!isValid) return false
+export const uptadeNewPassword = async (updatePassword) => {
+    try {
+        const response = await api.post('/login/updatePass', {updatePassword})
+        const { newPassword } = response.data
+        Alert.alert('MyBank', `Senha alterada com sucesso. Nova senha é: ${newPassword}`)
+        return newPassword
+    } catch (error) {
+        console.log(error)
+    }
+}
 
-//         const response = await api.post('/login/recover', { email })
-//         const { success } = response.data
-//         return success
-//     } catch (error) {
-//         throwError(error)
-//     }
-// }
-
-// Ok - trocar no Register o email,password, confirm, etc por ..userDate
 export const createUser = async (userData) => {
 
     try {
@@ -76,5 +74,17 @@ export const createUser = async (userData) => {
     } catch (error) {
         Alert.alert('MyBank', 'Ocorreu um erro. Verifique se os dados estão corretos')
         console.log(error.data, 'Ocorreu um erro ao cadastrar seu usuario');
+    }
+}
+
+export const recover = async (email) => {
+    try {
+        const response = await api.post('/login/recover', email)
+        const { data } = response
+        Alert.alert('MyBank', `A nova senha foi enviada para o seu email`)
+        return data
+    } catch (error) {
+        Alert.alert('MyBank', `A nova senha foi enviada para o seu email`)
+        console.log(error)
     }
 }

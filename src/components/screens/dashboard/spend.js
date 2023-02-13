@@ -40,7 +40,7 @@ export default function SpendControll() {
     })
     const [spend, useSpend] = useState({
         label: '',
-        value: '0.00',
+        value: '',
         createdAt: '',
         type: 'expense',
         createdBy: idUser,
@@ -169,17 +169,19 @@ export default function SpendControll() {
                     <Text style={{ fontSize: 35, color: '#FFF', top: 5, textAlign: 'center' }}>R$ </Text>
                     <TextInput
                         name="value"
+                        placeholder='0.00'
                         value={spend.value}
                         type="number"
                         underlineColorAndroid={'rgba(0,0,0,0)'}
                         onChangeText={(text) => handleChangeValueSpend(text)}
-                        style={{ width: 250, fontSize: 40, fontWeight: 'bold', color: '#fff', borderWidth: 1, borderColor: Colors.darkGray, textAlign: 'left', borderRadius: 3, marginLeft: 15 }}
+                        style={{ width: 250, fontSize: 40, fontWeight: 'bold', color: '#fff', textAlign: 'left', borderRadius: 3, marginLeft: 15 }}
                     />
                 </View>
                 <Spacer size={2} />
                 <Text style={styles.textForm}>Descrição</Text>
                 <TextInputState
                     placeholderTextColor={Colors.lightGray}
+                    placeholder='Ex: Almoço Shopping'
                     name="label"
                     value={spend.label}
                     autoCapitalize="none"
@@ -189,7 +191,8 @@ export default function SpendControll() {
 
                 <Text style={styles.textForm}>Data</Text>
                 <TextInputState
-                    placeholderTextColor="#696969"
+                    placeholderTextColor={Colors.lightGray}
+                    placeholder='01/01/2023'
                     name="createdAt"
                     value={spend.createdAt}
                     autoCapitalize="none"
@@ -259,7 +262,15 @@ export default function SpendControll() {
                     <Text style={{ color: '#fff', fontSize: 17 }}>Enviar</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={styles.buttonClean} onPress={() => useSpend('')}>
+                    style={styles.buttonClean} onPress={() => useSpend({
+                        label: '',
+                        value: '',
+                        createdAt: '',
+                        type: 'expense',
+                        createdBy: idUser,
+                        user: idUser,
+                        category: !categorySelected ? 'Outros' : categorySelected,
+                    })}>
                     <Text style={{ color: '#fff', fontSize: 17 }}>Limpar</Text>
                 </TouchableOpacity>
             </View>
