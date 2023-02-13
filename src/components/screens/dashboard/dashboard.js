@@ -32,16 +32,25 @@ export default function Dashboard({ navigation }) {
   const userName = name.split(" ")[0];
   const [porcentIncome, usePorentIncome] = useState("");
   const [porcentExpense, usePorcentExpense] = useState("");
-  const [monthSelect, useMonthSelect] = useState('janeiro');
+  const [monthSelect, useMonthSelect] = useState('Janeiro');
   const [showMonth, useShowMonth] = useState(false);
 
   useEffect(() => {
     navigation.addListener('focus', () =>
-      handleLoadItems()
+      handleLoadItems(),
+      calculationValues(),
     )
   }, [navigation, listFilterMoviments, monthSelect])
 
-  useEffect(() => {
+  const handleLoadItems = async () => {
+    startLoading({ msg: 'Carregando...' })
+    setShowButtonAddMoviment(false)
+    stopLoading()
+  }
+
+  const calculationValues = async () => {
+    startLoading({ msg: 'Carregando...' })
+
     const amountExpanse = listFilterMoviments?.
       filter((item) => item.type == 'expense').
       map((item) => Number(item.value));
@@ -70,15 +79,8 @@ export default function Dashboard({ navigation }) {
     useIncomeStatus(`R$ ${incomeStatusCalc}`);
     useValueTotal(`R$ ${valueTotalStatus}`);
     filterMonth()
-
-  }, [listFilterMoviments, navigation])
-
-  const handleLoadItems = async () => {
-    startLoading({ msg: 'Carregando...' })
-    setShowButtonAddMoviment(false)
     stopLoading()
   }
-
 
   const filterMonth = async () => {
     const filtrando = await filtro(monthSelect)
@@ -134,7 +136,7 @@ export default function Dashboard({ navigation }) {
           <Text style={{ color: Colors.lightGray, display: 'flex', height: 30, }}> Saldo em conta</Text>
         </View>
       </View>
-      
+
       <View style={styles.containerDash}>
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', }}>
           <TouchableOpacity style={styles.boxRevenue}>
@@ -202,7 +204,7 @@ export default function Dashboard({ navigation }) {
         <Spacer size={2} />
 
         <View style={{ width: '100%', alignItems: 'center' }}>
-          <TouchableOpacity onPress={() => { setShowScreenInvestment(!showScreenInvestment)}}
+          <TouchableOpacity onPress={() => { setShowScreenInvestment(!showScreenInvestment) }}
             style={showInvestment ? { paddingVertical: 20, flexDirection: 'row', width: '90%', borderRadius: 5, borderWidth: 1, borderColor: Colors.lightGray, justifyContent: 'space-between' } : { paddingVertical: 20, width: '90%', borderRadius: 5, borderWidth: 1, borderColor: Colors.lightGray }}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
               <Text style={showInvestment ? { marginLeft: 20 } : { bottom: 10, marginLeft: 10, color: Colors.lightGray }}>Investimentos</Text>
@@ -216,7 +218,7 @@ export default function Dashboard({ navigation }) {
                   <Text style={{ marginLeft: 20 }}>Valor Investido:</Text>
                   <Text style={{ marginLeft: 30, justifyContent: 'flex-end', fontSize: 25, top: 5, color: 'green', fontWeight: 'bold' }}>R$ 5000,00</Text>
                 </View>
-                <TouchableOpacity style={{ alignItems: 'center' }} onPress={() => { setShowScreenInvestment(!showScreenInvestment)}}>
+                <TouchableOpacity style={{ alignItems: 'center' }} onPress={() => { setShowScreenInvestment(!showScreenInvestment) }}>
                   <Text style={{
                     borderBottomWidth: 1, borderStyle: 'dashed', width: '60%',
                     color: Colors.primary, textAlign: 'center', top: 15
@@ -235,7 +237,7 @@ export default function Dashboard({ navigation }) {
           <Investiments />
           : ''
         }
-        
+
         <Spacer size={8} />
 
         <StatusBar style="auto" />
