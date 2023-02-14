@@ -103,7 +103,7 @@ export default function DepositControll() {
 
             if (!label || label == "") { return Alert.alert("MyBank", "Dados preenchidos de forma inválida.") }
             if (!createdAt || createdAt == "") { return Alert.alert("MyBank", "Data preenchida de forma inválida") }
-            if (!category || category == "") { return Alert.alert("MyBank", "Dados preenchidos de forma inválida.") }
+            if (!category || category == "") { return Alert.alert("MyBank", "Selecione uma categoria.") }
             if (!value) {
                 Alert.alert("MyBank", "Valor inválido")
                 return
@@ -140,6 +140,8 @@ export default function DepositControll() {
         if (categoryName == '' || categoryName == null || categoryName == undefined) {
             Alert.alert('MyBank', 'Por favor, inserir um nome valido!')
         }
+
+        useDeposit({...deposit, category: categoryName})
 
         await api.post('/categoryList/create', addCategoryList)
             .then(response => {
