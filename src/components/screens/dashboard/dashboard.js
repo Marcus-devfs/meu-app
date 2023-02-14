@@ -8,115 +8,100 @@ import Colors from '../../atoms/Colors';
 import { FontAwesome5, Ionicons } from '../../atoms/icons';
 import { Spacer } from '../../atoms/Spacer';
 import Avatar from '../../organisms/Avatar';
-import { formatDate } from '../../../context/validadores';
 import { VictoryPie } from "victory-native"
 import filtro, { listMonths } from '../../../interface/month-select';
-import Investiments from '../investiments/InvestimentsList';
 
 export default function Dashboard({ navigation }) {
 
   const [valueTotal, useValueTotal] = useState("");
-  const [expenseGraphicData, useExpenseGraphicData] = useState("");
-  const [incomeGraphicData, useIncomeGraphicData] = useState("");
-  const [dataGraphic, useDataGraphic] = useState([income = {}, expense = {}]);
+  const [dataGraphic, useDataGraphic] = useState([income = {}, expense = {}, investing = {}]);
   const [incomeStatus, useIncomeStatus] = useState("");
   const [expenseStatus, useExpenseStatus] = useState("");
-  const [showButton, setShowButton] = useState(false);
   const [showInvestment, setShowInvestment] = useState(false);
-  const [showScreenInvestment, setShowScreenInvestment] = useState(true);
   const [showButtonAddMoviment, setShowButtonAddMoviment] = useState(false);
   const [listFilterMoviments, useListFilterMoviments] = useState();
+  const [listFilterInvestments, useListFilterInvestments] = useState();
   const { startLoading, stopLoading, loading } = useContext(AppContext)
   const { user } = useContext(AuthContext)
   const { name, _id } = user
   const userName = name.split(" ")[0];
-  const [porcentIncome, usePorentIncome] = useState("");
-  const [porcentExpense, usePorcentExpense] = useState("");
   const [monthSelect, useMonthSelect] = useState('Janeiro');
   const [showMonth, useShowMonth] = useState(false);
-  const [investiments, setInvestiments] = useState()
   const [totalValueInvestiment, setTotalValueInvestiment] = useState()
-
-
 
   useEffect(() => {
     navigation.addListener('focus', () =>
-      handleLoadItems(),
+      startLoading({ msg: 'Carregando...' }),
       calculationValues(),
+      stopLoading()
     )
   }, [navigation, listFilterMoviments, monthSelect])
 
-
   const handleLoadItems = async () => {
-    startLoading({ msg: 'Carregando...' })
+    filterMonthMoviments()
+    filterMonthInvestment()
     setShowButtonAddMoviment(false)
-    stopLoading()
+    // console.log('rodando')
   }
 
   const calculationValues = async () => {
-    startLoading({ msg: 'Carregando...' })
+
+    // handleLoadItems()
+      filterMonthMoviments()
+    filterMonthInvestment()
 
     const amountExpanse = listFilterMoviments?.
       filter((item) => item.type == 'expense').
-      map((item) => Number(item.value));
+      map((item) => Number(item.value))?.reduce((acc, cur) => acc + cur, 0);
 
     const amountIncome = listFilterMoviments?.
       filter((item) => item.type == 'income').
-      map((item) => Number(item.value));
+      map((item) => Number(item.value))?.reduce((acc, cur) => acc + cur, 0);
 
-    //dados para grafico
-    const expenseGraphic = Number(amountExpanse?.reduce((acc, cur) => acc + cur, 0));
-    const incomeGraphic = Number(amountIncome?.reduce((acc, cur) => acc + cur, 0));
-    const incomeGraphicPorcent = `${(incomeGraphic / (incomeGraphic + expenseGraphic) * 100).toString().split(".")[0]}%`
-    const expenseGraphicPorcent = `${(expenseGraphic / (incomeGraphic + expenseGraphic) * 100).toString().split(".")[0]}%`
-    usePorentIncome(incomeGraphicPorcent)
-    usePorcentExpense(expenseGraphicPorcent)
-    useExpenseGraphicData(expenseGraphic)
-    useIncomeGraphicData(incomeGraphic)
-    useDataGraphic([income = { label: incomeGraphicPorcent, value: incomeGraphic, color: 'green', },
-    expense = { label: expenseGraphicPorcent, value: expenseGraphic, color: 'red', }])
+    const amountInvesting = listFilterInvestments?.
+      map((item) => Number(item.value))?.reduce((acc, cur) => acc + cur, 0);
+
+    //calculo % grafico
+    const incomeGraphicPorcent = `${amountIncome > 0 ? (amountIncome / (amountIncome + amountExpanse + amountInvesting) * 100).toString().split(".")[0] : 0}%`
+    const expenseGraphicPorcent = `${amountExpanse > 0 ? (amountExpanse / (amountIncome + amountExpanse + amountInvesting) * 100).toString().split(".")[0] : 0}%`
+    const investingGraphicPorcent = `${amountInvesting > 0 ? (amountInvesting / (amountIncome + amountExpanse + amountInvesting) * 100).toString().split(".")[0] : 0}%`
+
+    useDataGraphic([income = { label: incomeGraphicPorcent, value: amountIncome, color: 'green', },
+    expense = { label: expenseGraphicPorcent, value: amountExpanse, color: 'red', },
+    investing = { label: investingGraphicPorcent, value: amountInvesting, color: '#8a2be2' }
+    ])
 
     //dados para status dash
-    const expenseStatusCalc = amountExpanse?.reduce((acc, cur) => acc + cur, 0).toFixed(2);
-    const incomeStatusCalc = amountIncome?.reduce((acc, cur) => acc + cur, 0).toFixed(2);
-    const valueTotalStatus = Math.abs(incomeStatusCalc - expenseStatusCalc).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
-    useExpenseStatus(`R$ ${expenseStatusCalc}`);
-    useIncomeStatus(`R$ ${incomeStatusCalc}`);
+    const valueTotalStatus = Math.abs(amountIncome - amountExpanse - amountInvesting).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+    useExpenseStatus(`R$ ${amountExpanse?.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}`);
+    useIncomeStatus(`R$ ${amountIncome?.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}`);
     useValueTotal(`R$ ${valueTotalStatus}`);
+    setTotalValueInvestiment(`R$ ${amountInvesting?.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}`);
 
-    const valueInvestiments = investiments?.map((item) => Number(item.value)).reduce((acc, cur) => acc + cur, 0).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
-    setTotalValueInvestiment(`R$ ${valueInvestiments}`);
-
-    filterMonth()
-    listInvestiment()
-    stopLoading()
   }
 
-  const filterMonth = async () => {
+  const filterMonthMoviments = async () => {
     const filtrando = await filtro(monthSelect)
-    await api.post('/movimentsList', {...filtrando, user_find: user._id})
+    await api.post('/movimentsList', { ...filtrando, user_find: user._id })
       .then(response => {
         const { data } = response
-        startLoading({ msg: 'Carregando...' })
         useListFilterMoviments(data)
-        stopLoading()
-
       })
       .catch(error => {
         console.log(error)
       })
+
   }
 
-  const listInvestiment = async () => {
-    await api.get(`/investmentList/${user._id}`)
+  const filterMonthInvestment = async () => {
+    const filtrando = await filtro(monthSelect)
+    await api.post('/investmentList', { ...filtrando, user_find: user._id })
       .then(response => {
-        const { investment } = response.data
-        startLoading({ msg: 'Carregando...' })
-        setInvestiments(investment)
-        stopLoading()
+        const { data } = response
+        useListFilterInvestments(data)
       })
       .catch(error => {
-        console.log('error investiment', error)
+        console.log(error)
       })
   }
 
@@ -164,11 +149,11 @@ export default function Dashboard({ navigation }) {
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', }}>
           <TouchableOpacity style={styles.boxRevenue}>
             <Text style={{ color: Colors.darkGray, fontSize: 15 }}>Receita:</Text>
-            <Text style={{ color: '#006400', fontSize: 20, fontWeight: '700' }}>{incomeStatus !== '' ? incomeStatus.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.') : '...'}</Text>
+            <Text style={{ color: '#006400', fontSize: 20, fontWeight: '700' }}>{incomeStatus !== '' ? incomeStatus : '...'}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.boxSpend}>
             <Text style={{ color: Colors.darkGray, fontSize: 15, }}>Despesa:</Text>
-            <Text style={{ color: '#8B0000', fontSize: 20, fontWeight: '700' }}>{expenseStatus !== '' ? expenseStatus.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.') : '...'}</Text>
+            <Text style={{ color: '#8B0000', fontSize: 20, fontWeight: '700' }}>{expenseStatus !== '' ? expenseStatus : '...'}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -187,11 +172,11 @@ export default function Dashboard({ navigation }) {
             labels={({ datum }) => datum.x}
             labelPosition={({ index }) => index
               ? "centroid"
-              : "endAngle"
+              : "centroid"
             }
             style={{ labels: { fill: "black", fontSize: 15, } }}
           />
-          <View style={{ flexDirection: 'row', width: '50%', justifyContent: 'space-around', bottom: 15 }}>
+          <View style={{ flexDirection: 'row', width: '80%', justifyContent: 'space-between', bottom: 15 }}>
             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
               <View style={{ backgroundColor: 'red', width: 8, height: 5, marginRight: 5 }}></View>
               <Text style={{}}>Despesa</Text>
@@ -199,6 +184,10 @@ export default function Dashboard({ navigation }) {
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <View style={{ backgroundColor: 'green', width: 8, height: 5, marginRight: 5 }}></View>
               <Text>Receita</Text>
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={{ backgroundColor: '#8a2be2', width: 8, height: 5, marginRight: 5 }}></View>
+              <Text>Investido</Text>
             </View>
           </View>
 
@@ -241,7 +230,7 @@ export default function Dashboard({ navigation }) {
               <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
                 <Text style={showInvestment ? { marginLeft: 20 } : { marginLeft: 20, marginTop: 14 }}>Valor Investido:</Text>
                 {showInvestment ?
-                  <Text style={{ marginLeft: 30, justifyContent: 'flex-end', fontSize: 25, top: 5, color: 'green', fontWeight: 'bold' }}>{totalValueInvestiment ? totalValueInvestiment : 'R$ ---'}</Text>
+                  <Text style={{ marginLeft: 30, justifyContent: 'flex-end', fontSize: 25, top: 5, color: '#8a2be2', fontWeight: 'bold' }}>{totalValueInvestiment ? totalValueInvestiment : 'R$ ---'}</Text>
                   :
                   <View style={{ marginLeft: 30, backgroundColor: Colors.lightGray, width: 130, height: 20, opacity: 0.5 }}>
                   </View>}
@@ -357,12 +346,9 @@ const styles = StyleSheet.create({
     elevation: 20,
   },
   viewGraphic: {
-    // backgroundColor: 'rgba(0, 102, 0, 0.2)',
     alignItems: 'center',
     borderRadius: 10,
     justifyContent: 'center',
-    // maxHeight: 200,
-    // minHeight: 200,
     width: '92%',
     marginLeft: '4%',
     top: 20,
