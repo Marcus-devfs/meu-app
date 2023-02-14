@@ -94,7 +94,7 @@ export default function Dashboard({ navigation }) {
 
   const filterMonth = async () => {
     const filtrando = await filtro(monthSelect)
-    await api.post('/movimentsList', filtrando)
+    await api.post('/movimentsList', {...filtrando, user_find: user._id})
       .then(response => {
         const { data } = response
         startLoading({ msg: 'Carregando...' })
