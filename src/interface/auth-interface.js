@@ -19,7 +19,7 @@ export const loginUser = async (login) => {
 
         return user
     } catch (error) {
-       Alert.alert('MyBank', 'Usuario não encontrado');
+        Alert.alert('MyBank', 'Usuario não encontrado');
         return false
     }
 
@@ -33,7 +33,7 @@ export const doLoginByToken = async (token) => {
         const { user, token: newToken } = response.data
 
         if (newToken) AsyncStorage.setItem('@1trainer', newToken)
-        
+
         api.defaults.headers['Authorization'] = `Bearer ${newToken}`;
         return user
     } catch (error) {
@@ -52,11 +52,20 @@ export const doLogout = async (user) => {
     }
 }
 
-// Verificar depois - "Esqueci a senha"
+export const update = async (updateData) => {
+    try {
+        const response = await api.post('/login/updateData', { updateData })
+        const { msg } = response.data
+        Alert.alert('MyBank', `${msg}`)
+        return msg
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 export const uptadeNewPassword = async (updatePassword) => {
     try {
-        const response = await api.post('/login/updatePass', {updatePassword})
+        const response = await api.post('/login/updatePass', { updatePassword })
         const { newPassword } = response.data
         Alert.alert('MyBank', `Senha alterada com sucesso. Nova senha é: ${newPassword}`)
         return newPassword
@@ -69,10 +78,12 @@ export const createUser = async (userData) => {
 
     try {
         const response = await api.post("/auth/register", userData)
-        Alert.alert('MyBank', 'Usuario cadastrado com sucesso!')
-        return response.data
+        const { msg } = response.data
+        Alert.alert('MyBank', `${msg}`)
+        const { user } = response.data
+        return user
     } catch (error) {
-        Alert.alert('MyBank', 'Ocorreu um erro. Verifique se os dados estão corretos')
+        Alert.alert('MyBank', 'Usuário existente. Verifique os dados.')
         console.log(error.data, 'Ocorreu um erro ao cadastrar seu usuario');
     }
 }

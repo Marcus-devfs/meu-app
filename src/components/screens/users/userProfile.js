@@ -42,8 +42,8 @@ export default function UserProfile() {
           <Ionicons name='chevron-forward' color={'#A9A9A9'} size={16} />
         </TouchableOpacity>
         <Divider style={styles.divider} />
-        <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('upDatePass')}>
-          <Text style={styles.menuItemText}>Alterar senha</Text>
+        <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('changeData')}>
+          <Text style={styles.menuItemText}>Alterar dados</Text>
           <Ionicons name='chevron-forward' color={'#A9A9A9'} size={16} />
         </TouchableOpacity>
         <Divider style={styles.divider} />

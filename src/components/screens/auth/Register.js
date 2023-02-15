@@ -16,39 +16,35 @@ import { Spacer, } from '../../atoms/Spacer';
 import Colors from '../../atoms/Colors';
 import { AuthContext } from '../../../context/validators/AuthContext';
 import { createUser } from '../../../interface/auth-interface';
-
-// export function handleSubmit({navigation,email, senha}){
-
-//   if(TextInput == user)
-//   return(navigation.navigate("dashboard"));
-//   else{
-//     alert('email ou senha incorreta. Verifique e tente novamente.')
-//   }
-
-// }
-
+import { createCategoriesDefault } from '../../../interface/category-interface';
 
 export const RegisterScreen = ({ navigation }) => {
-
-    // const { createUser } = useContext(AuthContext);
 
     const [userData, setUserData] = useState({
         name: '',
         email: '',
         password: '',
-        confirmpassword: ''
+        confirmpassword: '',
+        dateBirth: '',
+        telephone: '',
     })
 
     const handleChange = async (name, value) => {
+        if (name == 'telephone') {
+            const regex = /^\(?([0-9]{2})\)?([0-9]{4,5})\-?([0-9]{4})$/mg;
+            let str = value.replace(/[^0-9]/g, "").slice(0, 11);
+            value = str.replace(regex, "($1)$2-$3")
+        }
+        if (name == 'dateBirth') {
+            if (value.length == 2 || value.length == 5) {
+                value = value + '/'
+            }
+        }
         setUserData({
             ...userData,
             [name]: value
         })
     }
-    // const [name, setName] = useState();
-    // const [email, setEmail] = useState();
-    // const [password, setPassword] = useState();
-    // const [confirmpassword, setConfirmPassword] = useState();
 
     const handleCreateAccount = async () => {
 
@@ -57,109 +53,118 @@ export const RegisterScreen = ({ navigation }) => {
             return EMAIL_REGEX.test(email)
         }
 
-        try {
-            const { name, email, password, confirmpassword } = userData;
+        const { name, email, password, confirmpassword, dateBirth, telephone } = userData
 
-            if (!name) { Alert.alert('MyBank', "O campo 'Nome' é obrigatório") }
-            if (!email) { Alert.alert('MyBank', "O campo 'E-mail' é obrigatório") }
-            if (!emailValidator(email)) { Alert.alert('MyBank', "O e-mail digitado está incorreto") }
-            if (!password) { Alert.alert('MyBank', "O campo 'Senha' é obrigatório") }
-            if (password.length < 6 || confirmpassword.length < 6) { Alert.alert('MayBank', 'A senha deve conter no mínimo 6 digitos.') }
-            if (password !== confirmpassword) { Alert.alert('MyBank', 'As senhas não conferem! Verifique e tente novamente') }
-
-            await createUser(userData)
-            setUserData('');
-        } catch (error) {
-            setUserData('')
-            Alert.alert('MyBank', 'Ocorreu um erro. Verifique se os dados estão corretos');
-            console.error(error, 'Ocorreu um erro com os dados')
+        if (!name) { Alert.alert('MyBank', "O campo 'Nome' é obrigatório") }
+        if (!email) { Alert.alert('MyBank', "O campo 'E-mail' é obrigatório") }
+        if (!emailValidator(email)) { Alert.alert('MyBank', "O e-mail digitado está incorreto") }
+        if (!password) { Alert.alert('MyBank', "O campo 'Senha' é obrigatório") }
+        if (password?.length < 6 || confirmpassword?.length < 6) { Alert.alert('MayBank', 'A senha deve conter no mínimo 6 digitos.') }
+        if (password !== confirmpassword) { Alert.alert('MyBank', 'As senhas não conferem! Verifique e tente novamente') }
+        if (!dateBirth) { Alert.alert('MyBank', "O campo data de nascimento é obrigatório") }
+        if (!telephone || telephone?.length < 14 || telephone?.length > 15) { Alert.alert('MyBank', "O numero de telefone é invalido") }
+        else {
+            const create = await createUser(userData)
+            if (create) {
+                const idCategory = create?._id
+                if (idCategory) {
+                    await createCategoriesDefault(idCategory)
+                    setUserData('')
+                    navigation.navigate('Signin')
+                }
+            }
         }
     }
 
-    // const handleRegister = () => {
-
-    //     // let emailOk = "vini";
-    //     // let senhaOk = "111"
-
-    //     // if (email != emailOk) {
-    //     //   return Alert.alert("MyBank","email ou senha incorretos. Tente novamente!")
-    //     // }
-    //     // else if(password != senhaOk){
-    //     //   return Alert.alert("MyBank","email ou senha incorretos. Tente novamente!")
-    //     // }
-    //     // else {
-    //     //   return (navigation.navigate("dashboard"));
-    //     // }
-    // }
-
-
     return (
         <View style={styles.container}>
-            <SafeAreaView>
+            <View style={{ width: '100%' }}>
                 <ScrollView>
-                    <Spacer size={2} />
-                    {/* <Text style={{ color: 'black', fontSize: 25 }}>{vailogo}</Text> */}
                     <View style={styles.containerForm}>
-                        <Text style={{ color: '#fff', fontSize: 25 }}>Crie sua conta!</Text>
-                        <Spacer size={5} />
-                        <Image style={styles.imgLogin}
-                            source={require('../../../assets/icono.png')}
-                            resizeMode="contain"
-                        />
+                        <Text style={{ color: '#fff', fontSize: 25, textAlign: 'center', width: '90%' }}>Crie sua conta!</Text>
                         <Spacer size={1} />
-                        <TextInputState
-                            name="name"
-                            placeholder="Digite seu nome"
-                            placeholderTextColor="#696969"
-                            value={userData.name}
-                            handleChange={(name, value) => handleChange(name, value)}
-                        />
+                        <Image style={styles.imgLogin} source={require('../../../assets/icono.png')} resizeMode="contain" />
+                        <Spacer size={1} />
+                        <View style={{ width: '95%', marginLeft: '4.5%' }}>
 
-                        <TextInputState
-                            name="email"
-                            keyboardType='email-address'
-                            placeholderTextColor="#696969"
-                            placeholder="Digite seu e-mail"
-                            autoCapitalize="none"
-                            value={userData.email}
-                            handleChange={(name, value) => handleChange(name, value)}
-                        />
+                            <Text style={styles.label}>Nome: </Text>
+                            <TextInputState
+                                name="name"
+                                placeholder="João Silva"
+                                placeholderTextColor="#696969"
+                                value={userData.name}
+                                handleChange={(name, value) => handleChange(name, value)}
+                            />
+                            <Text style={styles.label}>E-mail: </Text>
 
-                        <TextInputState
-                            name="password"
-                            placeholder="Digite sua senha"
-                            placeholderTextColor="#696969"
-                            autoCapitalize="none"
-                            secureTextEntry={true}
-                            value={userData.password}
-                            handleChange={(name, value) => handleChange(name, value)}
-                            type='password'
-                        />
+                            <TextInputState
+                                name="email"
+                                keyboardType='email-address'
+                                placeholderTextColor="#696969"
+                                placeholder="fulano@gmail.com"
+                                autoCapitalize="none"
+                                value={userData.email}
+                                handleChange={(name, value) => handleChange(name, value)}
+                            />
+                            <Text style={styles.label}>Senha: </Text>
 
-                        <TextInputState
-                            name="confirmpassword"
-                            placeholder="Confirme sua senha"
-                            placeholderTextColor="#696969"
-                            autoCapitalize="none"
-                            secureTextEntry={true}
-                            value={userData.confirmpassword}
-                            handleChange={(name, value) => handleChange(name, value)}
-                            type='password'
-                        />
+                            <TextInputState
+                                name="password"
+                                placeholder="******"
+                                placeholderTextColor="#696969"
+                                autoCapitalize="none"
+                                secureTextEntry={true}
+                                value={userData.password}
+                                handleChange={(name, value) => handleChange(name, value)}
+                                type='password'
+                            />
+                            <Text style={styles.label}>Confime sua senha: </Text>
+
+                            <TextInputState
+                                name="confirmpassword"
+                                placeholder="******"
+                                placeholderTextColor="#696969"
+                                autoCapitalize="none"
+                                secureTextEntry={true}
+                                value={userData.confirmpassword}
+                                handleChange={(name, value) => handleChange(name, value)}
+                                type='password'
+                            />
+
+                            <Text style={styles.label}>Data de nascimento: </Text>
+
+                            <TextInputState
+                                name="dateBirth"
+                                placeholder="20/02/1995"
+                                placeholderTextColor="#696969"
+                                value={userData.dateBirth}
+                                handleChange={(name, value) => handleChange(name, value)}
+                            />
+
+                            <Text style={styles.label}>Telefone: </Text>
+
+                            <TextInputState
+                                name="telephone"
+                                placeholder="(11) 91158-5464"
+                                placeholderTextColor="#696969"
+                                value={userData.telephone}
+                                handleChange={(name, value) => handleChange(name, value)}
+                            />
+                        </View>
                         {/* <TouchableOpacity style={{cursor: 'pointer' ,marginLeft: 140, color: "#fff", marginBottom: 10, fontSize: 14 }}><Text style={{color: "#fff"}}>Recuperar senha?</Text></TouchableOpacity> */}
                         <Spacer size={1} />
 
                         <TouchableOpacity
                             style={styles.buttonRegister} onPress={() => {
                                 handleCreateAccount()
-                                }}>
+                            }}>
 
                             <Text style={{ color: '#fff', fontSize: 17 }}>Cadastrar</Text>
                         </TouchableOpacity>
 
                         <Spacer size={5} />
                     </View>
-                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
+                    <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
                         <Spacer size={2} />
                         <Text style={{ color: '#fff', fontSize: 13 }}>Já possui uma conta?</Text>
                         <TouchableOpacity
@@ -171,10 +176,10 @@ export const RegisterScreen = ({ navigation }) => {
                         </TouchableOpacity>
                     </View>
                     <StatusBar barStyle={{ color: '#fff' }} />
-
-
+                    <Spacer size={5} />
                 </ScrollView>
-            </SafeAreaView>
+
+            </View>
         </View>
     );
 }
@@ -182,34 +187,39 @@ export const RegisterScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center',
         backgroundColor: Colors.primary
     },
     containerForm: {
         backgroundColor: Colors.primary,
-        alignItems: 'center',
         justifyContent: 'center',
-        width: 300,
+        width: '100%',
         borderRadius: 10,
-        height: 500,
-        margin: 40,
         marginTop: 80,
-
+        marginLeft: '5%'
     },
     imgLogin: {
-        width: '100%',
-        height: "30%",
+        width: '90%',
+        height: 100,
         resizeMode: 'contain',
         marginBottom: 30,
-        marginTop: 10
+        marginTop: 10,
     },
     buttonRegister: {
         backgroundColor: '#B22222',
         padding: 7,
-        width: '90%',
+        width: '50%',
         alignItems: 'center',
         borderRadius: 10,
-        marginTop: 10
+        marginTop: 10,
+        marginLeft: '22%'
     },
+    label: {
+        textAlign: 'left',
+        color: '#fff',
+        marginLeft: 5,
+        bottom: 5,
+        fontSize: 15,
+        marginTop: 5
+    }
 
 });

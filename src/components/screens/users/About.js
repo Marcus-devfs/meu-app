@@ -68,7 +68,7 @@ export default function AboutUs() {
                 </View>
                 <View style={{ alignItems: 'center', paddingTop: 100 }}>
                     <Text>Sugestões, duvidas ou ajuda, enviar email para:</Text>
-                    <Text style={{ color: Colors.primary, fontWeight: 'bold', fontSize: 15, marginTop: 5 }}>{email}</Text>
+                    <Text style={{ color: Colors.primary, fontWeight: 'bold', fontSize: 15, marginTop: 5 }}>marcusvf.silva@outlook.com</Text>
                 </View>
             </View>
             <StatusBar style="auto" />

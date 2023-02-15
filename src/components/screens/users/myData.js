@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Divider } from '../../atoms/Divider';
 import Header, { name } from '../../organisms/header'
@@ -9,21 +9,17 @@ import Colors from '../../atoms/Colors';
 import { AuthContext } from '../../../context/validators/AuthContext';
 import Avatar from '../../organisms/Avatar';
 import { useNavigation } from '@react-navigation/native';
+import { formatDate } from '../../../context/validadores';
 
 
 
 export default function MyData() {
-
     const { user } = useContext(AuthContext)
-    const { name, _id, email } = user
-
+    const { name, _id, email, telephone, dateBirth } = user
     const firstName = name.split(" ")[0];
     const lastName = name.split(" ")[1];
-
     const navigation = useNavigation()
-
     const userName = `${firstName} ${lastName}`
-
     const { handleLogout } = useContext(AuthContext)
 
     return (
@@ -57,7 +53,7 @@ export default function MyData() {
                 <TouchableOpacity style={styles.menuItemEdit}>
                     <View style={{ flexDirection: 'column' }}>
                         <Text style={styles.menuItemText}>Telefone: </Text>
-                        <Text style={styles.infoData}>(11) 96181-9664</Text>
+                        <Text style={styles.infoData}>{telephone}</Text>
                     </View>
                     <Ionicons name='chevron-forward' color={'#A9A9A9'} size={16} />
                 </TouchableOpacity>
@@ -65,7 +61,7 @@ export default function MyData() {
                 <TouchableOpacity style={styles.menuItemEdit}>
                     <View style={{ flexDirection: 'column' }}>
                         <Text style={styles.menuItemText}>Data de Nascimento: </Text>
-                        <Text style={styles.infoData}>13/11/2000</Text>
+                        <Text style={styles.infoData}>{formatDate({ date: dateBirth })}</Text>
                     </View>
                     <Ionicons name='chevron-forward' color={'#A9A9A9'} size={16} />
                 </TouchableOpacity>
