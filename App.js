@@ -7,6 +7,8 @@ import { AuthProvider } from './src/context/validators/AuthContext';
 import { AuthNavigator } from './src/components/layout/AuthNavigator';
 import { AppProvider } from './src/context/validators/AppContext';
 import { Loading } from './src/components/atoms/Loading';
+import Ionicons from 'react-native-vector-icons/Ionicons'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
 export default function App() {
   return (
