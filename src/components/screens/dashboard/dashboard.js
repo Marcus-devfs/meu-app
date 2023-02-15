@@ -30,26 +30,48 @@ export default function Dashboard({ navigation }) {
   const [totalValueInvestiment, setTotalValueInvestiment] = useState()
 
   useEffect(() => {
-    navigation.addListener('focus', () =>
-      startLoading({ msg: 'Carregando...' }),
-      calculationValues(),
-      stopLoading()
-    )
-  }, [navigation, listFilterMoviments, monthSelect])
+    async function filterMonth() {
+      const filterMoviments = await filtro(monthSelect)
+      await api.post('/movimentsList', { ...filterMoviments, user_find: user._id })
+        .then(response => {
+          const { data } = response
+          useListFilterMoviments(data)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+
+      const filterInvestiments = await filtro(monthSelect)
+      await api.post('/investmentList', { ...filterInvestiments, user_find: user._id })
+        .then(response => {
+          const { data } = response
+          useListFilterInvestments(data)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+
+      return
+    }
+    filterMonth()
+  }, [monthSelect])
 
   const handleLoadItems = async () => {
-    filterMonthMoviments()
-    filterMonthInvestment()
-    setShowButtonAddMoviment(false)
-    // console.log('rodando')
+    startLoading({ msg: 'Carregando...' })
+      calculationValues()
+      setShowButtonAddMoviment(false)
+      stopLoading()
   }
 
+  useEffect(() => {
+    navigation.addListener('focus', () =>
+      handleLoadItems()
+    )
+    handleLoadItems()
+  }, [navigation, listFilterInvestments, listFilterMoviments])
+
   const calculationValues = async () => {
-
-    // handleLoadItems()
-      filterMonthMoviments()
-    filterMonthInvestment()
-
+    
     const amountExpanse = listFilterMoviments?.
       filter((item) => item.type == 'expense').
       map((item) => Number(item.value))?.reduce((acc, cur) => acc + cur, 0);
@@ -72,37 +94,12 @@ export default function Dashboard({ navigation }) {
     ])
 
     //dados para status dash
-    const valueTotalStatus = Math.abs(amountIncome - amountExpanse - amountInvesting).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+    const valueTotalStatus = (amountIncome - (amountExpanse + amountInvesting)).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+
     useExpenseStatus(`R$ ${amountExpanse?.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}`);
     useIncomeStatus(`R$ ${amountIncome?.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}`);
     useValueTotal(`R$ ${valueTotalStatus}`);
     setTotalValueInvestiment(`R$ ${amountInvesting?.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}`);
-
-  }
-
-  const filterMonthMoviments = async () => {
-    const filtrando = await filtro(monthSelect)
-    await api.post('/movimentsList', { ...filtrando, user_find: user._id })
-      .then(response => {
-        const { data } = response
-        useListFilterMoviments(data)
-      })
-      .catch(error => {
-        console.log(error)
-      })
-
-  }
-
-  const filterMonthInvestment = async () => {
-    const filtrando = await filtro(monthSelect)
-    await api.post('/investmentList', { ...filtrando, user_find: user._id })
-      .then(response => {
-        const { data } = response
-        useListFilterInvestments(data)
-      })
-      .catch(error => {
-        console.log(error)
-      })
   }
 
   async function selectItem(month) {
