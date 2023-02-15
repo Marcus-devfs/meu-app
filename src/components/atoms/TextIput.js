@@ -53,6 +53,6 @@ const styles = StyleSheet.create({
       marginLeft: 5,
       fontSize: 16,
       flex: 1,
-      color: Colors.secondary
+      color: Colors.darkGray
    }
 })

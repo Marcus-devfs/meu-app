@@ -50,17 +50,21 @@ export default function Dashboard({ navigation }) {
         .catch(error => {
           console.log(error)
         })
-
       return
     }
+    if (navigation) {
+      navigation.addListener('focus', () =>
+        filterMonth()
+      )
+    }
     filterMonth()
-  }, [monthSelect])
+  }, [monthSelect, navigation])
 
   const handleLoadItems = async () => {
     startLoading({ msg: 'Carregando...' })
-      calculationValues()
-      setShowButtonAddMoviment(false)
-      stopLoading()
+    calculationValues()
+    setShowButtonAddMoviment(false)
+    stopLoading()
   }
 
   useEffect(() => {
@@ -68,10 +72,9 @@ export default function Dashboard({ navigation }) {
       handleLoadItems()
     )
     handleLoadItems()
-  }, [navigation, listFilterInvestments, listFilterMoviments])
+  }, [listFilterInvestments, listFilterMoviments])
 
   const calculationValues = async () => {
-    
     const amountExpanse = listFilterMoviments?.
       filter((item) => item.type == 'expense').
       map((item) => Number(item.value))?.reduce((acc, cur) => acc + cur, 0);
@@ -163,7 +166,7 @@ export default function Dashboard({ navigation }) {
             y="value"
             colorScale={dataGraphic.map((item) => item.color)}
             innerRadius={30}
-            padding={35}
+            padding={40}
             width={350}
             height={200}
             labels={({ datum }) => datum.x}
@@ -171,9 +174,9 @@ export default function Dashboard({ navigation }) {
               ? "centroid"
               : "centroid"
             }
-            style={{ labels: { fill: "black", fontSize: 15, } }}
+            style={{ labels: { fill: "black", fontSize: 15 } }}
           />
-          <View style={{ flexDirection: 'row', width: '80%', justifyContent: 'space-between', bottom: 15 }}>
+          <View style={{ flexDirection: 'row', width: '80%', justifyContent: 'space-between', bottom: 15, marginTop: 15 }}>
             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
               <View style={{ backgroundColor: 'red', width: 8, height: 5, marginRight: 5 }}></View>
               <Text style={{}}>Despesa</Text>

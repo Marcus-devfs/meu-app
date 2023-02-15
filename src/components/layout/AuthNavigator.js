@@ -22,6 +22,7 @@ import AboutUs from '../screens/users/About';
 import InvestimentControll from '../screens/dashboard/investiment';
 import UpDatePass from '../screens/users/UpdatePassword';
 import { RecoverScreen } from '../screens/auth/recover';
+import ChangeData from '../screens/users/changeData';
 
 const Stack = createNativeStackNavigator();
 
@@ -103,6 +104,10 @@ const isLoggedInStack =
         <Stack.Screen
             name="upDatePass"
             component={UpDatePass}
+            options={{ headerShown: false, gestureDirection: 'vertical' }} />
+        <Stack.Screen
+            name="changeData"
+            component={ChangeData}
             options={{ headerShown: false, gestureDirection: 'vertical' }} />
     </>
 

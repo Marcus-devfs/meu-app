@@ -140,7 +140,7 @@ export default function SpendControll() {
         if (categoryName == '' || categoryName == null || categoryName == undefined) {
             Alert.alert('MyBank', 'Por favor, inserir um nome valido!')
         }
-        useSpend({...spend, category: categoryName})                                                                                                        
+        useSpend({ ...spend, category: categoryName })
 
         await api.post('/categoryList/create', addCategoryList)
             .then(response => {
