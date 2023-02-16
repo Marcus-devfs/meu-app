@@ -1,6 +1,6 @@
 export default {
     api: {
-        url: 'http://192.168.0.129/'
+        url: 'https://api-mybank-app.vercel.app/'
     },
     auth: {
         email: 'marcus.silva@gmail.com',
