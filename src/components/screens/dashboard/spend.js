@@ -297,10 +297,6 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         fontSize: 15
     },
-    // containerForm: {
-    //     flex: 1,
-
-    // },
     buttonLogin: {
         backgroundColor: '#B22222',
         padding: 7,
