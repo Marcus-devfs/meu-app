@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
 import { ScrollView, StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
 import api from '../../../config/api';
 import { AppContext } from '../../../context/validators/AppContext';
@@ -25,40 +25,42 @@ export default function Dashboard({ navigation }) {
   const { user } = useContext(AuthContext)
   const { name, _id } = user
   const userName = name.split(" ")[0];
-  const [monthSelect, useMonthSelect] = useState('Janeiro');
+  const [monthSelect, useMonthSelect] = useState();
   const [showMonth, useShowMonth] = useState(false);
   const [totalValueInvestiment, setTotalValueInvestiment] = useState()
 
   useEffect(() => {
-    async function filterMonth() {
-      const filterMoviments = await filtro(monthSelect)
-      await api.post('/movimentsList', { ...filterMoviments, user_find: user._id })
-        .then(response => {
-          const { data } = response
-          useListFilterMoviments(data)
-        })
-        .catch(error => {
-          console.log(error)
-        })
-
-      const filterInvestiments = await filtro(monthSelect)
-      await api.post('/investmentList', { ...filterInvestiments, user_find: user._id })
-        .then(response => {
-          const { data } = response
-          useListFilterInvestments(data)
-        })
-        .catch(error => {
-          console.log(error)
-        })
-      return
-    }
-    if (navigation) {
-      navigation.addListener('focus', () =>
-        filterMonth()
-      )
-    }
-    filterMonth()
+    navigation.addListener('focus', () =>
+      filterMovimentsMonth(),
+    filterInvestimentsMonth()
+    )
+    filterMovimentsMonth(),
+    filterInvestimentsMonth()
   }, [monthSelect, navigation])
+
+  const filterMovimentsMonth = useCallback(async () => {
+    const filterMoviments = await filtro(monthSelect)
+    await api.post('/movimentsList', { ...filterMoviments, user_find: user._id })
+      .then(response => {
+        const { data } = response
+        useListFilterMoviments(data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }, [monthSelect])
+  
+  const filterInvestimentsMonth = useCallback(async () => {
+    const filterInvestiments = await filtro(monthSelect)
+    await api.post('/investmentList', { ...filterInvestiments, user_find: user._id })
+      .then(response => {
+        const { data } = response
+        useListFilterInvestments(data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }, [monthSelect])
 
   const handleLoadItems = async () => {
     startLoading({ msg: 'Carregando...' })
@@ -68,10 +70,9 @@ export default function Dashboard({ navigation }) {
   }
 
   useEffect(() => {
-    navigation.addListener('focus', () =>
-      handleLoadItems()
-    )
-    handleLoadItems()
+    startLoading({ msg: 'Carregando...' }),
+      handleLoadItems(),
+      stopLoading()
   }, [listFilterInvestments, listFilterMoviments])
 
   const calculationValues = async () => {
