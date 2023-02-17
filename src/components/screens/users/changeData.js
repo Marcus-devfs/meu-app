@@ -115,8 +115,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
-        // alignItems: 'center',
-        // justifyContent: 'center',
     },
     containerHeader: {
         flexDirection: 'row',
@@ -124,7 +122,6 @@ const styles = StyleSheet.create({
         width: '100%',
         minHeight: 150,
         maxHeight: 150,
-        // alignItems: 'center',
         justifyContent: 'center',
     },
     userName: {
@@ -144,7 +141,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#A9A9A9',
     },
     menuItem: {
-        // flexDirection: 'row',
         padding: 15,
         justifyContent: 'space-between',
 

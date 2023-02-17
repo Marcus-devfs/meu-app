@@ -70,7 +70,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    // justifyContent: 'center',
   },
   containerHeader: {
     flexDirection: 'row',
@@ -78,7 +77,6 @@ const styles = StyleSheet.create({
     width: '100%',
     minHeight: 150,
     maxHeight: 150,
-    // alignItems: 'center',
     justifyContent: 'center',
   },
   userName: {

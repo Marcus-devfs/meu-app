@@ -14,7 +14,6 @@ export default function Moviments({ data }) {
     const [showButton, setShowButton] = useState(false);
 
     return (
-        // <TouchableOpacity style={styles.container} >
         <TouchableOpacity style={styles.container} onPress={() => setShowButton(!showButton)}>
 
             <Text style={styles.date}>{data.createdAt}</Text>

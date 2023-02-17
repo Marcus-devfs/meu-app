@@ -20,11 +20,6 @@ export default function Avatar() {
     return (
         <TouchableOpacity style={styles.containerAvatar} onPress={() => navigation.navigate('myData')}>
             <FontAwesome5 name="user" size={32} color={'#fff'}></FontAwesome5>
-            {/* <Image style={styles.avatarImg}
-
-                source={imageAvatar}
-                resizeMode="cover"
-            /> */}
         </TouchableOpacity>
     )
 
@@ -44,10 +39,4 @@ const styles = StyleSheet.create({
         borderRadius: 100,
         marginLeft: 10,
     },
-
-    // Avatar: {
-    //     fontSize: 40,
-    //     justifyContent: 'center',
-    // },
-
 })

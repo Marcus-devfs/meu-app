@@ -234,7 +234,6 @@ const styles = StyleSheet.create({
     },
     containerList: {
         height: 60,
-        // paddingHorizontal: 10,
         flex: 1,
         marginTop: 8,
         alignItems: 'center',

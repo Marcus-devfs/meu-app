@@ -57,7 +57,7 @@ export default function Investiments({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <View style={{ marginTop: 60, backgroundColor: '#fff', flex: 1, borderTopLeftRadius: 20, borderTopRightRadius: 20 }}>
+            <View style={{ marginTop: 80, backgroundColor: '#fff', flex: 1, borderTopLeftRadius: 20, borderTopRightRadius: 20,  }}>
 
                 <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                     <View style={{ width: 60, height: 5, backgroundColor: Colors.lightGray, marginTop: 8, borderRadius: 10, }}></View>
@@ -134,11 +134,11 @@ export default function Investiments({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: 20,
+        backgroundColor: Colors.primary
     },
     bodyDash: {
         width: '100%',
-        height: '80%'
+        height: '80%',
     },
     containerList: {
         padding: 5,

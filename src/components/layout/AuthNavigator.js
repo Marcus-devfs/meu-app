@@ -84,7 +84,7 @@ const isLoggedInStack =
         <Stack.Screen
             name="graphics"
             component={Graphics}
-            options={{ headerShown: false, }} />
+            options={{ headerShown: false, gestureDirection: 'vertical' }} />
         <Stack.Screen
             name="movimentEdit"
             component={MovimentsEdit}
@@ -96,19 +96,19 @@ const isLoggedInStack =
         <Stack.Screen
             name="aboutUs"
             component={AboutUs}
-            options={{ headerShown: false, gestureDirection: 'vertical' }} />
+            options={{ headerShown: false, }} />
         <Stack.Screen
             name="investimentControll"
             component={InvestimentControll}
-            options={{ headerShown: false, gestureDirection: 'vertical' }} />
+            options={{ headerShown: false, }} />
         <Stack.Screen
             name="upDatePass"
             component={UpDatePass}
-            options={{ headerShown: false, gestureDirection: 'vertical' }} />
+            options={{ headerShown: false, }} />
         <Stack.Screen
             name="changeData"
             component={ChangeData}
-            options={{ headerShown: false, gestureDirection: 'vertical' }} />
+            options={{ headerShown: false, }} />
     </>
 
 

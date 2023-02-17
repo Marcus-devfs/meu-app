@@ -26,13 +26,6 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: Colors.primary,
         width: '100%',
-        // height: 120,
-        // justifyContent: 'center',
-        // alignItems: 'flex-start',
-        // borderBottomLeftRadius: 15,
-        // borderBottomRightRadius: 15,
-        // borderTopRightRadius: 15,
-        // borderTopLeftRadius: 15,
     },
 
 

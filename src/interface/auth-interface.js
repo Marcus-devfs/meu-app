@@ -24,7 +24,6 @@ export const loginUser = async (login) => {
     }
 
 }
-//Ok
 export const doLoginByToken = async (token) => {
     try {
         api.defaults.headers['Authorization'] = `Bearer ${token}`;
@@ -41,7 +40,7 @@ export const doLoginByToken = async (token) => {
         return false
     }
 }
-// Ok
+
 export const doLogout = async (user) => {
     try {
         AsyncStorage.removeItem('@MyBank')

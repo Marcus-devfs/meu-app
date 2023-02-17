@@ -23,19 +23,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const Signin = ({ navigation }) => {
 
-  // const {loginUser} = useContext(AuthContext);
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // const [email, setEmail] = useState(null);
-  // const [password, setPassword] = useState(null);
-
-  // const val = useContext(AuthContext);
-
-
   const { setUser } = useContext(AuthContext)
-
   const [login, setLogin] = useState({
     email: Environment.auth.email,
     password: Environment.auth.password
@@ -78,7 +66,6 @@ export const Signin = ({ navigation }) => {
     }
 
   }
-
 
   return (
     <View style={styles.container}>

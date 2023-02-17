@@ -57,12 +57,4 @@ export const TabNavigator = ({ navigation }) => {
 
 
 const styles = StyleSheet.create({
-    // container: {
-    //     flex: 1,
-    //     paddingHorizontal: 15,
-    //     paddingTop: 15,
-    //     backgroundColor: Colors.lightGray
-    // },
-    tabConfig: {
-    }
 });
