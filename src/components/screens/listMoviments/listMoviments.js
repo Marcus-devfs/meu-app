@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput } from 
 import api from "../../../config/api";
 import { AuthContext } from "../../../context/validators/AuthContext";
 import Colors from "../../atoms/Colors";
-import { FontAwesome5 } from "../../atoms/icons";
+import { FontAwesome5, Ionicons } from "../../atoms/icons";
 import { formatDate } from "../../../context/validadores";
 import { AppContext } from "../../../context/validators/AppContext";
 import { Spacer } from "../../atoms/Spacer";
@@ -179,18 +179,23 @@ export default function MovimentsList({ navigation }) {
                                     borderRadius: 5,
                                     borderColor: Colors.lightGray,
                                     borderWidth: 0.5,
-                                    height: 32
+                                    height: 32,
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between'
                                 }}
                                 onPress={() => useShowList(!showList)}>
                                 <Text style={{
                                     textAlign: 'center',
-                                    fontSize: 17, color: Colors.lightGray
+                                    fontSize: 17, 
+                                    color: Colors.lightGray,
+                                    paddingLeft: 20
                                 }}>{filterItem == '' ? 'Todos' : filterItem}</Text>
+                                <Ionicons name={'chevron-down'} size={20} color={Colors.lightGray} />
                             </TouchableOpacity>
                             :
-                            <ScrollView style={{ marginTop: 15 }}>
+                            <ScrollView style={{ marginTop: 15, borderColor: Colors.darkGray, borderWidth: 1, borderRadius: 5 }}>
                                 {listCategoryItem?.map((item) => (
-                                    <View key={item?._id} style={{ width: 'auto', backgroundColor: '#fff', borderColor: Colors.lightGray, borderBottomWidth: 1 }}>
+                                    <View key={item?._id} style={{ width: 'auto', backgroundColor: '#fff', borderColor: Colors.lightGray }}>
                                         <TouchableOpacity onPress={() => {
                                             selectItem(item.categoryName)
                                             useShowList(!showList)

@@ -120,10 +120,10 @@ export default function Dashboard({ navigation }) {
         </View>
         <View style={{ marginTop: 45, flex: 1, alignItems: 'center', right: 28 }}>
           {!showMonth ?
-            <TouchableOpacity style={{ borderColor: Colors.lightGray, width: 100, alignItems: 'center', flexDirection: 'row', justifyContent: 'space-around' }} onPress={() => {
+            <TouchableOpacity style={{ borderColor: Colors.lightGray, alignItems: 'center', flexDirection: 'row', justifyContent: 'space-around' }} onPress={() => {
               useShowMonth(!showMonth)
             }}>
-              <Text style={{ color: Colors.lightGray, display: 'flex', fontSize: 17 }}> {monthSelect ? monthSelect : 'Mês'}</Text>
+              <Text style={{ color: Colors.lightGray, display: 'flex', fontSize: 17 }}> {monthSelect ? monthSelect : 'selecione o mês'}</Text>
               <Ionicons name='chevron-forward' color={'#A9A9A9'} size={20} />
             </TouchableOpacity>
             :
