@@ -21,7 +21,7 @@ export default function Dashboard({ navigation }) {
   const [showButtonAddMoviment, setShowButtonAddMoviment] = useState(false);
   const [listFilterMoviments, useListFilterMoviments] = useState();
   const [listFilterInvestments, useListFilterInvestments] = useState();
-  const { startLoading, stopLoading, loading } = useContext(AppContext)
+  const { startLoading, stopLoading, startMessage, stopMessage } = useContext(AppContext)
   const { user } = useContext(AuthContext)
   const { name, _id } = user
   const userName = name.split(" ")[0];
@@ -31,11 +31,12 @@ export default function Dashboard({ navigation }) {
 
   useEffect(() => {
     navigation.addListener('focus', () =>
+
       filterMovimentsMonth(),
-    filterInvestimentsMonth()
+      filterInvestimentsMonth()
     )
     filterMovimentsMonth(),
-    filterInvestimentsMonth()
+      filterInvestimentsMonth()
   }, [monthSelect, navigation])
 
   const filterMovimentsMonth = useCallback(async () => {
@@ -49,7 +50,7 @@ export default function Dashboard({ navigation }) {
         console.log(error)
       })
   }, [monthSelect])
-  
+
   const filterInvestimentsMonth = useCallback(async () => {
     const filterInvestiments = await filtro(monthSelect)
     await api.post('/investmentList', { ...filterInvestiments, user_find: user._id })
@@ -63,11 +64,13 @@ export default function Dashboard({ navigation }) {
   }, [monthSelect])
 
   const handleLoadItems = async () => {
-    startLoading({ msg: 'Carregando...' })
     calculationValues()
     setShowButtonAddMoviment(false)
-    stopLoading()
   }
+
+  useEffect(() => {
+    startMessage({ alertMessage: 'MyBank' })
+  }, [])
 
   useEffect(() => {
     startLoading({ msg: 'Carregando...' }),
