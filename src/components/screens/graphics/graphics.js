@@ -34,7 +34,7 @@ export default function Graphics({ navigation }) {
         handleLoadItems()
     }, [navigation, cleanFilter])
 
-   
+
 
     useEffect(() => {
     }, [])
@@ -176,9 +176,10 @@ export default function Graphics({ navigation }) {
                             fillOpacity: 0.9, stroke: "#fff", strokeWidth: 3
                         },
                     }}
-
-
-
+                    animate={{
+                        duration: 2000,
+                        easing: 'circleInOut'
+                    }}
                 />
             </View>
 
